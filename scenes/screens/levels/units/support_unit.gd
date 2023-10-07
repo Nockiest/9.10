@@ -14,15 +14,23 @@ func _ready():
 	super._ready()
 ## override for the supper funcion
 func process_action():
-	#action_component.toggle_action_screen()
-	do_supporting_action()
-	
-func do_supporting_action():
+#	action_component.toggle_action_screen()
 	if Globals.action_taking_unit == self:
-		action_component.highlight_units_in_range()
+	#		action_component.highlight_units_in_range()
+		print("CHOOSING SUPPORTED")
 		action_component.choose_supported()
-	else:
-		action_component.unhighlight_units_in_range()
+#	print("DOING SUPPORTING ACTION")
+#	do_supporting_action()
+#
+#func do_supporting_action():
+#	if Globals.action_taking_unit == self:
+##		action_component.highlight_units_in_range()
+#		print("CHOOSING SUPPORTED")
+#		action_component.choose_supported()
+
+
+#	else:
+#		action_component.unhighlight_units_in_range()
 #		toggle_action_screen()
 #func toggle_action_screen():
 #	super.toggle_action_screen()

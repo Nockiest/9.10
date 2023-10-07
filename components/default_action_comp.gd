@@ -6,7 +6,6 @@ var remain_actions: int = base_actions:
 	set(new_attacks):
 		remain_actions = new_attacks
 		emit_signal("remain_actions_updated", new_attacks)
-
 var units_in_action_range:Array= []
 var action_range:int = 100
 var attack_range_modifiers = {"base_modifier": 1}
@@ -21,8 +20,8 @@ func try_attack( ):
 	print("CAN ATTACK ", distance," ", action_range)
 	if not Globals.hovered_unit in units_in_action_range:
 		return "FAILED"
-#	if distance > action_range:
-#		return "FAILED"
+	if distance > action_range:
+		return "FAILED"
 	## I will add this to the try_attack component later too
 	print("TOGGLING")
 	toggle_action_screen()
@@ -78,7 +77,7 @@ func toggle_action_screen():
 		print_debug ("2 ", self,  Globals.hovered_unit)
 		return
 	if Globals.action_taking_unit != null:
-		print_debug("3 ", self)
+		print_debug("3 ", self,  Globals.action_taking_unit)
 		return
 	## switch between moving and doing action
 	owner.deselect_movement()

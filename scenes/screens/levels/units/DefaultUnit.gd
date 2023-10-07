@@ -248,9 +248,10 @@ func _on_tree_exiting():
 
 	var death_image = death_image_scene.instantiate() as Sprite2D
 	death_image.global_position = $Center.position
-	get_tree().get_root().add_child(death_image)
+	call_deferred("add_death_cross_to_root", death_image )
 
- 
+func add_death_cross_to_root(death_image):
+	get_tree().get_root().add_child(death_image )
 func ___on_movement_changed():
 	update_stats_bar()
  
@@ -258,11 +259,9 @@ func _on_collision_area_entered(area):
  
 	for overlapping in $CollisionArea.get_overlapping_areas():
 		if overlapping.get_parent().get_parent() is Forrest:
-			print("IS IN FORREST")
 			$movement_comp.movement_modifieres["in_forrest"] = 0.5
 			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 		elif overlapping.get_parent() is Road:
-			print("IS IN FORREST")
 			$movement_comp.movement_modifieres["on_road"] = -0.5
 			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 		elif overlapping.get_parent() is Bridge:

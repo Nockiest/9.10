@@ -16,7 +16,6 @@ func _ready():
 	$BlastAnimation.hide()
 
 func toggle_action_screen():
-	print(ammo," AMMO WHEN TOGGLING")
 	if ammo <= 0:
 		return
  

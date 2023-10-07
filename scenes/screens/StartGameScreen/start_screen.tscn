@@ -131,6 +131,198 @@ layout_mode = 2
 attached_settings_variable = "city_turn_income"
 label_text = "City Income Per Turn"
 
+[node name="Blue Units" type="VBoxContainer" parent="SettingsScreen"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 50.0
+grow_horizontal = 0
+scale = Vector2(0.8, 0.8)
+
+[node name="Label" type="Label" parent="SettingsScreen/Blue Units"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Blue Player Units
+"
+
+[node name="Medics" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Medic"
+label_text = "Medics"
+slider_range = [0, 10]
+
+[node name="Observers" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Observer"
+label_text = "Observers"
+slider_range = [0, 10]
+
+[node name="SupplyCart" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Supply_cart"
+label_text = "Supply Carts"
+slider_range = [0, 10]
+
+[node name="Cannons" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Cannon"
+label_text = "Cannon"
+slider_range = [0, 10]
+
+[node name="Musketeer" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Musketeer"
+label_text = "Musketeers"
+slider_range = [0, 10]
+
+[node name="Pikeman" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Pikeman"
+label_text = "Pikemans"
+slider_range = [0, 10]
+
+[node name="Shield" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Shield"
+label_text = "Shields"
+slider_range = [0, 10]
+
+[node name="Knight" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Knight"
+label_text = "Knights"
+slider_range = [0, 10]
+
+[node name="Commadnder" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "blue_player_units"
+augmented_dictionary_variable = "Commadnder"
+label_text = "Commadnders"
+slider_range = [0, 10]
+
+[node name="Structures" type="VBoxContainer" parent="SettingsScreen"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 20.0
+offset_right = 100.0
+offset_bottom = 253.0
+grow_horizontal = 2
+
+[node name="TownSlider" parent="SettingsScreen/Structures" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "num_towns"
+label_text = "Number of Towns"
+slider_range = [0, 10]
+
+[node name="RiverSlider" parent="SettingsScreen/Structures" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "num_rivers"
+label_text = "Number of Rivers"
+slider_range = [0, 10]
+
+[node name="ForrestSlider" parent="SettingsScreen/Structures" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "num_forests"
+label_text = "Number of Forests"
+slider_range = [0, 10]
+
+[node name="Red Units" type="VBoxContainer" parent="SettingsScreen"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -410.0
+offset_top = 10.0
+offset_right = -210.0
+offset_bottom = 747.0
+grow_horizontal = 0
+scale = Vector2(0.8, 0.8)
+
+[node name="Label" type="Label" parent="SettingsScreen/Red Units"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Red Player Units
+"
+
+[node name="Medics" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Medic"
+label_text = "Medics"
+slider_range = [0, 10]
+
+[node name="Observers" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Observer"
+label_text = "Observers"
+slider_range = [0, 10]
+
+[node name="SupplyCart" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Supply_cart"
+label_text = "Supply Carts"
+slider_range = [0, 10]
+
+[node name="Cannons" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Cannon"
+label_text = "Cannon"
+slider_range = [0, 10]
+
+[node name="Musketeer" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Musketeer"
+label_text = "Musketeers"
+slider_range = [0, 10]
+
+[node name="Pikeman" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Pikeman"
+label_text = "Pikemans"
+slider_range = [0, 10]
+
+[node name="Shield" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Shield"
+label_text = "Shields"
+slider_range = [0, 10]
+
+[node name="Knight" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Knight"
+label_text = "Knights"
+slider_range = [0, 10]
+
+[node name="Commadnder" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
+layout_mode = 2
+attached_settings_variable = "red_player_units"
+augmented_dictionary_variable = "Commadnder"
+label_text = "Commadnders"
+slider_range = [0, 10]
+
 [connection signal="pressed" from="MainButtons/StartGameBtn" to="." method="_on_start_game_btn_pressed"]
 [connection signal="pressed" from="MainButtons/SettingsBtn" to="." method="_on_settings_btn_pressed"]
 [connection signal="button_up" from="SettingsScreen/VBoxContainer/BackToStartScreenBtn" to="." method="_on_back_to_start_screen_btn_button_up"]

@@ -31,13 +31,14 @@ func get_z_indexes(node,nodes_list):
 func sort_by_z_index_desc(a, b):
 	return a[1] < b[1]
  
+
 func _ready():
 #	Engine.time_scale = 0.5
 	LoadingScreen.render_loading_screen()
 	set_process_input(true)
 	put_unit_into_teams()
  
-	for i in range(1):
+	for i in range(Globals.num_towns):
 		var town_instance = town_scene.instantiate() as Area2D
 		town_instance.global_position = Vector2(randf_range(0, get_viewport().size.x ), randf_range(0, get_viewport().size.y))
 		$Structures.add_child(town_instance)
@@ -53,19 +54,17 @@ func _ready():
 #		supply_depo_instance.global_position = Vector2(randf_range(0, get_viewport().size.x), randf_range(0, get_viewport().size.y))
 #		$Structures.add_child(supply_depo_instance)
 	var all_segments = []
-	for i in range(6):
+	for i in range(Globals.num_forests):
 		var forrest_instance = forrest_scene.instantiate() as Node2D
 		$Structures.add_child(forrest_instance)
-	for i in range(10):
+	for i in range(Globals.num_rivers):
 		var top_point =  Vector2(randi_range(100, get_viewport().size.x  -100), 0)
 		var right_point =  Vector2(  get_viewport().size.x  , randi_range(100,  get_viewport().size.y -100))
 		var left_point =  Vector2( 0 , randi_range(100,  get_viewport().size.y -100 ))
 		var bottom_point =  Vector2(randi_range(100,  get_viewport().size.x -100 ),    get_viewport().size.y )		
-		# Vector2(100,0)Vector2(500,500)  Vector2(500, screen_size.y)
 		var start_point = top_point if randi() % 2 == 0 else left_point
 		var control_point =  Vector2(randi_range(100, get_viewport().size.x-100), randi_range(100, get_viewport().size.y-100))
 		var end_point = bottom_point if randi() % 2 == 0 else right_point
-		
 		var new_segments = Utils.generate_bezier_curve(start_point, end_point, control_point,  10)
 		var non_intersecting_segments = []
 		var intersecting_segment 
@@ -109,6 +108,8 @@ func create_roads_to_edges():
 				closest_town_center_pos = Utils. get_collision_shape_center(town )  
 			elif Utils. get_collision_shape_center(town ).distance_to(edge_point) < closest_town_center_pos.distance_to(edge_point):
 				closest_town_center_pos = Utils. get_collision_shape_center(town ) 
+		if closest_town_center_pos == null:
+			return
 		instantiate_roads(closest_town_center_pos, edge_point)
  
 
@@ -144,6 +145,7 @@ func add_bridges():
 func instantiate_roads(start, end):
 	var road_instance = road_scene.instantiate() as Node2D
 	var collision_area = road_instance.get_node("Area2D")
+	print(start, end)
 	collision_area.position = Vector2(start + end ) / 2
 	collision_area.rotation = start.direction_to(end).angle()
 	var length = start.distance_to(end)

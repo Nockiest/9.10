@@ -7,4 +7,4 @@ func _ready():
 func check_can_support():
 	if Globals.hovered_unit is MeleeUnit:
 		return false
-	super.check_can_support()
+	return super.check_can_support()
