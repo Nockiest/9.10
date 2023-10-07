@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsghedd31qfoa"]
+
+[ext_resource type="Script" path="res://components/movement_comp/movement_comp.gd" id="1_i5omy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3tkyc"]
+radius = 10.6301
+
+[node name="movement_comp" type="Node2D"]
+light_mask = 2
+script = ExtResource("1_i5omy")
+
+[node name="MovementRangeArea" type="Area2D" parent="."]
+light_mask = 2
+collision_layer = 32
+
+[node name="MovementRangeArea" type="CollisionShape2D" parent="MovementRangeArea"]
+light_mask = 2
+visibility_layer = 3
+position = Vector2(25, 24)
+shape = SubResource("CircleShape2D_3tkyc")
+debug_color = Color(0.537255, 0.568627, 0.0862745, 0.862745)

@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5auqxghohgor"]
+
+[ext_resource type="PackedScene" uid="uid://b8esb3nkgltuq" path="res://scenes/screens/levels/units/support_unit.tscn" id="1_cy0mk"]
+[ext_resource type="Script" path="res://scenes/screens/levels/units/medic.gd" id="2_c2hhd"]
+[ext_resource type="PackedScene" uid="uid://c70tupiwq3xmg" path="res://components/support_action_comp/healing_action.tscn" id="3_sqnr2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hvkvo"]
+size = Vector2(49, 48)
+
+[node name="Medic" instance=ExtResource("1_cy0mk")]
+collision_mask = 11
+script = ExtResource("2_c2hhd")
+
+[node name="ColorRect" parent="." index="0"]
+offset_right = 49.0
+offset_bottom = 48.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
+
+[node name="UnitStatsBar" parent="." index="3"]
+visible = false
+offset_left = 1.0
+offset_top = 49.0
+offset_right = 1.0
+offset_bottom = 49.0
+
+[node name="Attacks" parent="UnitStatsBar/VBoxContainer" index="2"]
+text = ""
+
+[node name="HealthComponent" parent="." index="4"]
+visible = false
+position = Vector2(-6, -8)
+
+[node name="CollisionArea" parent="." index="5" groups=["unit_collision_areas"]]
+visibility_layer = 57
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" parent="CollisionArea" index="0"]
+visibility_layer = 9
+position = Vector2(24.5, 24)
+shape = SubResource("RectangleShape2D_hvkvo")
+
+[node name="CollisionShape2D" parent="." index="7"]
+position = Vector2(24.5, 24.25)
+
+[node name="ActionComponent" parent="." index="8"]
+position = Vector2(0, 0)
+
+[node name="HealingAction" parent="ActionComponent" index="0" groups=["SupportActions"] instance=ExtResource("3_sqnr2")]
+
+[node name="RemainMovementLabel" parent="." index="10"]
+offset_left = -40.0
+offset_top = 0.0
+offset_bottom = 23.0
+
+[node name="Center" parent="." index="11"]
+position = Vector2(25, 25)
+
+[connection signal="area_entered" from="CollisionArea" to="." method="_on_area_2d_area_entered" flags=18]
+[connection signal="mouse_entered" from="CollisionArea" to="." method="_on_collision_area_mouse_entered" flags=18]
+[connection signal="mouse_exited" from="CollisionArea" to="." method="_on_collision_area_mouse_exited" flags=18]

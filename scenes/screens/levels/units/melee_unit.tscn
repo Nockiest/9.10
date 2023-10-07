@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://jsotvstucd7a"]
+
+[ext_resource type="PackedScene" uid="uid://dkrdjtyb1p88n" path="res://scenes/screens/levels/units/basic_unit.tscn" id="1_7vyga"]
+[ext_resource type="Script" path="res://scenes/screens/levels/units/melee_unit.gd" id="2_bnftf"]
+[ext_resource type="PackedScene" uid="uid://j1m3phvcc4ib" path="res://components/melee_attack_comp/melee_attack_comp.tscn" id="4_uxegk"]
+
+[node name="MeleeUnit" instance=ExtResource("1_7vyga")]
+script = ExtResource("2_bnftf")
+
+[node name="Sprite2D" parent="." index="1"]
+position = Vector2(24, 23)
+
+[node name="VBoxContainer" parent="UnitStatsBar" index="1"]
+offset_top = 10.0
+offset_bottom = 84.0
+
+[node name="CollisionArea" parent="." index="4"]
+collision_mask = 27
+
+[node name="melee_attack_comp" parent="ActionComponent" index="0" instance=ExtResource("4_uxegk")]
+position = Vector2(18, 13)
