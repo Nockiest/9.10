@@ -25,16 +25,22 @@ func update_for_next_turn():
 	super.update_for_next_turn()
 	ammo += 1
 	
-func try_attack():
-	print("LAUNCHED XXXXXXXXXXXXXXXXXXXXXXX", ammo)
-	if    ammo < 0:
-		return false
-	if super.try_attack() != "SUCESS":
-		print("ATTACK FAILED")
-		return false
-	return true
+#func try_attack():
+#	var overlapping_areas = owner.get_node("CollisionArea").get_overlapping_areas()
+#	print("COLAREA", owner.get_node("CollisionArea"),  owner.get_node("CollisionArea").get_overlapping_areas())
+#	for area in overlapping_areas:
+#		if area.get_parent().get_parent() is Forrest:
+#			print("RANGED UNIT IS IN FORREST",area.get_parent().get_parent() )
+#			return false
+#	print("LAUNCHED XXXXXXXXXXXXXXXXXXXXXXX", ammo)
+#	if    ammo < 0:
+#		return false
+#	if super.try_attack() != "SUCESS":
+#		print("ATTACK FAILED")
+#		return false
+#	return true
+#
  
-		
 func attack():
 	Globals.last_attacker = owner
 	remain_actions -=1
@@ -42,12 +48,18 @@ func attack():
 	shoot_bullet(owner.get_node("Center").global_position , direction)
 	ammo-=1
 
+#
 func check_can_attack():
-	if ammo <= 0:
+	var overlapping_areas = owner.get_node("CollisionArea").get_overlapping_areas()
+	print("COLAREA", owner.get_node("CollisionArea"),  owner.get_node("CollisionArea").get_overlapping_areas())
+	for area in overlapping_areas:
+		if area.get_parent().get_parent() is Forrest:
+			print("RANGED UNIT IS IN FORREST",area.get_parent().get_parent() )
+			return false
+	if ammo < 0:
 		return false
-#		toggle_action_screen()
 	return super.check_can_attack()
-
+	
 func shoot_bullet(pos, direction):
 	var bullet = projectile_scene.instantiate() as Area2D
 	# Set the position and direction of the bullet

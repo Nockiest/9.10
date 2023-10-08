@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cy5kuxt61njjo"]
 
-[ext_resource type="PackedScene" uid="uid://b8esb3nkgltuq" path="res://scenes/screens/levels/units/support_unit.tscn" id="1_fp1u3"]
+[ext_resource type="PackedScene" uid="uid://b8esb3nkgltuq" path="res://scenes/screens/levels/support_unit.tscn" id="1_8hcme"]
 [ext_resource type="Texture2D" uid="uid://b72braopnqrkw" path="res://img/supplycart.png" id="2_3ai4u"]
 [ext_resource type="Script" path="res://scenes/screens/levels/units/supply_cart.gd" id="2_yvb64"]
 [ext_resource type="PackedScene" uid="uid://bg1dfecnxp0dr" path="res://components/support_action_comp/resupply_action.tscn" id="3_40yky"]
@@ -8,7 +8,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hvkvo"]
 size = Vector2(50, 50)
 
-[node name="SupplyCart" instance=ExtResource("1_fp1u3")]
+[node name="SupplyCart" instance=ExtResource("1_8hcme")]
 z_index = 2
 collision_layer = 3
 collision_mask = 11

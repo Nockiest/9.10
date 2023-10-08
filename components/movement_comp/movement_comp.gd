@@ -41,10 +41,6 @@ func move(size_of_scene, center):
 	var new_position = global_position
 	var distance_just_traveled =  0
  
-#	if distance_to_mouse > base_movement_range:
-#		var direction_to_mouse = (mouse_pos - global_start_turn_position).normalized()
-#		new_position = global_start_turn_position + direction_to_mouse * base_movement_range - size_of_scene / 2
-#	else:
 	new_position = mouse_pos - size_of_scene / 2
 	if floor( owner.center.distance_to(mouse_pos) ) <= 1 :
 		distance_just_traveled =  0

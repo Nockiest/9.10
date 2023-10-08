@@ -35,6 +35,8 @@ func _ready():
 	# The code here has to come after the code in th echildren compoennts
 	$HealthComponent.hp = start_hp
 	$Center.position = to_local(Utils.get_collision_shape_center($CollisionArea))
+	$ErrorAnimation.hide()
+	$ErrorAnimation.position = $Center.position  
 	center = $Center.global_position 
 	$ActionComponent.position =  $Center.position #to_local(global_position + Vector2(25,25))# to_local(center) 
 	var outline = Utils.polygon_to_line2d($OutlinePolygon , 2) 
@@ -87,7 +89,9 @@ func add_to_team(team):
 
 
 func process_action():
-	action_component.try_attack()
+	if  action_component.try_attack() ==  "FAILED":
+		$ErrorAnimation.show()
+		$ErrorAnimation.play("error")
 	
 func process_input():
 	if Color(Globals.cur_player) !=  color :
@@ -256,7 +260,6 @@ func ___on_movement_changed():
 	update_stats_bar()
  
 func _on_collision_area_entered(area):
- 
 	for overlapping in $CollisionArea.get_overlapping_areas():
 		if overlapping.get_parent().get_parent() is Forrest:
 			$movement_comp.movement_modifieres["in_forrest"] = 0.5
@@ -266,7 +269,7 @@ func _on_collision_area_entered(area):
 			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 		elif overlapping.get_parent() is Bridge:
 			$movement_comp.on_bridge = true
-		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self:
+		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and not ("on_road" in$movement_comp.movement_modifieres):
 			position = $movement_comp.abort_movement()
  
 func _on_collision_area_area_exited(area):
@@ -274,10 +277,9 @@ func _on_collision_area_area_exited(area):
 	var on_road = false
 	for overlapping in $CollisionArea.get_overlapping_areas():
 		if overlapping.get_parent().get_parent() is Forrest:
-			in_forrest = true
+			in_forrest = false
 		elif overlapping.get_parent()   is Road:
-			print(overlapping.get_parent()  , overlapping, " OVERLAPPING ROAD")
-			on_road = true
+			on_road = false
 		elif overlapping.get_parent() is Bridge:
 			$movement_comp.on_bridge = false
  
@@ -287,6 +289,12 @@ func _on_collision_area_area_exited(area):
 	elif !on_road:
 		$movement_comp.movement_modifieres["on_road"] = 0
 	$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
+	
+
+ 
+
+func _on_error_animation_finished():
+	$ErrorAnimation.hide()
 #    def find_obstacles_in_line_to_enemies(self, enemy, line_points):
 #        # I could only reset the line to that specific unit instead of deleting the whole array
 #        ######################### x FIND BLOCKING UNITS ##############
@@ -345,10 +353,4 @@ func _on_collision_area_area_exited(area):
 # 
  
 
-
  
- 
-
- 
-
-  

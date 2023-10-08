@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://b8esb3nkgltuq"]
 
-[ext_resource type="PackedScene" uid="uid://dkrdjtyb1p88n" path="res://scenes/screens/levels/units/basic_unit.tscn" id="1_4in6k"]
-[ext_resource type="Script" path="res://scenes/screens/levels/units/support_unit.gd" id="2_qjlxr"]
+[ext_resource type="PackedScene" uid="uid://dkrdjtyb1p88n" path="res://scenes/screens/levels/units/basic_unit.tscn" id="1_2rr4a"]
+[ext_resource type="Script" path="res://scenes/screens/levels/units/support_unit.gd" id="2_q1tfr"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2c6gy"]
 load_path = "res://.godot/imported/medic.png-8a49963f5c0781843e8a27f15c73c800.ctex"
 
-[node name="SupportUnit" instance=ExtResource("1_4in6k")]
-script = ExtResource("2_qjlxr")
+[node name="SupportUnit" instance=ExtResource("1_2rr4a")]
+script = ExtResource("2_q1tfr")
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(0.75, 0.734375)

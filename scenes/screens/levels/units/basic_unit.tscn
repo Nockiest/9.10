@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dkrdjtyb1p88n"]
+[gd_scene load_steps=9 format=3 uid="uid://dkrdjtyb1p88n"]
 
 [ext_resource type="Script" path="res://scenes/screens/levels/units/DefaultUnit.gd" id="1_vdjhd"]
 [ext_resource type="Texture2D" uid="uid://ixa58p2rs7m1" path="res://img/knight.png" id="2_bl1id"]
+[ext_resource type="PackedScene" uid="uid://c82skjj0rnb0j" path="res://animations/error_animation.tscn" id="3_4eh3g"]
 [ext_resource type="Script" path="res://scenes/screens/levels/units/CollisionArea.gd" id="4_gcuuy"]
 [ext_resource type="PackedScene" uid="uid://ckpuh02hucwvd" path="res://components/HealthComponent.tscn" id="4_oq3j3"]
 [ext_resource type="PackedScene" uid="uid://bsghedd31qfoa" path="res://components/movement_comp/movement_comp.tscn" id="6_0pp86"]
@@ -28,6 +29,10 @@ z_index = 10
 position = Vector2(25, 24.5)
 scale = Vector2(1.04167, 1.02083)
 texture = ExtResource("2_bl1id")
+
+[node name="ErrorAnimation" parent="." instance=ExtResource("3_4eh3g")]
+z_index = 100
+z_as_relative = false
 
 [node name="UnitStatsBar" type="Control" parent="."]
 layout_mode = 3
@@ -109,6 +114,7 @@ Movement:"
 position = Vector2(25, 26)
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
+[connection signal="animation_finished" from="ErrorAnimation" to="." method="_on_error_animation_finished"]
 [connection signal="hp_changed" from="HealthComponent" to="." method="_on_health_component_hp_changed"]
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_entered"]
 [connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited"]

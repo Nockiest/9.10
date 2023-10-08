@@ -7,46 +7,48 @@ extends Node
 #	var v = min(color.v - amount, 1)
 #	return Color.from_hsv(h, s, v, color.a)
  
-func is_town_far_enough(  new_coors, min_distance, towns):
-	for town in towns:
-		var distance = new_coors.distance_to(town.center)
-		if distance < min_distance:
-			return false
-	return true
-
+#func is_town_far_enough(  new_coors, min_distance, towns):
+#	for town in towns:
+#		var distance = new_coors.distance_to(town.center)
+#		if distance < min_distance:
+#			return false
+#	return true
+func are_points_far_enough(a:Vector2, b:Vector2, min_distance:int):
+	return a.distance_to(b) > min_distance
+	
 func find_child_with_variable(parent, variable):
 	for child in parent.get_children():
 		if variable in child:
 			return child
 	return null
 
-func debug(position: Vector2, value):
-	# Create a new Label node.
-	var label = Label.new()
-	# Set the text of the label to the value.
-	label.text = str(value)
-	# Set the position of the label.
-	label.position = position
-	# Add the label as a child of the current node.
-	add_child(label)
+#func debug(position: Vector2, value):
+#	# Create a new Label node.
+#	var label = Label.new()
+#	# Set the text of the label to the value.
+#	label.text = str(value)
+#	# Set the position of the label.
+#	label.position = position
+#	# Add the label as a child of the current node.
+#	add_child(label)
+#
+#	# Create a new Timer node.
+#	var timer = Timer.new()
+#	# Set the timer to one-shot mode and start it with a delay of 5 seconds.
+#	timer.set_one_shot(true)
+#	timer.start(0.1)
+#	# Connect the timeout signal of the timer to a function that removes the label.
+#
+#	# Add the timer as a child of the current node.
+#	add_child(timer)
+#	label.queue_free()
 
-	# Create a new Timer node.
-	var timer = Timer.new()
-	# Set the timer to one-shot mode and start it with a delay of 5 seconds.
-	timer.set_one_shot(true)
-	timer.start(0.1)
-	# Connect the timeout signal of the timer to a function that removes the label.
- 
-	# Add the timer as a child of the current node.
-	add_child(timer)
-	label.queue_free()
-
-func sort_ascending(a,b):
-	if a >= b:
-		return false
-	else:
-		return true
- 
+#func sort_ascending(a,b):
+#	if a >= b:
+#		return false
+#	else:
+#		return true
+#
 ## you have to put this variable wheter you want to put the z_indexes
 var nodes_list = []
 func get_z_indexes(node,nodes_list):

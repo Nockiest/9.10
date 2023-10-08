@@ -78,7 +78,6 @@ func is_far_enough():
 	for town in get_tree().get_nodes_in_group("towns"):
 		if town == self:
 			continue
-		print("DISTANCE " ,Utils.get_collision_shape_center(self  ).distance_to(Utils.get_collision_shape_center(town  ) ))
 		if Utils.get_collision_shape_center(self  ).distance_to(Utils.get_collision_shape_center(town  ) ) <  Globals.min_town_spacing_distance:
 			return false
 	return true

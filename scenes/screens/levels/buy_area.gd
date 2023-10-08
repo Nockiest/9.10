@@ -16,10 +16,8 @@ func _process(_delta):
 
 func _on_area_entered(area):
 	if not(area is UnitsMainCollisionArea):
-		print("ISNT COLLISION AREA", area)
 		return
 	if not (area.get_parent() is BattleUnit):
-		print("ISNT BATTLEUNIT", area.get_parent())
 		return
 	print("UNIT ENTERED BUY AREA",  area.get_parent())
 	units_inside.append(area.get_parent())

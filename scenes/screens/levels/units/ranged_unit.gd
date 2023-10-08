@@ -16,10 +16,7 @@ func _ready():
 	unit_name = "ranged_unit"
 #	action_range = 300 
 #	$RangedAttackComp.action_range = action_range   
-#func try_attack():
-#	if super.try_attack() == "success":
-#		$RangedAttackComp.try_attack( )
-#		toggle_action_screen()
+ 
 #func toggle_action_screen(): 
 #	var ranged_action_component = $RangedAttackComp
 #	if ranged_action_component.ammo <= 0:

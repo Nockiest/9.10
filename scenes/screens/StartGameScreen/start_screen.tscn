@@ -57,11 +57,12 @@ text = "Start Game"
 layout_mode = 2
 text = "Settings"
 
-[node name="Button" type="Button" parent="MainButtons"]
+[node name="ExitBtn" type="Button" parent="MainButtons"]
 layout_mode = 2
 text = "Exit Game"
 
 [node name="SettingsScreen" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,12 +114,14 @@ text = "Money"
 layout_mode = 2
 label_text = "Blue Money"
 slider_range = [0, 500]
+start_value = 100
 
 [node name="RedMoneySlider" parent="SettingsScreen/VBoxContainer2" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_money"
 label_text = "Red Money"
 slider_range = [0, 500]
+start_value = 100
 
 [node name="MoneyPerTurnSlider" parent="SettingsScreen/VBoxContainer2" instance=ExtResource("2_hthqh")]
 layout_mode = 2
@@ -132,6 +135,7 @@ attached_settings_variable = "city_turn_income"
 label_text = "City Income Per Turn"
 
 [node name="Blue Units" type="VBoxContainer" parent="SettingsScreen"]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -229,20 +233,24 @@ layout_mode = 2
 attached_settings_variable = "num_towns"
 label_text = "Number of Towns"
 slider_range = [0, 10]
+start_value = 3
 
 [node name="RiverSlider" parent="SettingsScreen/Structures" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "num_rivers"
 label_text = "Number of Rivers"
 slider_range = [0, 10]
+start_value = 3
 
 [node name="ForrestSlider" parent="SettingsScreen/Structures" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "num_forests"
 label_text = "Number of Forests"
 slider_range = [0, 10]
+start_value = 2
 
 [node name="Red Units" type="VBoxContainer" parent="SettingsScreen"]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -325,4 +333,5 @@ slider_range = [0, 10]
 
 [connection signal="pressed" from="MainButtons/StartGameBtn" to="." method="_on_start_game_btn_pressed"]
 [connection signal="pressed" from="MainButtons/SettingsBtn" to="." method="_on_settings_btn_pressed"]
+[connection signal="button_up" from="MainButtons/ExitBtn" to="." method="_on_exit_btn_button_up"]
 [connection signal="button_up" from="SettingsScreen/VBoxContainer/BackToStartScreenBtn" to="." method="_on_back_to_start_screen_btn_button_up"]

@@ -14,3 +14,7 @@ func show_and_hide(show, hide):
 
 func _on_back_to_start_screen_btn_button_up():
 	show_and_hide($MainButtons, $SettingsScreen)
+
+
+func _on_exit_btn_button_up():
+	get_tree().quit()

@@ -110,7 +110,10 @@ func _process(_delta):
 
  
 func _on_area_entered(area):
-	super._on_area_entered(area)
+ 
+ 
+	if super._on_area_entered(area) == "SAME COLOR":
+		units_in_action_range.append(area.get_parent())
 
 func _on_area_exited(area):
 	if area.name == "CollisionArea" and units_in_action_range.has(area.get_parent()):

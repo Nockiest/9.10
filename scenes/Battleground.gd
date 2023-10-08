@@ -9,6 +9,17 @@ var river_scene: PackedScene = preload("res://structures/river.tscn")
 var forrest_scene:PackedScene = preload("res://structures/forrest/forrest.tscn")
 var road_scene:PackedScene = preload("res://structures/road/road.tscn")
 var bridge_scene:PackedScene = preload("res://structures/bridge.tscn")
+
+var medic_scene:PackedScene =preload("res://scenes/screens/levels/units/medic.tscn")
+var observer_scene:PackedScene =preload("res://scenes/screens/levels/units/observer.tscn")
+var supply_cart_scene:PackedScene =preload("res://scenes/screens/levels/units/supply_cart.tscn")
+var cannon_scene:PackedScene = preload("res://scenes/screens/levels/units/canon.tscn")
+var musketeer_scene:PackedScene =preload("res://scenes/screens/levels/units/musketeer.tscn")
+var pikeman_scene:PackedScene =preload("res://scenes/screens/levels/units/pikeman.tscn")
+var shield_scene:PackedScene =preload("res://scenes/screens/levels/units/shield.tscn")
+var knight_scene:PackedScene = preload("res://scenes/screens/levels/units/knight.tscn" )
+var commander_scene:PackedScene = preload("res://scenes/screens/levels/units/commander.tscn")
+var unit_packed_scenes_arr: Array = [medic_scene,observer_scene,supply_cart_scene, cannon_scene, musketeer_scene, pikeman_scene, shield_scene, knight_scene, commander_scene]
 #this could cause potential problems in the future
 @onready var tenders = get_tree().get_nodes_in_group("player_tenders")
 @onready var players = get_tree().get_nodes_in_group("players")
@@ -22,6 +33,7 @@ func put_unit_into_teams():
 		unit.add_to_team(team)
 		unit.is_newly_bought = false
 	Globals.placed_unit = null
+
 var nodes_list = []
 func get_z_indexes(node,nodes_list):
 	if node is CanvasItem:
@@ -92,7 +104,22 @@ func _process(delta):
 	if !added:
 		add_bridges()
 		added=true
-		
+
+func place_starting_units():
+	## get the dictionary with the values for all units
+	## for every unit in its total value choose a random point on the canvas
+	## assert that it is far engough from other units
+	## once you hve all the points set start placing units on them
+	## get the packed scene at the index of ecvery value of the dictionary
+	## instance it on a random point of the poits array you have calculated
+	## remove the point from the points array
+	## repeat until empy
+	
+	for unit in Globals.red_player_units:
+		print(unit)
+	for unit in Globals.blue_player_units:
+		print(unit)
+	print("PLACING STARTING UNITS")
 func create_roads_to_edges():	
 	var top_point =  Vector2(randi_range(100, get_viewport().size.x  -100), 0)
 	var right_point =  Vector2(  get_viewport().size.x  , randi_range(100,  get_viewport().size.y -100))

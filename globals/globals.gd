@@ -33,8 +33,8 @@ var cur_player_index =  0 :
  
 # settings config
 var num_towns = 6
-var num_rivers = 3
-var num_forests = 5
+var num_rivers = 2
+var num_forests = 3
 var blue_player_units = {
 	'Medic': 0,
 	'Observer': 1,

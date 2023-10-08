@@ -66,7 +66,8 @@ texture = ExtResource("2_skx2m")
 shape = SubResource("CapsuleShape2D_l6eco")
 
 [node name="BulletFlyingAnimation" type="AnimatedSprite2D" parent="." index="3"]
+position = Vector2(-0.999982, 5)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_b5yqj")
 animation = &"BulletFlyingAnimation"
 autoplay = "BulletFlyingAnimation"
-frame_progress = 0.773426

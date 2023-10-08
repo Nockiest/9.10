@@ -31,6 +31,7 @@ func try_attack( ):
 ## ranged attack has an overide for this function  
 func attack():
 	Globals.last_attacker = owner
+	toggle_action_screen()
 
 func check_can_attack():
 	print("GLOBALS ", Globals.action_taking_unit, owner, Globals.action_taking_unit == owner )
@@ -59,7 +60,7 @@ func _ready():
 # 
 func  update_for_next_turn():
 	remain_actions = base_actions
-
+	unhighlight_units_in_range()
 func _process(_delta):
 	if Globals.action_taking_unit == owner:
 		$AttackRangeShape.show()
@@ -116,7 +117,8 @@ func _on_area_entered(area):
 		return
 	
 	if area.get_parent().color == owner.color:
-		return
+ 
+		return "SAME COLOR"
 	if units_in_action_range.has(area.get_parent()) :
 		return
 	units_in_action_range.append(area.get_parent())
