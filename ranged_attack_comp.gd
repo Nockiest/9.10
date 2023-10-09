@@ -9,13 +9,14 @@ var max_ammo: int
 	set(value):
 		ammo = min(value, max_ammo)
 		ammo_changed.emit(ammo)
+		print("CHANGING VALUE OF AMMO ", ammo)
  
 
 func _ready():
 	action_range = 300
 	super._ready()
 	$BlastAnimation.hide()
-
+#	ammo = 0 ## smazaz!!
 func toggle_action_screen():
 	if ammo <= 0:
 		return
@@ -29,11 +30,12 @@ func update_for_next_turn():
  
  
 func attack():
-	Globals.last_attacker = owner
+#	Globals.last_attacker = owner
+	super.attack()
 	remain_actions -=1
 	var direction = ( Globals.hovered_unit.get_node("Center").global_position  - global_position).normalized()
 	shoot_bullet(owner.get_node("Center").global_position , direction)
-	ammo-=1
+	ammo -=1
 
 #
 func check_can_attack():
@@ -63,7 +65,7 @@ func shoot_bullet(pos, direction):
 		print("Unsupported shape type")
  
  
-	bullet.position = pos - shape_size / 2   # Adjust the position so that the center of the shape is at pos
+	bullet.position = pos #- shape_size / 2   # Adjust the position so that the center of the shape is at pos
 	bullet.direction = direction
 	bullet.color = owner.color
 	bullet.action_range = action_range

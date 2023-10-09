@@ -58,12 +58,15 @@ func check_can_attack():
 
 func _ready():
 	pass
- 
+#	$AttackRangeShape.shape = CircleShape2D.new()
+#	$AttackRangeShape.shape.radius = action_range
+#	print(action_range)
 func  update_for_next_turn():
 	remain_actions = base_actions
 	unhighlight_units_in_range()
 func _process(_delta):
 	if Globals.action_taking_unit == owner:
+		print("SHOWING ATTACK RANGE CIRCLE")
 		$AttackRangeCircle.show()
 	else:
 		$AttackRangeCircle.hide()

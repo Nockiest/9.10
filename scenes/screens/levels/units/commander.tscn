@@ -38,7 +38,6 @@ position = Vector2(24.875, 24.5625)
 shape = SubResource("RectangleShape2D_840qd")
 
 [node name="ActionComponent" parent="." index="9"]
-visible = true
 position = Vector2(0, 0)
 
 [node name="melee_attack_comp" parent="ActionComponent" index="0"]

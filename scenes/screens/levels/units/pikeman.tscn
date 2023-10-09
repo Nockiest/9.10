@@ -31,6 +31,7 @@ visible = false
 position = Vector2(-8, -8)
 
 [node name="ActionComponent" parent="." index="8"]
+visible = false
 position = Vector2(0, 0)
 
 [node name="RemainMovementLabel" parent="." index="10"]

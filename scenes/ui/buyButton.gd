@@ -3,6 +3,9 @@ signal buy_unit
 var unit_class
 @onready var UnitClass: PackedScene 
 @onready var texture_rect = get_node("%TextureRect")  # Replace with your actual node path
+@export var instanced_units_index = 0
+
+#@export var connected_unit_scene = null
 func _ready():
 	texture_rect.set_size(Vector2(32,32))
 	texture_rect.size.x = 32
@@ -10,7 +13,7 @@ func _ready():
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color(1, 0, 0, 1)  # Change to your desired color
 	set("custom_styles/normal", style)
- 
+	UnitClass = Globals.unit_packed_scenes_arr[instanced_units_index]
 func _on_pressed(): 
 	## bohuřžel nemůžžu psát proěné jako reference k jiným proměnným, což komplikuje kod
 	var mock_unit = UnitClass.instantiate() as  Node2D

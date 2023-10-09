@@ -50,21 +50,13 @@ func is_area_occupied(area):
  
  
 func _on_area_entered(area): 
-#	if area is Town:
-#		print("HAD TO DESTROY ITSELF BECAUSE OVERLAPED ANOTHER TOWN")
-#		queue_free()
 	if not(area is UnitsMainCollisionArea):
 		return
 	if not (area.get_parent() is BattleUnit):
 		return
-	print("UNIT ENTERED TOWN ",  area.get_parent())
+#	print("UNIT ENTERED TOWN ",  area.get_parent())
 	units_inside.append(area.get_parent())
-	
-#func check_overlaps_other_towns():
-#	for town in get_tree().get_nodes_in_group("towns"):
-#		print("XXX", town.get_overlapping_areas())
-#		if town.get_overlapping_areas().has(self):
-#			queue_free()
+ 
 func _ready():
 	if not is_far_enough():
 		free()

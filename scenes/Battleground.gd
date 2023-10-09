@@ -9,17 +9,6 @@ var river_scene: PackedScene = preload("res://structures/river.tscn")
 var forrest_scene:PackedScene = preload("res://structures/forrest/forrest.tscn")
 var road_scene:PackedScene = preload("res://structures/road/road.tscn")
 var bridge_scene:PackedScene = preload("res://structures/bridge.tscn")
-
-var medic_scene:PackedScene =preload("res://scenes/screens/levels/units/medic.tscn")
-var observer_scene:PackedScene =preload("res://scenes/screens/levels/units/observer.tscn")
-var supply_cart_scene:PackedScene =preload("res://scenes/screens/levels/units/supply_cart.tscn")
-var cannon_scene:PackedScene = preload("res://scenes/screens/levels/units/canon.tscn")
-var musketeer_scene:PackedScene =preload("res://scenes/screens/levels/units/musketeer.tscn")
-var pikeman_scene:PackedScene =preload("res://scenes/screens/levels/units/pikeman.tscn")
-var shield_scene:PackedScene =preload("res://scenes/screens/levels/units/shield.tscn")
-var knight_scene:PackedScene = preload("res://scenes/screens/levels/units/knight.tscn" )
-var commander_scene:PackedScene = preload("res://scenes/screens/levels/units/commander.tscn")
-var unit_packed_scenes_arr: Array = [medic_scene,observer_scene,supply_cart_scene, cannon_scene, musketeer_scene, pikeman_scene, shield_scene, knight_scene, commander_scene]
  
  
 @onready var players = get_tree().get_nodes_in_group("players")
@@ -144,7 +133,7 @@ func place_starting_units(placment_area: Area2D, color, units_list  ):
 			var random_point = placement_positions[random_index]
 #			print(unit_name, " ", random_point, " ", random_index, " ", len(placement_positions ))
 #			print(placement_positions)
-			var instance = unit_packed_scenes_arr[i].instantiate() as Node2D
+			var instance = Globals.unit_packed_scenes_arr[i].instantiate() as Node2D
 			instance.position = random_point
 			instance.color = Color(color)
 			instance.add_to_team(color)

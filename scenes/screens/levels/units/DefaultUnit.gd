@@ -105,6 +105,7 @@ func process_input():
 		if Input.is_action_just_pressed("left_click"): 
 			toggle_move()
 		if Input.is_action_just_pressed("right_click"):
+			print("ACTION BEGINS")
 			if action_component != null:
 				action_component.toggle_action_screen()
 			else:
@@ -122,7 +123,7 @@ func process_unit_placement():
 		var in_valid_buy_area = false
 		## check wheter it is being placed inside the buy bar
 		for buy_area in buy_areas:
-			print("COLORS",Color(buy_area.team) , color, buy_area.units_inside)
+#			print("COLORS",Color(buy_area.team) , color, buy_area.units_inside)
 			if Color(buy_area.team) != color:
 				continue  
 			if self not in buy_area.units_inside:
@@ -192,21 +193,22 @@ func deselect_movement():
 func toggle_move():
 	if Globals.moving_unit == self:
 		deselect_movement()
-#		print("CASE 1")
+		print("CASE 1")
 		return
 	elif Globals.hovered_unit != self:
-#		print("CASE 2")
+		print("CASE 2")
 		return  
 
 	elif Globals.action_taking_unit != self and Globals.action_taking_unit != null:
-#		print("CASE 3")
+		print("CASE 3")
 		return
 	elif Globals.action_taking_unit != null:
-#		print("CASE 4")
+		print("CASE 4")
 		return 
 	elif $movement_comp.remain_movement <= 0:
+		print("CASE 5")
 		return
-#	print("CASE 5")
+	print("CASE 6")
 	Globals.moving_unit = self
 	Globals.action_taking_unit = null
  
@@ -215,8 +217,8 @@ func update_for_next_turn():
 	$movement_comp.process_for_next_turn()
 	#$movement_comp.remain_movement =  $movement_comp.base_movement 
 #	remain_actions = action_component.base_actions
-	if has_node("RangedAttackComp"):
-		$RangedAttackComp.ammo += 1
+#	if has_node("RangedAttackComp"):
+#		$RangedAttackComp.ammo += 1
 	if action_component != null:
 		action_component.update_for_next_turn()
 	else:
@@ -240,7 +242,6 @@ func _on_health_component_hp_changed(hp, prev_hp):
 func _on_collision_area_mouse_entered():
 	if Globals.placed_unit == self:
 		return
- 
 	Globals.hovered_unit = self
 	toggle_show_information()
  
@@ -256,6 +257,7 @@ func update_stats_bar():
 	$UnitStatsBar/VBoxContainer/Health.text = "Health "+str($HealthComponent.hp)
 	$UnitStatsBar/VBoxContainer/Actions.text = "Moves "+str($movement_comp.remain_movement)
 	$RemainMovementLabel.text = "Remain Movement:\n" + str($movement_comp.remain_distance ) + " " + str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
+
 func _on_tree_exiting():
 	# remove_from_group("living_units")
 	var other_units = get_tree().get_nodes_in_group("living_units")
@@ -285,23 +287,26 @@ func _on_collision_area_entered(_area):
 			$movement_comp.on_bridge = true
 		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and not  ($movement_comp.movement_modifieres["on_road"] == 0):
 			position = $movement_comp.abort_movement()
+	print("MOVEMENT MODIFIERS ", Utils.sum_dict_values($movement_comp.movement_modifieres) , $movement_comp.movement_modifieres)
  
-func _on_collision_area_area_exited(_area):
+func _on_collision_area_area_exited(area):
 	var in_forrest = false
 	var on_road = false
-	for overlapping in $CollisionArea.get_overlapping_areas():
-		if overlapping.get_parent().get_parent() is Forrest:
-			in_forrest = false
-		elif overlapping.get_parent()   is Road:
-			on_road = false
-		elif overlapping.get_parent() is Bridge:
-			$movement_comp.on_bridge = false
+#	for overlapping in $CollisionArea.get_overlapping_areas():
+	if area.get_parent().get_parent() is Forrest:
+		in_forrest = false
+	elif area.get_parent()   is Road:
+		on_road = false
+		print("LEFT ROAD")
+	elif area.get_parent() is Bridge:
+		$movement_comp.on_bridge = false
  
 			
 	if !in_forrest:
 		$movement_comp.movement_modifieres["in_forrest"] = 0
 	elif !on_road:
 		$movement_comp.movement_modifieres["on_road"] = 0
+		print("ROAD LEDT ", $movement_comp.movement_modifieres  )
 	$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 
 

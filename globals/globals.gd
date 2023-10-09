@@ -15,6 +15,19 @@ var attacking_component
 var moving_unit
 var last_attacker
 var can_start_new_attack = true
+
+
+var medic_scene:PackedScene =preload("res://scenes/screens/levels/units/medic.tscn")
+var observer_scene:PackedScene =preload("res://scenes/screens/levels/units/observer.tscn")
+var supply_cart_scene:PackedScene =preload("res://scenes/screens/levels/units/supply_cart.tscn")
+var cannon_scene:PackedScene = preload("res://scenes/screens/levels/units/canon.tscn")
+var musketeer_scene:PackedScene =preload("res://scenes/screens/levels/units/musketeer.tscn")
+var pikeman_scene:PackedScene =preload("res://scenes/screens/levels/units/pikeman.tscn")
+var shield_scene:PackedScene =preload("res://scenes/screens/levels/units/shield.tscn")
+var knight_scene:PackedScene = preload("res://scenes/screens/levels/units/knight.tscn" )
+var commander_scene:PackedScene = preload("res://scenes/screens/levels/units/commander.tscn")
+var unit_packed_scenes_arr: Array = [medic_scene,observer_scene,supply_cart_scene, cannon_scene, musketeer_scene, pikeman_scene, shield_scene, knight_scene, commander_scene]
+ 
 #this could cause potential problems in the future
 @onready var tenders = get_tree().get_nodes_in_group("player_tenders")
 func update_cur_player():

@@ -29,7 +29,6 @@ func _on_area_exited(area):
 		return
 	if area.get_parent() not in units_inside:
 		return
-	print("UNIT EXITED BUY AREA ")
 	units_inside.erase(area.get_parent())
 #func _draw():
 #	if Globals.placed_unit != null:

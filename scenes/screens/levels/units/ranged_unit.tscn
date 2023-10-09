@@ -13,7 +13,7 @@ position = Vector2(21.75, 28.5)
 scale = Vector2(0.332031, 0.304688)
 texture = ExtResource("3_kdekp")
 
-[node name="UnitStatsBar" parent="." index="2"]
+[node name="UnitStatsBar" parent="." index="3"]
 offset_top = 48.0
 offset_bottom = 48.0
 
@@ -22,8 +22,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 10
 text = "Ammo:"
 
-[node name="CollisionArea" parent="." index="4"]
-collision_mask = 27
+[node name="ActionComponent" parent="." index="6"]
+visible = true
 
 [node name="RangedAttackComp" parent="ActionComponent" index="0" instance=ExtResource("4_5x482")]
 position = Vector2(-1, 1)

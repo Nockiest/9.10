@@ -26,7 +26,7 @@ var movement_modifieres:Dictionary = {
 	set(new_value):
 		print("SETTING", new_value)
 		movement_modifieres = new_value 
-#		current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
+		current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
 	get:
 		return movement_modifieres
 var current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
@@ -65,12 +65,10 @@ func abort_movement():
 func process_for_next_turn():
 	remain_movement =  base_movement_points
 	remain_distance = base_movement_range
-	#print("set_new_start_turn_point")
-	#print(global_start_turn_position,global_position, parent_size, "VALUES BEFORE SETTING NEW START POS")
 	set_new_start_turn_point() #$CollisionArea/CollisionShape2D.global_position +$CollisionArea/CollisionShape2D.shape.extents/2 
 	return global_start_turn_position
 	
 func  set_new_start_turn_point():
 	global_start_turn_position = global_position
-	position = to_local(global_start_turn_position)
+#	position = to_local(global_start_turn_position)
 	return global_start_turn_position
