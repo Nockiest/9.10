@@ -13,7 +13,8 @@ func _ready():
 	super._ready()
 	$SupportConnnection.modulate = color
 	$SupportConnnection.z_index = 1000
-
+	action_range = 100
+	$AttackRangeCircle.shape.radius = action_range
 func deselect_supported_entity():
 	if supported_entity and constant_buff and buff_already_applied:
 		if buffed_variable in supported_entity :
@@ -79,11 +80,16 @@ func draw_line_to_supported_entity():
 		$SupportConnnection.add_point(local_start)  # Add the parent's position as a point
 		$SupportConnnection.add_point(local_end )  # Add the supported entity's position as a point
 		# Calculate the distance between the start and end points
-		var distance = local_start.distance_to(local_end)
-
-		if distance > action_range:
+#		 
+		
+		print(get_overlapping_areas())
+		if not  get_overlapping_areas().has(supported_entity.get_node("CollisionArea")):
 			deselect_supported_entity()
-			return
+#			deselect_supported_entity()
+#			var distance = local_start.distance_to(local_end)
+#		if distance > action_range:
+#			deselect_supported_entity()
+#			return
 
 func _process(_delta):
 	super._process(_delta)
@@ -111,13 +117,14 @@ func _process(_delta):
  
 func _on_area_entered(area):
  
- 
-	if super._on_area_entered(area) == "SAME COLOR":
+	if str(super._on_area_entered(area)) == "SAME COLOR":
+#		print("SUPPORT COMPONENT APPENDING AREA", area.get_parent())
 		units_in_action_range.append(area.get_parent())
+#		print(units_in_action_range, "NOW FRIENDLY UNITS IN RANGE ARE")
 
-func _on_area_exited(area):
-	if area.name == "CollisionArea" and units_in_action_range.has(area.get_parent()):
-		units_in_action_range.erase(area.get_parent()) 
+#func _on_area_exited(area):
+#	if area.name == "CollisionArea" and units_in_action_range.has(area.get_parent()):
+#		units_in_action_range.erase(area.get_parent()) 
  
 
 

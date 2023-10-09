@@ -156,65 +156,65 @@ text = "Blue Player Units
 [node name="Medics" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Medic"
+augmented_dictionary_variable = "medic"
 label_text = "Medics"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Observers" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Observer"
+augmented_dictionary_variable = "observer"
 label_text = "Observers"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="SupplyCart" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Supply_cart"
+augmented_dictionary_variable = "supply_cart"
 label_text = "Supply Carts"
 slider_range = [0, 10]
 
 [node name="Cannons" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Cannon"
+augmented_dictionary_variable = "cannon"
 label_text = "Cannon"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Musketeer" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Musketeer"
+augmented_dictionary_variable = "musketeer"
 label_text = "Musketeers"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Pikeman" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Pikeman"
+augmented_dictionary_variable = "pikeman"
 label_text = "Pikemans"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Shield" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Shield"
+augmented_dictionary_variable = "shield"
 label_text = "Shields"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Knight" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Knight"
+augmented_dictionary_variable = "knight"
 label_text = "Knights"
 slider_range = [0, 10]
-
-[node name="Commadnder" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
-layout_mode = 2
-attached_settings_variable = "blue_player_units"
-augmented_dictionary_variable = "Commadnder"
-label_text = "Commadnders"
-slider_range = [0, 10]
+start_value = 1
 
 [node name="Structures" type="VBoxContainer" parent="SettingsScreen"]
 custom_minimum_size = Vector2(0, 20)
@@ -271,65 +271,66 @@ text = "Red Player Units
 [node name="Medics" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Medic"
+augmented_dictionary_variable = "medic"
 label_text = "Medics"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Observers" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Observer"
+augmented_dictionary_variable = "observer"
 label_text = "Observers"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="SupplyCart" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Supply_cart"
+augmented_dictionary_variable = "supply_cart"
 label_text = "Supply Carts"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Cannons" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Cannon"
+augmented_dictionary_variable = "cannon"
 label_text = "Cannon"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Musketeer" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Musketeer"
+augmented_dictionary_variable = "musketeer"
 label_text = "Musketeers"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Pikeman" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Pikeman"
-label_text = "Pikemans"
+augmented_dictionary_variable = "pikeman"
+label_text = "Pikemen"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Shield" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Shield"
+augmented_dictionary_variable = "shield"
 label_text = "Shields"
 slider_range = [0, 10]
+start_value = 1
 
 [node name="Knight" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
 attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Knight"
+augmented_dictionary_variable = "knight"
 label_text = "Knights"
 slider_range = [0, 10]
-
-[node name="Commadnder" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
-layout_mode = 2
-attached_settings_variable = "red_player_units"
-augmented_dictionary_variable = "Commadnder"
-label_text = "Commadnders"
-slider_range = [0, 10]
+start_value = 1
 
 [connection signal="pressed" from="MainButtons/StartGameBtn" to="." method="_on_start_game_btn_pressed"]
 [connection signal="pressed" from="MainButtons/SettingsBtn" to="." method="_on_settings_btn_pressed"]

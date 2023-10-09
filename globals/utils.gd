@@ -43,41 +43,34 @@ func find_child_with_variable(parent, variable):
 #	add_child(timer)
 #	label.queue_free()
 
-#func sort_ascending(a,b):
-#	if a >= b:
-#		return false
-#	else:
-#		return true
-#
+ 
 ## you have to put this variable wheter you want to put the z_indexes
-var nodes_list = []
-func get_z_indexes(node,nodes_list):
-	if node is CanvasItem:
-		nodes_list.append([node, node.z_index])
-	for child in node.get_children():
-		get_z_indexes(child,nodes_list)
-func sort_by_z_index_desc(a, b):
-	return a[1] < b[1]
+#var nodes_list = []
+#func get_z_indexes(node,nodes_list):
+#	if node is CanvasItem:
+#		nodes_list.append([node, node.z_index])
+#	for child in node.get_children():
+#		get_z_indexes(child,nodes_list)
+#func sort_by_z_index_desc(a, b):
+#	return a[1] < b[1]
  
 func get_collision_shape_center(area: Area2D, node_name: String= "CollisionShape2D") -> Vector2:
 	var shape = area.get_node(node_name).shape 
 	if shape is RectangleShape2D:
-		var rect_shape =  shape  as RectangleShape2D
+		var rect_shape =  shape   as RectangleShape2D
 		return area.global_position  + Vector2(rect_shape.extents.x, rect_shape.extents.y)
 	elif  shape is CircleShape2D:
-		var circle_shape =  shape as CircleShape2D
+#		var circle_shape =  shape #as CircleShape2D
 		return  area.global_position 
 	else:
 		assert (false, "Unsupported collision shape type")
 		return Vector2(0, 0)
-
+ 
 func play_animation_at_position(animation_node, animation  , position: Vector2) -> void:
-#	var animation = get_node(animation_name)
-	
 	if animation_node == null:
 		print("No animation found with name: ", animation_node)
 		return
-#	animation_node.z_index = 100000
+	animation_node.z_index = 100000
 	animation_node.show()
 	# Set the position of the animation
 	animation_node.global_position = position
@@ -90,9 +83,10 @@ func play_animation_at_position(animation_node, animation  , position: Vector2) 
 	await animation_node.animation_finished 
 	animation_node.hide()
 
-func get_random_point_in_square(square_size: Vector2) -> Vector2:
+func get_random_point_in_square(square_size: Vector2) -> Vector2: ## shape extents only return half the size of the collision shape
 	var random_x = randi_range(0, int(square_size.x))
 	var random_y = randi_range(0, int(square_size.y))
+#	print(Vector2(random_x, random_y),square_size.x," ",square_size.y)
 	return Vector2(random_x, random_y)
 
 ## doesnt work how I intended

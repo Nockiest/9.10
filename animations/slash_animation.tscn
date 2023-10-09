@@ -49,3 +49,5 @@ animations = [{
 z_index = 3
 sprite_frames = SubResource("SpriteFrames_3dep5")
 animation = &"slash"
+frame = 8
+frame_progress = 1.0

@@ -7,7 +7,14 @@ var remain_actions: int = base_actions:
 		remain_actions = new_attacks
 		emit_signal("remain_actions_updated", new_attacks)
 var units_in_action_range:Array= []
-var action_range:int = 100
+var action_range:int = 100:
+	get:
+		return action_range
+	set(value):
+		action_range = value
+		units_in_action_range = []
+		$AttackRangeShape.shape = CircleShape2D.new()
+		$AttackRangeShape.shape.radius = action_range
 var attack_range_modifiers = {"base_modifier": 1}
 var center
 
@@ -16,11 +23,7 @@ func try_attack( ):
 	if !check_can_attack():
 		print("FAILED ",self, self.get_parent(),  check_can_attack() )
 		return  "FAILED"
-	var distance =  global_position.distance_to(Globals.hovered_unit.global_position) 
-	print("CAN ATTACK ", distance," ", action_range)
 	if not Globals.hovered_unit in units_in_action_range:
-		return "FAILED"
-	if distance > action_range:
 		return "FAILED"
 	## I will add this to the try_attack component later too
 	print("TOGGLING")
@@ -54,18 +57,16 @@ func check_can_attack():
 	return true
 
 func _ready():
-	$AttackRangeShape.shape = CircleShape2D.new()
-	$AttackRangeShape.shape.radius = action_range # * attack_range_modifiers["base_modifier"]
-	$AttackRangeShape.hide()
-# 
+	pass
+ 
 func  update_for_next_turn():
 	remain_actions = base_actions
 	unhighlight_units_in_range()
 func _process(_delta):
 	if Globals.action_taking_unit == owner:
-		$AttackRangeShape.show()
+		$AttackRangeCircle.show()
 	else:
-		$AttackRangeShape.hide()
+		$AttackRangeCircle.hide()
  
 func toggle_action_screen():
 	if Globals.action_taking_unit == owner:
@@ -103,26 +104,24 @@ func unhighlight_units_in_range():
 
 func _on_area_entered(area):
 #	print(area, area.get_parent(), "AREA", area is BattleUnit )
+#	if units_in_action_range.has(area.get_parent()) :
+#		return
 	if not owner:
-		return
+		return 1
 	if area.get_parent() == owner:
-		return
+		return 2
 	if area.name != "CollisionArea": 
-		return
+		return 3
 	if not (area.get_parent() is BattleUnit):
-		return
+		return 4
 #	print("x",self, owner)
 #	print( "x",owner.color)
 	if  area.get_parent().color == null:
-		return
-	
+		return 5
 	if area.get_parent().color == owner.color:
- 
 		return "SAME COLOR"
-	if units_in_action_range.has(area.get_parent()) :
-		return
 	units_in_action_range.append(area.get_parent())
- 
+	return 6
 func process_action():
 	print("CHILDReN OF THIS COMPONENT SHOULd HAVE ATTACK IN THEM")
 

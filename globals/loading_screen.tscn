@@ -35,6 +35,7 @@ _data = {
 }
 
 [node name="LoadingScreen" type="CanvasLayer"]
+visible = false
 script = ExtResource("1_fd682")
 
 [node name="ColorRect" type="ColorRect" parent="."]

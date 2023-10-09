@@ -19,7 +19,9 @@ var remain_movement:int = base_movement_points:
 	get:
 		return remain_movement
 var movement_modifieres:Dictionary = {
-	"base_modifier": 1
+	"base_modifier": 1,
+	"on_road": 0,
+	"in_forrest": 0
 }:
 	set(new_value):
 		print("SETTING", new_value)
@@ -37,7 +39,7 @@ func _ready():
 	
 func move(size_of_scene, center):
 	var mouse_pos = get_global_mouse_position()
-	var distance_to_mouse = global_start_turn_position.distance_to(mouse_pos) 
+#	var distance_to_mouse = global_start_turn_position.distance_to(mouse_pos) 
 	var new_position = global_position
 	var distance_just_traveled =  0
  

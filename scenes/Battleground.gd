@@ -20,8 +20,8 @@ var shield_scene:PackedScene =preload("res://scenes/screens/levels/units/shield.
 var knight_scene:PackedScene = preload("res://scenes/screens/levels/units/knight.tscn" )
 var commander_scene:PackedScene = preload("res://scenes/screens/levels/units/commander.tscn")
 var unit_packed_scenes_arr: Array = [medic_scene,observer_scene,supply_cart_scene, cannon_scene, musketeer_scene, pikeman_scene, shield_scene, knight_scene, commander_scene]
-#this could cause potential problems in the future
-@onready var tenders = get_tree().get_nodes_in_group("player_tenders")
+ 
+ 
 @onready var players = get_tree().get_nodes_in_group("players")
  
 func put_unit_into_teams():
@@ -46,10 +46,10 @@ func sort_by_z_index_desc(a, b):
 
 func _ready():
 #	Engine.time_scale = 0.5
+	Globals.tenders= get_tree().get_nodes_in_group("player_tenders")
 	LoadingScreen.render_loading_screen()
 	set_process_input(true)
 	put_unit_into_teams()
- 
 	for i in range(Globals.num_towns):
 		var town_instance = town_scene.instantiate() as Area2D
 		town_instance.global_position = Vector2(randf_range(0, get_viewport().size.x ), randf_range(0, get_viewport().size.y))
@@ -98,14 +98,77 @@ func _ready():
 			river_instance.add_river_segment(segment[0], segment[1]   )
 		$Structures.add_child(river_instance)
 	create_roads_to_edges()
+	place_starting_units($RedBuyArea, "red", Globals.red_player_units  )
+	place_starting_units($BlueBuyArea, "blue", Globals.blue_player_units  )
  
 var added = false
-func _process(delta):
+func _process(_delta):
 	if !added:
 		add_bridges()
 		added=true
 
-func place_starting_units():
+func place_starting_units(placment_area: Area2D, color, units_list  ):
+	var total_unit_number = Utils.sum_dict_values(units_list)
+	var placement_positions = []
+	var minimal_gap = 65
+	var tries = 0
+	var max_tries = 1000
+#	var square_size = placment_area.get_node("CollisionShape2D").shape.extents*2
+#	print("SQUARE" ,square_size.x," ",square_size.y, Utils.get_random_point_in_square(placment_area.get_node("CollisionShape2D").shape.extents))
+#	func get_random_point_in_square(square_size: Vector2) -> Vector2:
+#	var random_x = randi_range(0, int(square_size.x))
+#	var random_y = randi_range(0, int(square_size.y))
+#	print(Vector2(random_x, random_y),square_size.x," ",square_size.y)
+#	return Vector2(random_x, random_y)
+
+	while len(placement_positions) < total_unit_number and tries < max_tries:
+		var new_point = Utils.get_random_point_in_square(placment_area.get_node("CollisionShape2D").shape.extents*2)
+		var valid_position = true
+		for point in placement_positions:
+			if not Utils.are_points_far_enough(point, new_point, minimal_gap):
+				valid_position = false
+				break
+		if valid_position:
+			placement_positions.append(new_point)
+		tries += 1
+#	print("PLACEMENT POSITIONS ",placement_positions) 
+	
+	for i in range(len(placement_positions)):
+		placement_positions[i] += placment_area.global_position
+	
+	var i = 0
+	for unit_name in units_list.keys():
+		var unit_count = units_list[unit_name] 
+		while unit_count > 0 and len(placement_positions) > 0:
+			var random_index = randi() % (len(placement_positions ))
+			var random_point = placement_positions[random_index]
+#			print(unit_name, " ", random_point, " ", random_index, " ", len(placement_positions ))
+#			print(placement_positions)
+			var instance = unit_packed_scenes_arr[i].instantiate() as Node2D
+			instance.position = random_point
+			instance.color = Color(color)
+			instance.add_to_team(color)
+			$LivingUnits.add_child(instance)
+			placement_positions.erase(random_point)
+			unit_count -= 1
+		i += 1
+		
+		## place the units relative to the area 2d global position
+		## make them acually moveable
+		## prevent the points to be on rivers
+		
+		
+	## take the units list which is a dictionary of a unit classes with a int number
+	## for every value in the dictionary
+		##while the value is bigger than zero and placement positions is not empty
+			## take a random point from placement positions
+			## take the name of the dictionary value append "_scene" after it
+			## instantiate the "value"+"_scene on the random point
+			## remove the point from the placement positions
+		
+#	Utils.are_points_far_enough(a:Vector2, b:Vector2, min_distance:int)
+#	Utils. get_random_point_in_square(square_size: Vector2)
+#	sum_dict_values(dict: Dictionary)
 	## get the dictionary with the values for all units
 	## for every unit in its total value choose a random point on the canvas
 	## assert that it is far engough from other units
@@ -115,11 +178,10 @@ func place_starting_units():
 	## remove the point from the points array
 	## repeat until empy
 	
-	for unit in Globals.red_player_units:
-		print(unit)
-	for unit in Globals.blue_player_units:
-		print(unit)
-	print("PLACING STARTING UNITS")
+ 
+ 
+
+
 func create_roads_to_edges():	
 	var top_point =  Vector2(randi_range(100, get_viewport().size.x  -100), 0)
 	var right_point =  Vector2(  get_viewport().size.x  , randi_range(100,  get_viewport().size.y -100))
@@ -151,22 +213,20 @@ func add_bridges():
 #				print(area, area.get_parent() , area.get_parent().get_parent())
 				if area.get_parent() is Road:
 					has_crossing = true
-					print("ROAD CROSSES THIS RIVER", river)
 					break
 		if !has_crossing:
 			var segment_num = randi_range(0, len(river.get_children())-1)
 			var new_bridge_position = to_global(river.get_child(segment_num).get_node("Area2D").global_position)
 			var segment = river.get_child(segment_num)
-			var collision_shape = segment.get_node("Area2D/CollisionShape2D").shape 
+#			var collision_shape = segment.get_node("Area2D/CollisionShape2D").shape 
 			var top_edge = river.segment_edges[segment_num][0]#segment.global_position + Vector2(collision_shape.extents.x, -collision_shape.extents.y)
 			var bottom_edge =river.segment_edges[segment_num][1] # segment.global_position + Vector2(collision_shape.extents.x, collision_shape.extents.y)
 			var angle_degrees = (top_edge - bottom_edge).angle() * 180 / PI #+ 45 
-			print("ANGLE ", top_edge, " ", bottom_edge, " ",  (top_edge - bottom_edge).angle(), " ", round(angle_degrees))
 			var bridge_instance = bridge_scene.instantiate() as Sprite2D
 			bridge_instance.rotation_degrees = angle_degrees
 			bridge_instance.position = new_bridge_position
 			$Structures.add_child(bridge_instance)
-			print(river, " NEEDS A BRIDGE ", new_bridge_position )
+ 
 
 
 func instantiate_roads(start, end):
@@ -211,6 +271,8 @@ func _on_canvas_next_turn_pressed():
 		var resupply_action = depo.get_node("AreaResupplyAction")
 		resupply_action.provide_buffs()
 	give_money_income_to_players()
+	for tender in Globals.tenders:
+		tender.update_tender()
 
 
 func give_money_income_to_players(): 
@@ -224,11 +286,8 @@ func give_money_income_to_players():
 			blue_towns += 1
 #	print(red_towns, blue_towns, " BLUE AND RED TOWNS")
 	Globals.blue_player_money += Globals.money_per_turn + blue_towns* Globals.city_turn_income
-	Globals.red_player_money +=  Globals.money_per_turn + red_towns* Globals.city_turn_income
-
-
-func update_tender(new_value, color):
-	print("UPDATING TENDER TO ", new_value, color) 
+	Globals.red_player_money  +=  Globals.money_per_turn + red_towns* Globals.city_turn_income
+	print(Globals.red_player_money,	" ",Globals.blue_player_money, " MONEY" )
  
 #DO NOT DELETE YET
 #

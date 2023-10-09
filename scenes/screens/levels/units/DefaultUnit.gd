@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends Node2D
 class_name  BattleUnit
 signal unit_selected 
 signal unit_deselected 
@@ -11,7 +11,7 @@ var action_component
 var death_image_scene:PackedScene = preload("res://scenes/screens/levels/sprite_with_timer.tscn")
 var attack_resistances =  {"base_resistance":  0.1  }  
 @onready var center = $Center.global_position 
-@onready var size = $CollisionShape2D.shape.extents * 2
+@onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2
 @onready var global_start_turn_position :Vector2 = get_global_transform().get_origin() # Vector2((position[0]+round(size[0]/2)),(position[1]+round(size[1]/2)))
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
 
@@ -20,6 +20,7 @@ var color: Color
 var original_position = position  # Store the current position
 var unit_name: String = "default"
 var start_hp: int = 2
+var outline_node
 var is_newly_bought = true:
 	get:
 		return is_newly_bought
@@ -31,15 +32,15 @@ var is_newly_bought = true:
 			tween.tween_property($ColorRect, "modulate", Color(1,1,1), 0.2)
 			tween.tween_property($ColorRect, "modulate",   color, 0.2)
  
-func _ready():
+func _ready(): 
 	# The code here has to come after the code in th echildren compoennts
 	$HealthComponent.hp = start_hp
 	$Center.position = to_local(Utils.get_collision_shape_center($CollisionArea))
-	$ErrorAnimation.hide()
 	$ErrorAnimation.position = $Center.position  
 	center = $Center.global_position 
 	$ActionComponent.position =  $Center.position #to_local(global_position + Vector2(25,25))# to_local(center) 
-	var outline = Utils.polygon_to_line2d($OutlinePolygon , 2) 
+	var outline = Utils.polygon_to_line2d($OutlinePolygon , 4) 
+	outline_node = outline
 	add_child(outline)
 	update_stats_bar()
 	emit_signal("bought", cost)
@@ -49,6 +50,8 @@ func _ready():
 	if  is_newly_bought:
 		Globals.placed_unit = self
 		Globals.hovered_unit = null
+	for tender in Globals.tenders:
+		tender.update_tender()
  
 func _on_default_attack_comp_remain_attacks_updated(_new_attacks):
 	update_stats_bar()
@@ -56,9 +59,7 @@ func _on_default_attack_comp_remain_attacks_updated(_new_attacks):
 func get_boost():
 	print("THIS UNIT DOESNT HAVE A BOOST FOR KILLING A UNIT")
 
-func _on_area_2d_area_entered(area): 
-	emit_signal("interferes_with_area", area)
-
+ 
 func move():
 	position = $movement_comp.move(size,$Center.position)
 	center =  $Center.global_position #Utils.get_collision_shape_center($CollisionArea) #$CollisionArea/CollisionShape2D.global_position +$CollisionArea/CollisionShape2D.shape.extents/2 
@@ -88,10 +89,12 @@ func add_to_team(team):
 	color_rect.modulate = color
 
 
+ 
 func process_action():
 	if  action_component.try_attack() ==  "FAILED":
 		$ErrorAnimation.show()
 		$ErrorAnimation.play("error")
+
 	
 func process_input():
 	if Color(Globals.cur_player) !=  color :
@@ -109,6 +112,7 @@ func process_input():
 	elif  Globals.action_taking_unit == self:
 		if Input.is_action_just_pressed("right_click") :
 			process_action()
+
 
 func process_unit_placement():
 	if Input.is_action_just_pressed("left_click"): 
@@ -155,7 +159,14 @@ func process_unit_placement():
 		print("ABORTING BUYING AND GIVING MONEY BACK")
 		queue_free()
 
-func _process(_delta): 
+
+func _process(_delta):
+	if Globals.moving_unit == self:
+		outline_node.modulate = Color("black")
+		$ColorRect.modulate = Color("gray")
+	else:
+		outline_node.modulate = Color("white")
+		$ColorRect.modulate = color 
 	queue_redraw()
 	if  Globals.placed_unit == self:
 		position = get_global_mouse_position() - size / 2
@@ -168,14 +179,15 @@ func _process(_delta):
 	process_input()
 	if Globals.moving_unit == self:
 		move() 
-
+		
 
 func deselect_movement():
 	if Globals.moving_unit == self:
-	#	remain_movement -= 1
+		$movement_comp.remain_movement -= 1
 		Globals.moving_unit = null 
 	global_start_turn_position = $movement_comp.set_new_start_turn_point()
 	#print("NEW START TURN POS ", global_start_turn_position)
+
 
 func toggle_move():
 	if Globals.moving_unit == self:
@@ -198,6 +210,7 @@ func toggle_move():
 	Globals.moving_unit = self
 	Globals.action_taking_unit = null
  
+
 func update_for_next_turn():
 	$movement_comp.process_for_next_turn()
 	#$movement_comp.remain_movement =  $movement_comp.base_movement 
@@ -256,10 +269,11 @@ func _on_tree_exiting():
 
 func add_death_cross_to_root(death_image):
 	get_tree().get_root().add_child(death_image )
+	
 func ___on_movement_changed():
 	update_stats_bar()
  
-func _on_collision_area_entered(area):
+func _on_collision_area_entered(_area):
 	for overlapping in $CollisionArea.get_overlapping_areas():
 		if overlapping.get_parent().get_parent() is Forrest:
 			$movement_comp.movement_modifieres["in_forrest"] = 0.5
@@ -269,10 +283,10 @@ func _on_collision_area_entered(area):
 			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 		elif overlapping.get_parent() is Bridge:
 			$movement_comp.on_bridge = true
-		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and not ("on_road" in$movement_comp.movement_modifieres):
+		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and not  ($movement_comp.movement_modifieres["on_road"] == 0):
 			position = $movement_comp.abort_movement()
  
-func _on_collision_area_area_exited(area):
+func _on_collision_area_area_exited(_area):
 	var in_forrest = false
 	var on_road = false
 	for overlapping in $CollisionArea.get_overlapping_areas():
@@ -289,9 +303,7 @@ func _on_collision_area_area_exited(area):
 	elif !on_road:
 		$movement_comp.movement_modifieres["on_road"] = 0
 	$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
-	
 
- 
 
 func _on_error_animation_finished():
 	$ErrorAnimation.hide()

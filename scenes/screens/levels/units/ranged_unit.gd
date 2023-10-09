@@ -3,13 +3,13 @@ class_name RangedUnit
  
 var start_ammo = 6
 var bullet_scene:PackedScene = preload("res://scenes/screens/levels/projectiles/bullet.tscn")
-var ranged_unit_range = 300
+#var ranged_unit_range = 300
 func _ready():
 	action_component = $ActionComponent/RangedAttackComp 
  
 	action_component.max_ammo = start_ammo 
 	action_component.ammo = start_ammo 
-	action_component.action_range = ranged_unit_range
+#	action_component.action_range = ranged_unit_range
 #	action_component.position = to_local(center)
 	action_component.owner =self
 	super._ready()

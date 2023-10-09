@@ -24,6 +24,10 @@ LoadingScreen="*res://globals/loading_screen.tscn"
 Globals="*res://globals/globals.gd"
 Utils="*res://globals/utils.gd"
 
+[display]
+
+window/stretch/mode="viewport"
+
 [input]
 
 left_click={

@@ -13,5 +13,5 @@ func _ready():
 #	value = hp
 
 
-func _on_health_component_hp_changed(hp, prev_hp):
+func _on_health_component_hp_changed(hp, _prev_hp):
 	value = hp

@@ -2,17 +2,13 @@ class_name MeleeAttackComp
 extends DefaultAttackComponent
 signal attack_failed
 signal attack_suceeded
-
-func _ready():
-	super._ready()
-	$SlashAnimation.hide()
+ 
 	
 func try_attack():
 	print("CALLED TRY ATTACK")
 	var res =super.try_attack()
-	print("RES", res)
+	print("RES ", res)
 	if res!="SUCESS":
-		print("ATTACK FAILED")
 		return "FAILED"
 	else:
 		print("ATTACK_SUCESS")
@@ -27,6 +23,7 @@ func attack():
 	super.attack()
 	Globals.hovered_unit.get_node("HealthComponent").hit(1) 
 	remain_actions -=1
+	print("PLAYING SLASH ANIMATION")
 	play_slash_animation()
 
 func process_action():

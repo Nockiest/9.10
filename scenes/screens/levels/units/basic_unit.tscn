@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkrdjtyb1p88n"]
+[gd_scene load_steps=8 format=3 uid="uid://dkrdjtyb1p88n"]
 
 [ext_resource type="Script" path="res://scenes/screens/levels/units/DefaultUnit.gd" id="1_vdjhd"]
 [ext_resource type="Texture2D" uid="uid://ixa58p2rs7m1" path="res://img/knight.png" id="2_bl1id"]
@@ -10,13 +10,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3ojo"]
 size = Vector2(50, 50)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_840qd"]
-size = Vector2(49.875, 50)
-
-[node name="basic_unit" type="AnimatableBody2D" groups=["living_units"]]
+[node name="basic_unit" type="Node2D" groups=["living_units"]]
 z_index = 9
-collision_mask = 25
-input_pickable = true
 script = ExtResource("1_vdjhd")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -31,6 +26,7 @@ scale = Vector2(1.04167, 1.02083)
 texture = ExtResource("2_bl1id")
 
 [node name="ErrorAnimation" parent="." instance=ExtResource("3_4eh3g")]
+visible = false
 z_index = 100
 z_as_relative = false
 
@@ -70,25 +66,11 @@ text = "Attacks:"
 [node name="HealthComponent" parent="." instance=ExtResource("4_oq3j3")]
 position = Vector2(-7, -13)
 
-[node name="CollisionArea" type="Area2D" parent="."]
-visibility_layer = 61
-collision_mask = 25
-script = ExtResource("4_gcuuy")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
-visibility_layer = 25
-position = Vector2(25, 25)
-shape = SubResource("RectangleShape2D_n3ojo")
-debug_color = Color(0.835294, 0.301961, 0.623529, 0.419608)
-
 [node name="movement_comp" parent="." instance=ExtResource("6_0pp86")]
 z_index = 3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(25.0625, 25)
-shape = SubResource("RectangleShape2D_840qd")
-
 [node name="ActionComponent" type="Node2D" parent="."]
+visible = false
 light_mask = 2
 position = Vector2(25, 25)
 
@@ -113,9 +95,20 @@ Movement:"
 [node name="Center" type="Marker2D" parent="."]
 position = Vector2(25, 26)
 
+[node name="CollisionArea" type="Area2D" parent="."]
+visibility_layer = 61
+collision_mask = 27
+script = ExtResource("4_gcuuy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
+visibility_layer = 25
+position = Vector2(25, 25)
+shape = SubResource("RectangleShape2D_n3ojo")
+debug_color = Color(0.835294, 0.301961, 0.623529, 0.419608)
+
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="animation_finished" from="ErrorAnimation" to="." method="_on_error_animation_finished"]
 [connection signal="hp_changed" from="HealthComponent" to="." method="_on_health_component_hp_changed"]
+[connection signal="remain_movement_changed" from="movement_comp" to="." method="___on_movement_changed"]
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_entered"]
 [connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited"]
-[connection signal="remain_movement_changed" from="movement_comp" to="." method="___on_movement_changed"]

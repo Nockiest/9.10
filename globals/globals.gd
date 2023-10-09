@@ -1,8 +1,8 @@
 extends Node
 
-signal cur_player_has_been_changed
-signal blue_player_money_changed(value)
-signal red_player_money_changed(value)
+signal cur_player_has_been_changed()
+signal  player_money_changed( )
+ 
 var red_player_color: Color = Color("ff0000")
 var blue_player_color: Color = Color("0000ff")
 var players = ["blue", "red"]
@@ -15,7 +15,8 @@ var attacking_component
 var moving_unit
 var last_attacker
 var can_start_new_attack = true
-
+#this could cause potential problems in the future
+@onready var tenders = get_tree().get_nodes_in_group("player_tenders")
 func update_cur_player():
 	cur_player = players[cur_player_index]
 	emit_signal("cur_player_has_been_changed") 
@@ -36,40 +37,46 @@ var num_towns = 6
 var num_rivers = 2
 var num_forests = 3
 var blue_player_units = {
-	'Medic': 0,
-	'Observer': 1,
-	'Supply_cart': 1,
-	'Cannon': 0,
-	'Musketeer': 2,
-	'Pikeman':1,
-	'Shield': 1,
-	'Knight': 1,
-	'Commander': 1,
+	'medic': 0,
+	'observer': 1,
+	'supply_cart': 1,
+	'cannon': 0,
+	'musketeer': 2,
+	'pikeman':1,
+	'shield': 1,
+	'knight': 1,
+	'commander': 1,
 }
-
 var blue_player_money = 100:
 	get:
 		return blue_player_money
 	set(value):
 		blue_player_money = max(0, min(value,100))
-		emit_signal("blue_player_money_changed", value)
+		player_money_changed.emit( ) #emit_signal("blue_player_money_changed", value)
+		for tender in tenders:
+			tender.update_tender()
 var red_player_money = 100:
 	get:
 		return red_player_money
 	set(value):
 		red_player_money = max(0, min(value,100))
-		emit_signal("red_player_money_changed", value)
+		player_money_changed.emit( ) #emit_signal("red_player_money_changed", value)
+		for tender in tenders:
+			tender.update_tender()
 var red_player_units = {
-	'Medic': 0,
-	'Observer': 1,
-	'Supply_cart': 1,
-	'Cannon': 0,
-	'Musketeer': 2,
-	'Pikeman':1,
-	'Shield': 1,
-	'Knight': 1,
-	'Commander': 1,
-}
+	'medic': 0,
+	'observer': 1,
+	'supply_cart': 1,
+	'cannon': 0,
+	'musketeer': 2,
+	'pikeman':1,
+	'shield': 1,
+	'knight': 1,
+	'commander': 1,
+}:
+	set(value):
+		print(value)
+		red_player_units= value
 var money_per_turn = 10
 var city_turn_income = 10
 var min_town_spacing_distance = 200

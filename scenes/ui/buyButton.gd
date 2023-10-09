@@ -13,7 +13,7 @@ func _ready():
  
 func _on_pressed(): 
 	## bohuřžel nemůžžu psát proěné jako reference k jiným proměnným, což komplikuje kod
-	var mock_unit = UnitClass.instantiate() as  StaticBody2D
+	var mock_unit = UnitClass.instantiate() as  Node2D
 	var battleground = $"../../../.."
 #	var buy_area = battleground.get_node("BlueBuyArea")  if Globals.cur_player == "blue" else  battleground.get_node("RedBuyArea")
 	if Globals.cur_player == "blue":

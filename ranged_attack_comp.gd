@@ -12,6 +12,7 @@ var max_ammo: int
  
 
 func _ready():
+	action_range = 300
 	super._ready()
 	$BlastAnimation.hide()
 
@@ -25,21 +26,7 @@ func update_for_next_turn():
 	super.update_for_next_turn()
 	ammo += 1
 	
-#func try_attack():
-#	var overlapping_areas = owner.get_node("CollisionArea").get_overlapping_areas()
-#	print("COLAREA", owner.get_node("CollisionArea"),  owner.get_node("CollisionArea").get_overlapping_areas())
-#	for area in overlapping_areas:
-#		if area.get_parent().get_parent() is Forrest:
-#			print("RANGED UNIT IS IN FORREST",area.get_parent().get_parent() )
-#			return false
-#	print("LAUNCHED XXXXXXXXXXXXXXXXXXXXXXX", ammo)
-#	if    ammo < 0:
-#		return false
-#	if super.try_attack() != "SUCESS":
-#		print("ATTACK FAILED")
-#		return false
-#	return true
-#
+ 
  
 func attack():
 	Globals.last_attacker = owner

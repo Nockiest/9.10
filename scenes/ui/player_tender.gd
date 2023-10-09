@@ -18,8 +18,8 @@ func _ready():
 		print("This node is not the first or second child of its parent.")
  
 
-func _process(_delta):
-	update_tender()
+#func _process(_delta):
+#	update_tender()
 	
 func sort_units(units):
 	sorted_units = {}
@@ -33,21 +33,10 @@ func sort_units(units):
 			sorted_units[unit_type] = 1
 
 func update_tender():
-#	var units = get_tree().get_nodes_in_group("living_units")
 	var same_color_units = get_tree().get_nodes_in_group(str(Color(team)))
 	var current_money =  Globals.red_player_money if team == "red" else   Globals.blue_player_money
-	if prev_units == same_color_units  :
-		prev_units = same_color_units
-		return
-	prev_units = same_color_units
-#	print("called")
-	print(Globals.blue_player_money, "BLUE PLAYER MONEY ON UPDATE ", team)
-	if team == "blue":  
-		$ColorRect/VScrollBar/VBoxContainer/Money/Label.text = str(Globals.blue_player_money)
-	elif team =="red":
-		$ColorRect/VScrollBar/VBoxContainer/Money/Label.text = str(Globals.red_player_money)
-	else:
-		print_debug("something wrong with rendering money ", team)
+ 
+	$ColorRect/VScrollBar/VBoxContainer/Money/Label.text = str(current_money)
  
 	if same_color_units:
 #		print(same_color_units)
@@ -66,3 +55,12 @@ func update_tender():
 		label.text = key + ": " + str(sorted_units[key])
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		vbox.add_child(label)
+ 
+#	$ColorRect/VScrollBar/VBoxContainer/Money/Label.text = str(current_money)
+#	if team == "blue":  
+#		$ColorRect/VScrollBar/VBoxContainer/Money/Label.text = str(Globals.blue_player_money)
+#	elif team =="red":
+#		$ColorRect/VScrollBar/VBoxContainer/Money/Label.text = str(Globals.red_player_money)
+#	else:
+#		print_debug("something wrong with rendering money ", team)
+ 
