@@ -76,6 +76,7 @@ func _ready():
 func  update_for_next_turn():
 	remain_actions = base_actions
 	unhighlight_units_in_range()
+
 func _process(_delta):
 	if Globals.action_taking_unit == owner:
 		$AttackRangeCircle.show()
@@ -124,6 +125,8 @@ func _on_area_entered(area):
 		return "SAME COLOR"
 	units_in_action_range.append(area.get_parent())
 	return 6
+
+
 func process_action():
 	print("CHILDReN OF THIS COMPONENT SHOULd HAVE ATTACK IN THEM")
 

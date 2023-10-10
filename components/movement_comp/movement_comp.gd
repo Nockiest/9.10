@@ -34,11 +34,7 @@ var movement_modifieres:Dictionary = {
 	get:
 		return movement_modifieres
 var current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
-var on_bridge:bool = false:
-	set(value):
-		on_bridge = value
-		if value == false:
-			abort_movement()
+var on_bridge:bool = false 
 var on_river:bool=false
 func _ready():
 	$MovementRangeArea/MovementRangeArea.shape = CircleShape2D.new()
@@ -47,11 +43,9 @@ func _ready():
 	global_start_turn_position =  global_position  
 	
 func move(size_of_scene, center):
-	var mouse_pos = get_global_mouse_position()
-#	var distance_to_mouse = global_start_turn_position.distance_to(mouse_pos) 
+	var mouse_pos = get_global_mouse_position() 
 	var new_position = global_position
 	var distance_just_traveled =  0
- 
 	new_position = mouse_pos - size_of_scene / 2
 	if floor( owner.center.distance_to(mouse_pos) ) <= 1 :
 		distance_just_traveled =  0
@@ -64,7 +58,6 @@ func move(size_of_scene, center):
 	return  global_position 
 		
 func abort_movement():
- 
 	Globals.moving_unit = null
 	global_position = global_start_turn_position
 	remain_distance = base_movement_range
@@ -74,7 +67,7 @@ func abort_movement():
 func process_for_next_turn():
 	remain_movement =  base_movement_points
 	remain_distance = base_movement_range
-	set_new_start_turn_point() #$CollisionArea/CollisionShape2D.global_position +$CollisionArea/CollisionShape2D.shape.extents/2 
+	set_new_start_turn_point()  
 	return global_start_turn_position
 	
 func  set_new_start_turn_point():
