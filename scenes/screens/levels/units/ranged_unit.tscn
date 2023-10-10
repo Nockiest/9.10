@@ -22,8 +22,5 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 10
 text = "Ammo:"
 
-[node name="ActionComponent" parent="." index="6"]
-visible = true
-
 [node name="RangedAttackComp" parent="ActionComponent" index="0" instance=ExtResource("4_5x482")]
 position = Vector2(-1, 1)

@@ -27,7 +27,7 @@ text = "Attacks"
 
 [node name="HealthComponent" parent="." index="4"]
 visible = false
-position = Vector2(-4, -9)
+position = Vector2(-5, -13)
 
 [node name="ActionComponent" parent="." index="6"]
 position = Vector2(0, 0)

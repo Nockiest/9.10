@@ -15,7 +15,7 @@ func _ready():
 	super._ready()
 	unit_name = "ranged_unit"
 #	action_range = 300 
-#	$RangedAttackComp.action_range = action_range   
+#	$RangedAttackComp.base_action_range = base_action_range   
  
 #func toggle_action_screen(): 
 #	var ranged_action_component = $RangedAttackComp

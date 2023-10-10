@@ -7,7 +7,11 @@ var remain_actions: int = base_actions:
 		remain_actions = new_attacks
 		emit_signal("remain_actions_updated", new_attacks)
 var units_in_action_range:Array= []
-var action_range:int = 100:
+var base_action_range:int = 100:
+	set(value):
+		base_action_range = value
+		action_range = base_action_range * Utils.sum_dict_values(aciton_range_modifiers)
+var action_range:int = base_action_range:
 	get:
 		return action_range
 	set(value):
@@ -15,9 +19,19 @@ var action_range:int = 100:
 		units_in_action_range = []
 		$AttackRangeShape.shape = CircleShape2D.new()
 		$AttackRangeShape.shape.radius = action_range
-var attack_range_modifiers = {"base_modifier": 1}
+var aciton_range_modifiers = {
+	"base_modifier": 1,
+	"observer": 0
+	}:
+	set(value):
+		print("VALUE AUGMENTED", base_action_range *Utils.sum_dict_values(aciton_range_modifiers))
+		aciton_range_modifiers = value
+		action_range = base_action_range *Utils.sum_dict_values(aciton_range_modifiers)
 var center
 
+func update_from_observer_boost():
+	action_range = base_action_range * Utils.sum_dict_values(aciton_range_modifiers)
+	print("NEW ACTION RANGE", action_range)
 func try_attack( ):
 	print("processing", Globals.hovered_unit,Globals.action_taking_unit  )
 	if !check_can_attack():
@@ -58,15 +72,12 @@ func check_can_attack():
 
 func _ready():
 	pass
-#	$AttackRangeShape.shape = CircleShape2D.new()
-#	$AttackRangeShape.shape.radius = action_range
-#	print(action_range)
+ 
 func  update_for_next_turn():
 	remain_actions = base_actions
 	unhighlight_units_in_range()
 func _process(_delta):
 	if Globals.action_taking_unit == owner:
-		print("SHOWING ATTACK RANGE CIRCLE")
 		$AttackRangeCircle.show()
 	else:
 		$AttackRangeCircle.hide()
@@ -94,31 +105,19 @@ func toggle_action_screen():
  
 func highlight_units_in_range(): 
 	print("HIGHLIGHTING UNITS", units_in_action_range)
-	var other_units = get_tree().get_nodes_in_group("living_units")
-	for enemy in other_units:
-		if units_in_action_range.has(enemy):
-			enemy.get_node("ColorRect").modulate = Color("white")
-		else:
-			enemy.get_node("ColorRect").modulate = enemy.color
-
+	for unit in units_in_action_range:
+		unit.get_node("ColorRect").modulate = Color("white")
+ 
 func unhighlight_units_in_range():
 	for enemy in units_in_action_range:
 		enemy.get_node("ColorRect").modulate = enemy.color
 
 func _on_area_entered(area):
 #	print(area, area.get_parent(), "AREA", area is BattleUnit )
-#	if units_in_action_range.has(area.get_parent()) :
-#		return
-	if not owner:
-		return 1
 	if area.get_parent() == owner:
 		return 2
 	if area.name != "CollisionArea": 
 		return 3
-	if not (area.get_parent() is BattleUnit):
-		return 4
-#	print("x",self, owner)
-#	print( "x",owner.color)
 	if  area.get_parent().color == null:
 		return 5
 	if area.get_parent().color == owner.color:

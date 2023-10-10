@@ -13,7 +13,7 @@ var max_ammo: int
  
 
 func _ready():
-	action_range = 300
+	base_action_range = 300
 	super._ready()
 	$BlastAnimation.hide()
 #	ammo = 0 ## smazaz!!

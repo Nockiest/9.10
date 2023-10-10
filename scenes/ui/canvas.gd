@@ -33,3 +33,9 @@ func _on_give_up_btn_up():
 
 func _on_next_turn_btn_button_up():
 	next_turn_pressed.emit()
+
+
+func _on_check_button_pressed():
+	for unit in get_tree().get_nodes_in_group("living_units"):
+		unit.get_node("ColorRect").visible = !unit.get_node("ColorRect").visible
+		unit.get_node("Sprite2D").visible = !unit.get_node("Sprite2D").visible

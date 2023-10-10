@@ -78,8 +78,8 @@ func _ready():
 			if intersecting_segment:
 				break
 			non_intersecting_segments.append(segment)
-		if intersecting_segment:
-			print(len(non_intersecting_segments), len(new_segments))
+#		if intersecting_segment:
+#			print(len(non_intersecting_segments), len(new_segments))
 		for segment in non_intersecting_segments:
 			all_segments.append(segment  )
 		var river_instance = river_scene.instantiate() as Node2D
@@ -102,13 +102,6 @@ func place_starting_units(placment_area: Area2D, color, units_list  ):
 	var minimal_gap = 65
 	var tries = 0
 	var max_tries = 1000
-#	var square_size = placment_area.get_node("CollisionShape2D").shape.extents*2
-#	print("SQUARE" ,square_size.x," ",square_size.y, Utils.get_random_point_in_square(placment_area.get_node("CollisionShape2D").shape.extents))
-#	func get_random_point_in_square(square_size: Vector2) -> Vector2:
-#	var random_x = randi_range(0, int(square_size.x))
-#	var random_y = randi_range(0, int(square_size.y))
-#	print(Vector2(random_x, random_y),square_size.x," ",square_size.y)
-#	return Vector2(random_x, random_y)
 
 	while len(placement_positions) < total_unit_number and tries < max_tries:
 		var new_point = Utils.get_random_point_in_square(placment_area.get_node("CollisionShape2D").shape.extents*2)
@@ -131,46 +124,18 @@ func place_starting_units(placment_area: Area2D, color, units_list  ):
 		while unit_count > 0 and len(placement_positions) > 0:
 			var random_index = randi() % (len(placement_positions ))
 			var random_point = placement_positions[random_index]
-#			print(unit_name, " ", random_point, " ", random_index, " ", len(placement_positions ))
-#			print(placement_positions)
+ 
 			var instance = Globals.unit_packed_scenes_arr[i].instantiate() as Node2D
 			instance.position = random_point
 			instance.color = Color(color)
 			instance.add_to_team(color)
+			instance.is_newly_bought = false
 			$LivingUnits.add_child(instance)
 			placement_positions.erase(random_point)
 			unit_count -= 1
 		i += 1
 		
-		## place the units relative to the area 2d global position
-		## make them acually moveable
-		## prevent the points to be on rivers
-		
-		
-	## take the units list which is a dictionary of a unit classes with a int number
-	## for every value in the dictionary
-		##while the value is bigger than zero and placement positions is not empty
-			## take a random point from placement positions
-			## take the name of the dictionary value append "_scene" after it
-			## instantiate the "value"+"_scene on the random point
-			## remove the point from the placement positions
-		
-#	Utils.are_points_far_enough(a:Vector2, b:Vector2, min_distance:int)
-#	Utils. get_random_point_in_square(square_size: Vector2)
-#	sum_dict_values(dict: Dictionary)
-	## get the dictionary with the values for all units
-	## for every unit in its total value choose a random point on the canvas
-	## assert that it is far engough from other units
-	## once you hve all the points set start placing units on them
-	## get the packed scene at the index of ecvery value of the dictionary
-	## instance it on a random point of the poits array you have calculated
-	## remove the point from the points array
-	## repeat until empy
-	
  
- 
-
-
 func create_roads_to_edges():	
 	var top_point =  Vector2(randi_range(100, get_viewport().size.x  -100), 0)
 	var right_point =  Vector2(  get_viewport().size.x  , randi_range(100,  get_viewport().size.y -100))
@@ -180,8 +145,8 @@ func create_roads_to_edges():
 	for edge_point in edge_points:
 		var closest_town_center_pos
 		for town in get_tree().get_nodes_in_group("towns"):
-			print(town, Utils. get_collision_shape_center(town ) )
-			print( Utils. get_collision_shape_center(town ).distance_to(edge_point) , closest_town_center_pos)
+#			print(town, Utils. get_collision_shape_center(town ) )
+#			print( Utils. get_collision_shape_center(town ).distance_to(edge_point) , closest_town_center_pos)
 			if closest_town_center_pos == null:
 				closest_town_center_pos = Utils. get_collision_shape_center(town )  
 			elif Utils. get_collision_shape_center(town ).distance_to(edge_point) < closest_town_center_pos.distance_to(edge_point):
@@ -221,7 +186,7 @@ func add_bridges():
 func instantiate_roads(start, end):
 	var road_instance = road_scene.instantiate() as Node2D
 	var collision_area = road_instance.get_node("Area2D")
-	print(start, end)
+#	print(start, end)
 	collision_area.position = Vector2(start + end ) / 2
 	collision_area.rotation = start.direction_to(end).angle()
 	var length = start.distance_to(end)

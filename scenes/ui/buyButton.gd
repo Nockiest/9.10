@@ -1,7 +1,12 @@
 extends Button
 signal buy_unit
 var unit_class
-@onready var UnitClass: PackedScene 
+@onready var UnitClass: PackedScene:
+	set(value):
+		UnitClass= value
+		var instance = UnitClass.instantiate() as  Node2D
+		$MarginContainer/Container/Cost.text = str(instance.cost)
+		instance.queue_free()
 @onready var texture_rect = get_node("%TextureRect")  # Replace with your actual node path
 @export var instanced_units_index = 0
 

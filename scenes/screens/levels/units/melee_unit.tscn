@@ -8,15 +8,8 @@
 [node name="MeleeUnit" instance=ExtResource("1_7vyga")]
 script = ExtResource("2_bnftf")
 
-[node name="ColorRect" parent="." index="0"]
-visible = true
-
 [node name="Sprite2D" parent="." index="1"]
-visible = true
 position = Vector2(24, 23)
-
-[node name="ErrorAnimation" parent="." index="2"]
-visible = false
 
 [node name="SlashAnimation" parent="." index="3" instance=ExtResource("3_tu6o0")]
 z_index = 4000
@@ -28,6 +21,3 @@ offset_bottom = 84.0
 
 [node name="melee_attack_comp" parent="ActionComponent" index="0" instance=ExtResource("4_uxegk")]
 position = Vector2(18, 13)
-
-[node name="CollisionArea" parent="." index="12"]
-collision_mask = 27

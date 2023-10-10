@@ -4,11 +4,10 @@ class_name RessuplyAction
 func _ready():
 	buffed_variable = "ammo"
 	increase_ammount = 1
-	constant_buff = false
+#	constant_buff = false
 	color = Color(0.5,0.5,0.5)
-	$SupportConnnection.modulate = color
 	$AnimatedSprite2D.hide()  # Hide the AnimatedSprite node on ready
- 
+	super._ready()
 #func _on_next_turn():
 #	print("NEXT TURN")
 #

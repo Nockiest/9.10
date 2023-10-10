@@ -12,7 +12,10 @@ var placed_unit
 var hovered_structure
 var action_taking_unit
 var attacking_component
-var moving_unit
+var moving_unit:
+	set(value):
+		moving_unit = value
+		print("MOVING UNIT CHANGED ", moving_unit)
 var last_attacker
 var can_start_new_attack = true
 
@@ -64,7 +67,8 @@ var blue_player_money = 100:
 	get:
 		return blue_player_money
 	set(value):
-		blue_player_money = max(0, min(value,100))
+		print("BLUE UNITS ", value)
+		blue_player_money =  max(0, value )
 		player_money_changed.emit( ) #emit_signal("blue_player_money_changed", value)
 		for tender in tenders:
 			tender.update_tender()
@@ -72,7 +76,7 @@ var red_player_money = 100:
 	get:
 		return red_player_money
 	set(value):
-		red_player_money = max(0, min(value,100))
+		red_player_money = max(0, value )
 		player_money_changed.emit( ) #emit_signal("red_player_money_changed", value)
 		for tender in tenders:
 			tender.update_tender()
@@ -88,7 +92,7 @@ var red_player_units = {
 	'commander': 1,
 }:
 	set(value):
-		print(value)
+		print("RED UNITS" , value)
 		red_player_units= value
 var money_per_turn = 10
 var city_turn_income = 10

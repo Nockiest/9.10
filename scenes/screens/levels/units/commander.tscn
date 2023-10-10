@@ -31,7 +31,7 @@ text = ""
 
 [node name="HealthComponent" parent="." index="6"]
 visible = false
-position = Vector2(-8, -8)
+position = Vector2(-8, -15)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="8"]
 position = Vector2(24.875, 24.5625)

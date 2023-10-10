@@ -4,23 +4,18 @@ extends DefaultAttackComponent
 var supported_entity
 var buffed_variable = "action_range"
 var increase_ammount = 200
-var constant_buff = true
-var buff_already_applied = false
 var color = Color(1, 0.75, 0.8) 
 var area_support = false
-#var action_range = 150
+ 
 func _ready():
-	super._ready()
 	$SupportConnnection.modulate = color
 	$SupportConnnection.z_index = 1000
-	action_range = 100
-	$AttackRangeCircle.shape.radius = action_range
+	base_action_range = 100
+	super._ready()
+ 
+ 
 func deselect_supported_entity():
-	if supported_entity and constant_buff and buff_already_applied:
-		if buffed_variable in supported_entity :
-			supported_entity.buffed_variable -= increase_ammount
 	supported_entity = null
-	buff_already_applied = false
 	unhighlight_units_in_range()
 
 func check_can_support():
@@ -40,32 +35,28 @@ func check_can_support():
 	return true
 
 func choose_supported():
-	print("CHOOSING SUPPORTED", check_can_support())
+#	print("CHOOSING SUPPORTED", check_can_support())
 	if not check_can_support(): 
-		deselect_supported_entity()
+		#deselect_supported_entity()
 		return
-	print("PASSED THE TEST")
+#	print("PASSED THE TEST")
 	supported_entity = Globals.hovered_unit
 	toggle_action_screen()
 	return "SUCCESS"
-	
-# connected to next turn button
+ 
+ 
 ## currently when i want to provide a buff on the enemy turn, it wouldnt work
 func provide_buffs():
 	if area_support:
 		return
 	if owner.color  != Color(Globals.cur_player):
 		return
-	if buff_already_applied and constant_buff:
-		return
 	if supported_entity:
 		var entity_to_buff = supported_entity if buffed_variable in supported_entity else Utils.find_child_with_variable(supported_entity, buffed_variable)
-	
+		print(entity_to_buff, "ENTITY TO BUFF")
 		if entity_to_buff and entity_to_buff.get(buffed_variable) != null:
 			entity_to_buff.set(buffed_variable, entity_to_buff.get(buffed_variable) + increase_ammount)
-			buff_already_applied = true
-		else:
-			buff_already_applied = false
+ 
  
 func update_for_next_turn():
 	provide_buffs()
@@ -80,12 +71,9 @@ func draw_line_to_supported_entity():
 		$SupportConnnection.add_point(local_start)  # Add the parent's position as a point
 		$SupportConnnection.add_point(local_end )  # Add the supported entity's position as a point
 		# Calculate the distance between the start and end points
-#		 
-		
-		print(get_overlapping_areas())
 		if not  get_overlapping_areas().has(supported_entity.get_node("CollisionArea")):
 			deselect_supported_entity()
-#			deselect_supported_entity()
+ 
 #			var distance = local_start.distance_to(local_end)
 #		if distance > action_range:
 #			deselect_supported_entity()
@@ -94,7 +82,19 @@ func draw_line_to_supported_entity():
 func _process(_delta):
 	super._process(_delta)
 	draw_line_to_supported_entity()
-#
+
+
+ 
+func _on_area_entered(area):
+	if area.name != "CollisionArea": 
+		return  
+	if area.owner.color != owner.color:
+		return
+	if str(super._on_area_entered(area)) == "SAME COLOR":
+		print("observer area entered",area.get_parent(),area.owner.color ,owner.color,  get_parent( ))
+		if area.owner.color != owner.color:
+			return
+		units_in_action_range.append(area.get_parent())
 #func toggle_action_screen():
 ##	print( Globals.action_taking_unit == get_parent())
 #	if Globals.action_taking_unit == get_parent():
@@ -115,11 +115,6 @@ func _process(_delta):
 #	print("ACTION TAKING UNIT", Globals.action_taking_unit)
 
  
-func _on_area_entered(area):
- 
-	if str(super._on_area_entered(area)) == "SAME COLOR":
-#		print("SUPPORT COMPONENT APPENDING AREA", area.get_parent())
-		units_in_action_range.append(area.get_parent())
 #		print(units_in_action_range, "NOW FRIENDLY UNITS IN RANGE ARE")
 
 #func _on_area_exited(area):

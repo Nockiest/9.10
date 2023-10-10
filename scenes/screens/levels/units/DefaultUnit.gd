@@ -8,7 +8,6 @@ signal died(this)
 const base_movement:int = 1
 const base_movement_range:int = 250  
 var action_component 
-var death_image_scene:PackedScene = preload("res://scenes/screens/levels/sprite_with_timer.tscn")
 var attack_resistances =  {"base_resistance":  0.1  }  
 @onready var center = $Center.global_position 
 @onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2
@@ -21,17 +20,18 @@ var original_position = position  # Store the current position
 var unit_name: String = "default"
 var start_hp: int = 2
 var outline_node
-var is_newly_bought = true:
+var is_newly_bought:bool = true:
 	get:
 		return is_newly_bought
 	set(new_value):
 		is_newly_bought = new_value
 		print(new_value)
-		if new_value == false:
+		if new_value == false and get_tree() != null:
 			var tween = get_tree().create_tween()
 			tween.tween_property($ColorRect, "modulate", Color(1,1,1), 0.2)
 			tween.tween_property($ColorRect, "modulate",   color, 0.2)
- 
+var support_giving_units:Array = []
+
 func _ready(): 
 	# The code here has to come after the code in th echildren compoennts
 	$HealthComponent.hp = start_hp
@@ -70,8 +70,8 @@ func move():
 		if unit.get_node("CollisionArea").get_overlapping_areas().has($CollisionArea):
 			can_move = false
 			break
-	if not can_move:
-		position = $movement_comp.abort_movement()
+	if not can_move: 
+		use_movement_component_abort()
  
 func _draw():
 	var local_start_turn_pos  = to_local(global_start_turn_position)
@@ -88,7 +88,6 @@ func add_to_team(team):
 	var color_rect = get_node("ColorRect")
 	color_rect.modulate = color
 
-
  
 func process_action():
 	if  action_component.try_attack() ==  "FAILED":
@@ -100,7 +99,9 @@ func process_input():
 	if Color(Globals.cur_player) !=  color :
 		return
 	elif Globals.moving_unit == self and Input.is_action_just_pressed("right_click"): 
-		position = $movement_comp.abort_movement()
+		use_movement_component_abort()
+		#position = $movement_comp.abort_movement()
+		#deselect_movement()
 	elif Globals.hovered_unit == self : 
 		if Input.is_action_just_pressed("left_click"): 
 			toggle_move()
@@ -162,12 +163,6 @@ func process_unit_placement():
 
 
 func _process(_delta):
-	if Globals.moving_unit == self:
-		outline_node.modulate = Color("black")
-		$ColorRect.modulate = Color("gray")
-	else:
-		outline_node.modulate = Color("white")
-		$ColorRect.modulate = color 
 	queue_redraw()
 	if  Globals.placed_unit == self:
 		position = get_global_mouse_position() - size / 2
@@ -180,15 +175,30 @@ func _process(_delta):
 	process_input()
 	if Globals.moving_unit == self:
 		move() 
-		
+
+func toggle_moving_appearance(toggle):
+	if toggle == "on":
+		outline_node.modulate = Color("black")
+		$ColorRect.modulate = Color("gray")
+ 
+	elif toggle == "off":
+		outline_node.modulate = Color("white")
+		$ColorRect.modulate = color
+	else:
+		print("ARGUMENT ", toggle)
+		assert(false, "TOGGLE MOVEMENT COLOR GOT BAD ARGUMENT" )
 
 func deselect_movement():
+	toggle_moving_appearance("off")	
 	if Globals.moving_unit == self:
 		$movement_comp.remain_movement -= 1
 		Globals.moving_unit = null 
-	global_start_turn_position = $movement_comp.set_new_start_turn_point()
-	#print("NEW START TURN POS ", global_start_turn_position)
+	global_start_turn_position = $movement_comp.set_new_start_turn_point() 
 
+func use_movement_component_abort():
+	toggle_moving_appearance("off")	
+	position = $movement_comp.abort_movement()
+	Globals.moving_unit = null 
 
 func toggle_move():
 	if Globals.moving_unit == self:
@@ -208,9 +218,9 @@ func toggle_move():
 	elif $movement_comp.remain_movement <= 0:
 		print("CASE 5")
 		return
-	print("CASE 6")
 	Globals.moving_unit = self
 	Globals.action_taking_unit = null
+	toggle_moving_appearance("on")
  
 
 func update_for_next_turn():
@@ -258,19 +268,19 @@ func update_stats_bar():
 	$UnitStatsBar/VBoxContainer/Actions.text = "Moves "+str($movement_comp.remain_movement)
 	$RemainMovementLabel.text = "Remain Movement:\n" + str($movement_comp.remain_distance ) + " " + str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
 
+## here is a call for function spwning a death cross
 func _on_tree_exiting():
-	# remove_from_group("living_units")
 	var other_units = get_tree().get_nodes_in_group("living_units")
 	for unit in other_units:
 		if unit == Globals.last_attacker:
 			print(unit, " will get a boost")
+	#var death_image = death_image_scene.instantiate() as Sprite2D
+	#death_image.global_position = $Center.global_position
+	#print("RENDERING DEATH CROSS ANIMATION")
+	#call_deferred("add_death_cross_to_root", death_image )
 
-	var death_image = death_image_scene.instantiate() as Sprite2D
-	death_image.global_position = $Center.position
-	call_deferred("add_death_cross_to_root", death_image )
-
-func add_death_cross_to_root(death_image):
-	get_tree().get_root().add_child(death_image )
+#func add_death_cross_to_root(death_image):
+#	get_tree().get_root().add_child(death_image )
 	
 func ___on_movement_changed():
 	update_stats_bar()
@@ -285,33 +295,36 @@ func _on_collision_area_entered(_area):
 			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 		elif overlapping.get_parent() is Bridge:
 			$movement_comp.on_bridge = true
-		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and not  ($movement_comp.movement_modifieres["on_road"] == 0):
-			position = $movement_comp.abort_movement()
-	print("MOVEMENT MODIFIERS ", Utils.sum_dict_values($movement_comp.movement_modifieres) , $movement_comp.movement_modifieres)
+		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and   $movement_comp.movement_modifieres["on_road"] == 0:
+			use_movement_component_abort()
+		if  overlapping.get_parent() is RiverSegment:
+			$movement_comp.on_river = true
+	#print("MOVEMENT MODIFIERS ", Utils.sum_dict_values($movement_comp.movement_modifieres) , $movement_comp.movement_modifieres)
  
-func _on_collision_area_area_exited(area):
-	var in_forrest = false
-	var on_road = false
+func _on_collision_area_area_exited(area): ## zde je možné, že když rychle vystoupíz jednoho leasa do druhého bude se myslet že není v lese
+	#var in_forrest = false
+	#var on_road = false
 #	for overlapping in $CollisionArea.get_overlapping_areas():
 	if area.get_parent().get_parent() is Forrest:
-		in_forrest = false
+		$movement_comp.movement_modifieres["in_forrest"] = 0
 	elif area.get_parent()   is Road:
-		on_road = false
-		print("LEFT ROAD")
+		$movement_comp.movement_modifieres["on_road"] = 0
 	elif area.get_parent() is Bridge:
 		$movement_comp.on_bridge = false
  
-			
-	if !in_forrest:
-		$movement_comp.movement_modifieres["in_forrest"] = 0
-	elif !on_road:
-		$movement_comp.movement_modifieres["on_road"] = 0
-		print("ROAD LEDT ", $movement_comp.movement_modifieres  )
+	#if !in_forrest:
+	#	$movement_comp.movement_modifieres["in_forrest"] = 0
+	#elif !on_road:
+	#	$movement_comp.movement_modifieres["on_road"] = 0
+	#	print("ROAD LEDT ", $movement_comp.movement_modifieres  )
 	$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 
 
 func _on_error_animation_finished():
 	$ErrorAnimation.hide()
+
+
+
 #    def find_obstacles_in_line_to_enemies(self, enemy, line_points):
 #        # I could only reset the line to that specific unit instead of deleting the whole array
 #        ######################### x FIND BLOCKING UNITS ##############

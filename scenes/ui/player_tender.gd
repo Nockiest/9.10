@@ -6,21 +6,17 @@ var sorted_units:Dictionary = {}
 
 func _ready():
 	var index = get_index()
+	Globals.connect("player_money_changed", update_tender )
 	if index == 0:
 		$ColorRect.color = Color("red")
-		team = "red"
-		Globals.connect("red_player_money_changed", update_tender )
+		team = "red" 
 	elif index == 1:
 		$ColorRect.color = Color("blue")
 		team = "blue"
-		Globals.connect("blue_player_money_changed", update_tender)
 	else:
 		print("This node is not the first or second child of its parent.")
  
-
-#func _process(_delta):
-#	update_tender()
-	
+ 
 func sort_units(units):
 	sorted_units = {}
 	for unit in units:
@@ -35,11 +31,9 @@ func sort_units(units):
 func update_tender():
 	var same_color_units = get_tree().get_nodes_in_group(str(Color(team)))
 	var current_money =  Globals.red_player_money if team == "red" else   Globals.blue_player_money
- 
 	$ColorRect/VScrollBar/VBoxContainer/Money/Label.text = str(current_money)
  
 	if same_color_units:
-#		print(same_color_units)
 		sort_units(same_color_units)
  
 	var vbox = $ColorRect/VScrollBar/VBoxContainer

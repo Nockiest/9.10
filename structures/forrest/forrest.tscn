@@ -5,5 +5,5 @@
 [node name="forrest" type="Node2D"]
 light_mask = 8
 visibility_layer = 33
-z_index = 2
+z_index = 4
 script = ExtResource("1_je5k7")

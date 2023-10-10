@@ -9,8 +9,6 @@
 size = Vector2(50, 50)
 
 [node name="Observer" instance=ExtResource("1_jl8ke")]
-collision_layer = 3
-collision_mask = 11
 script = ExtResource("2_o3tl6")
 
 [node name="Sprite2D" parent="." index="1"]
@@ -32,34 +30,30 @@ text = ""
 
 [node name="HealthComponent" parent="." index="5"]
 visible = false
-position = Vector2(-7, -9)
+position = Vector2(-6, -15)
 
-[node name="CollisionArea" parent="." index="6" groups=["unit_collision_areas"]]
-z_index = 0
+[node name="ActionComponent" parent="." index="7"]
+position = Vector2(0, 0)
+
+[node name="ObserveAction" parent="ActionComponent" index="0" groups=["SupportActions"] instance=ExtResource("4_r6a0c")]
+metadata/_edit_lock_ = true
+
+[node name="RemainMovementLabel" parent="." index="9"]
+offset_left = -40.0
+offset_top = 0.0
+offset_bottom = 23.0
+
+[node name="Center" parent="." index="10"]
+position = Vector2(25, 25)
+
+[node name="CollisionArea" parent="." index="11" groups=["unit_collision_areas"]]
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" parent="CollisionArea" index="0"]
 visibility_layer = 1
 shape = SubResource("RectangleShape2D_hvkvo")
 
-[node name="CollisionShape2D" parent="." index="8"]
-position = Vector2(25, 25)
-
-[node name="ActionComponent" parent="." index="9"]
-position = Vector2(0, 0)
-
-[node name="ObserveAction" parent="ActionComponent" index="0" groups=["SupportActions"] instance=ExtResource("4_r6a0c")]
-
-[node name="RemainMovementLabel" parent="." index="11"]
-offset_left = -40.0
-offset_top = 0.0
-offset_bottom = 23.0
-
-[node name="Center" parent="." index="12"]
-position = Vector2(25, 25)
-
+[connection signal="support_error" from="ActionComponent/ObserveAction" to="." method="_on_observe_action_support_error"]
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_area_2d_area_entered" flags=18]
-[connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_entered" flags=18]
-[connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited" flags=18]
 [connection signal="mouse_entered" from="CollisionArea" to="." method="_on_collision_area_mouse_entered" flags=18]
 [connection signal="mouse_exited" from="CollisionArea" to="." method="_on_collision_area_mouse_exited" flags=18]

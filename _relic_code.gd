@@ -116,7 +116,7 @@
 #    def get_attackable_units(self):
 #        self.enemies_in_range = []
 #        self.lines_to_enemies_in_range = []
-#        total_attack_range_modifier = sum(self.attack_range_modifiers.values())
+#        total_attack_range_modifier = sum(self.aciton_range_modifiers.values())
 #        # for every living unit
 #        for enemy in game_state.living_units.array:
 #            if enemy.color == self.color:
@@ -150,4 +150,4 @@
 #		var length = line.points[i].distance_to(line.points[i + 1])
 #		rect.extents = Vector2(length / 2, 10)
 #		new_shape.shape = rect
-#		print(new_shape.position)
+ 

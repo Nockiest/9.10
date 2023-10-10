@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://structures/town.gd" id="2_bdpkq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2ihe"]
-size = Vector2(143, 142)
+size = Vector2(138, 140)
 
 [node name="Town" groups=["structures", "towns"] instance=ExtResource("1_h84n4")]
 light_mask = 4
@@ -16,25 +16,23 @@ input_pickable = false
 script = ExtResource("2_bdpkq")
 
 [node name="CollisionShape2D" parent="." index="0"]
-position = Vector2(70.5, 71)
+position = Vector2(70, 70)
 shape = SubResource("RectangleShape2D_t2ihe")
 
-[node name="Edge" type="ColorRect" parent="." index="1"]
-offset_left = -2.0
-offset_top = -2.0
-offset_right = 142.0
-offset_bottom = 142.0
-
-[node name="ColorRect" parent="." index="2"]
+[node name="ColorRect" parent="." index="1"]
 offset_right = 140.0
 offset_bottom = 140.0
-color = Color(0.45098, 0, 0, 1)
+color = Color(0.509804, 0.403922, 0, 1)
 
-[node name="Sprite2D" parent="." index="3"]
+[node name="Sprite2D" parent="." index="2"]
 position = Vector2(70, 69)
 scale = Vector2(2.75806, 2.37097)
 
-[node name="Houses" type="Node2D" parent="." index="4"]
+[node name="Houses" type="Node2D" parent="." index="3"]
+
+[node name="Polygon2D" type="Polygon2D" parent="." index="4"]
+visible = false
+polygon = PackedVector2Array(0, 140, 140, 140, 140, 140, 140, 0, 0, 0)
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

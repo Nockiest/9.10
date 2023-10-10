@@ -158,7 +158,7 @@ layout_mode = 2
 attached_settings_variable = "blue_player_units"
 augmented_dictionary_variable = "medic"
 label_text = "Medics"
-slider_range = [0, 10]
+slider_range = [0, 0]
 start_value = 1
 
 [node name="Observers" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
@@ -167,7 +167,7 @@ attached_settings_variable = "blue_player_units"
 augmented_dictionary_variable = "observer"
 label_text = "Observers"
 slider_range = [0, 10]
-start_value = 1
+start_value = 0
 
 [node name="SupplyCart" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
@@ -175,6 +175,7 @@ attached_settings_variable = "blue_player_units"
 augmented_dictionary_variable = "supply_cart"
 label_text = "Supply Carts"
 slider_range = [0, 10]
+start_value = 0
 
 [node name="Cannons" parent="SettingsScreen/Blue Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
@@ -274,7 +275,7 @@ attached_settings_variable = "red_player_units"
 augmented_dictionary_variable = "medic"
 label_text = "Medics"
 slider_range = [0, 10]
-start_value = 1
+start_value = 0
 
 [node name="Observers" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2
@@ -290,7 +291,7 @@ attached_settings_variable = "red_player_units"
 augmented_dictionary_variable = "supply_cart"
 label_text = "Supply Carts"
 slider_range = [0, 10]
-start_value = 1
+start_value = 0
 
 [node name="Cannons" parent="SettingsScreen/Red Units" instance=ExtResource("2_hthqh")]
 layout_mode = 2

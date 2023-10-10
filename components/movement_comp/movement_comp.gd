@@ -3,7 +3,9 @@ extends Node2D
 signal remain_movement_changed( )
 const base_movement_points:int = 1
 const base_movement_range:int = 500  
-@onready var global_start_turn_position :Vector2 =  to_global(position)#get_global_transform().get_origin() # Vector2((position[0]+round(size[0]/2)),(position[1]+round(size[1]/2)))
+@onready var global_start_turn_position :Vector2 =  to_global(position):
+	set(value):
+		global_start_turn_position = value
 var remain_distance  = base_movement_range:
 	set(new_distance):
 		remain_distance =new_distance 
@@ -27,10 +29,17 @@ var movement_modifieres:Dictionary = {
 		print("SETTING", new_value)
 		movement_modifieres = new_value 
 		current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
+		if movement_modifieres["on_road"] == 0 and on_bridge == false:
+			abort_movement()
 	get:
 		return movement_modifieres
 var current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
-var on_bridge:bool = false
+var on_bridge:bool = false:
+	set(value):
+		on_bridge = value
+		if value == false:
+			abort_movement()
+var on_river:bool=false
 func _ready():
 	$MovementRangeArea/MovementRangeArea.shape = CircleShape2D.new()
 	$MovementRangeArea/MovementRangeArea.shape.radius = base_movement_range

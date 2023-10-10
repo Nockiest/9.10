@@ -8,17 +8,24 @@ var units_inside: Array
 var team_alligiance 
 var connected_roads:int = 0
 var connected_towns: Array = []
+var outline_node
 func _process(_delta):
+	if Globals.placed_unit and team_alligiance:
+		print(Globals.placed_unit.color ,Color(team_alligiance))
 	if  Globals.placed_unit == null:
-		$ColorRect.modulate = Color("#8B0000") 
-		return
-	if   team_alligiance == null:
-		$ColorRect.modulate = Color("#8B0000")
-		return
-
-	if Globals.placed_unit.color == Color(team_alligiance):
-		$ColorRect.modulate = Color("white")#Utils.lighten_color( Color(team_alligiance), 150) 
+		$ColorRect.modulate = Color("#826700") 
+	elif   team_alligiance == null:
+		$ColorRect.modulate = Color("#826700")
+	elif Globals.placed_unit.color == Color(team_alligiance):
+		print("MODULATE COLOR RECT ", team_alligiance)
+		if team_alligiance == "blue":
+			
+			$ColorRect.modulate = Color(1, 1, 1) # Light blue
+		else:
+			$ColorRect.modulate = Globals.placed_unit.color
+#	
 #	else:
+#		$ColorRect.modulate = Color("#826700")
 #		$ColorRect.modulate = ## default color
 	## make sure that collision shape in house scene is stil on index 0 otherwise it wont work
 func place_house():
@@ -62,8 +69,8 @@ func _ready():
 		free()
 		return
 	place_house()
-#	var outline = Utils.area_to_line2d(self, 2)
-# 	add_child(outline)
+	outline_node = Utils.polygon_to_line2d($Polygon2D, 2)
+	add_child(outline_node)
 #	check_overlaps_other_towns()
 
 func is_far_enough():
@@ -107,11 +114,11 @@ func check_who_occupied():
  
 func change_edge_color():
 	if team_alligiance == "blue":
-		$Edge.color = Color("blue")
+		outline_node.modulate = Color("blue")
 	elif team_alligiance == "red":
-		$Edge.color = Color("red")	
+		outline_node.modulate = Color("red")	
 	else:
-		$Edge.color = Color("white")
+		outline_node.modulate = Color("white")
 		
 func connect_to_other_towns():
 	var towns = get_tree().get_nodes_in_group("towns")
@@ -125,7 +132,6 @@ func connect_to_other_towns():
 		town_distances.append([ position.distance_to(town.position), town])
 		town_distances.sort()
 	for i in range(min(2, len(town_distances))):
-#		print(town_distances[i][1])
 		town_distances[i][1].connected_roads += 1
 		connected_towns.append(town_distances[i][1])
 		connected_roads += 1

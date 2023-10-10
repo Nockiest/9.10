@@ -77,5 +77,18 @@ offset_bottom = 26.0
 grow_horizontal = 2
 text = "Current Player ="
 
+[node name="CheckButton" type="CheckButton" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 128.0
+offset_top = -109.0
+offset_right = 263.0
+offset_bottom = -78.0
+grow_vertical = 0
+button_pressed = true
+text = "Show Units"
+
 [connection signal="button_up" from="NextTurnBtn" to="." method="_on_next_turn_btn_button_up"]
 [connection signal="button_up" from="GiveUpBtn" to="." method="_on_give_up_btn_up"]
+[connection signal="pressed" from="CheckButton" to="." method="_on_check_button_pressed"]
