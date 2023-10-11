@@ -6,14 +6,29 @@ var buffed_variable = "action_range"
 var increase_ammount = 200
 var color = Color(1, 0.75, 0.8) 
 var area_support = false
- 
 func _ready():
 	$SupportConnnection.modulate = color
 	$SupportConnnection.z_index = 1000
 	base_action_range = 100
 	super._ready()
- 
- 
+enum support_comp_state {
+	no_support_connection,
+	new_support_connection,
+	support_already_provided
+}
+var current_state:State  = support_comp_state.no_support_connection
+func _process(_delta):
+	super._process(_delta)
+	draw_line_to_supported_entity()
+
+	match current_state:
+		current_state.no_support_connection :
+			print("NOT PROVIDING SUPPORT CONNECTION")
+		current_state.new_support_connection :
+			print("CREATED NEW SUPPORT CONNECTION")
+		current_state.support_already_provided:
+			print("ALREADY PROVIDED SUPPORT")
+
 func deselect_supported_entity():
 	supported_entity = null
 	unhighlight_units_in_range()
@@ -78,12 +93,7 @@ func draw_line_to_supported_entity():
 #		if distance > action_range:
 #			deselect_supported_entity()
 #			return
-
-func _process(_delta):
-	super._process(_delta)
-	draw_line_to_supported_entity()
-
-
+ 
  
 func _on_area_entered(area):
 	if area.name != "CollisionArea": 

@@ -58,10 +58,9 @@ func _on_default_attack_comp_remain_attacks_updated(_new_attacks):
 
 func get_boost():
 	print("THIS UNIT DOESNT HAVE A BOOST FOR KILLING A UNIT")
-
  
 func move():
-	position = $movement_comp.move(size,$Center.position)
+	position = $movement_comp.move(size,)
 	center =  $Center.global_position #Utils.get_collision_shape_center($CollisionArea) #$CollisionArea/CollisionShape2D.global_position +$CollisionArea/CollisionShape2D.shape.extents/2 
 	var can_move = true
 	for unit in get_tree().get_nodes_in_group("living_units"):
@@ -73,13 +72,7 @@ func move():
 	if not can_move: 
 		use_movement_component_abort()
  
-func _draw():
-	var local_start_turn_pos  = to_local(global_start_turn_position)
-	if Globals.moving_unit == self:
-		var fill_color = Utils.lighten_color(color, 0.4)
-		# Draw an arc from 0 to PI radians (half a circle).
-		draw_arc(local_start_turn_pos, base_movement_range, 0,  PI*2, 100, fill_color, 3)
-		# Set the collision shape to match the drawn circle. 
+ 
 
 func add_to_team(team):
 	color = Color(team)
@@ -100,8 +93,6 @@ func process_input():
 		return
 	elif Globals.moving_unit == self and Input.is_action_just_pressed("right_click"): 
 		use_movement_component_abort()
-		#position = $movement_comp.abort_movement()
-		#deselect_movement()
 	elif Globals.hovered_unit == self : 
 		if Input.is_action_just_pressed("left_click"): 
 			toggle_move()
@@ -198,6 +189,7 @@ func deselect_movement():
 func use_movement_component_abort():
 	toggle_moving_appearance("off")	
 	position = $movement_comp.abort_movement()
+	print("POSNOW", position)
 	Globals.moving_unit = null 
 
 func toggle_move():
@@ -220,8 +212,13 @@ func toggle_move():
 		return
 	Globals.moving_unit = self
 	Globals.action_taking_unit = null
+	print("TURNING MOVEMENT LOOK ON")
 	toggle_moving_appearance("on")
  
+
+func _on_movement_comp_ran_out_of_movement():
+	use_movement_component_abort()
+	print("POSITION", position, " ", global_position)
 
 func update_for_next_turn():
 	$movement_comp.process_for_next_turn()
@@ -274,6 +271,7 @@ func _on_tree_exiting():
 	for unit in other_units:
 		if unit == Globals.last_attacker:
 			print(unit, " will get a boost")
+			unit.get_boost()
 	#var death_image = death_image_scene.instantiate() as Sprite2D
 	#death_image.global_position = $Center.global_position
 	#print("RENDERING DEATH CROSS ANIMATION")
@@ -382,5 +380,14 @@ func _on_error_animation_finished():
 #                screen.blit(text_surface, text_rect)
 # 
  
+
+ 
+#func _draw():
+#	var local_start_turn_pos  = to_local(global_start_turn_position)
+#	if Globals.moving_unit == self:
+#		var fill_color = Utils.lighten_color(color, 0.4)
+#		# Draw an arc from 0 to PI radians (half a circle).
+#		draw_arc(local_start_turn_pos, base_movement_range, 0,  PI*2, 100, fill_color, 3)
+#		# Set the collision shape to match the drawn circle. 
 
  

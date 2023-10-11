@@ -1,17 +1,17 @@
 class_name MovementComponent
 extends Node2D
 signal remain_movement_changed( )
+signal ran_out_of_movement()
 const base_movement_points:int = 1
 const base_movement_range:int = 500  
-@onready var global_start_turn_position :Vector2 =  to_global(position):
-	set(value):
-		global_start_turn_position = value
+@onready var global_start_turn_position :Vector2 =  to_global(position) 
 var remain_distance  = base_movement_range:
 	set(new_distance):
 		remain_distance =new_distance 
 		emit_signal("remain_movement_changed"  )
 		if new_distance < 0 :
-			abort_movement()
+			print("EMMITTING RAN OUT OF MOVEMENT")
+			emit_signal("ran_out_of_movement") 
 	get:
 		return remain_distance
 var remain_movement:int = base_movement_points:
@@ -30,7 +30,7 @@ var movement_modifieres:Dictionary = {
 		movement_modifieres = new_value 
 		current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
 		if movement_modifieres["on_road"] == 0 and on_bridge == false:
-			abort_movement()
+			ran_out_of_movement.emit()
 	get:
 		return movement_modifieres
 var current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
@@ -42,7 +42,7 @@ func _ready():
 	$MovementRangeArea/MovementRangeArea.hide()
 	global_start_turn_position =  global_position  
 	
-func move(size_of_scene, center):
+func move(size_of_scene):
 	var mouse_pos = get_global_mouse_position() 
 	var new_position = global_position
 	var distance_just_traveled =  0
@@ -52,16 +52,16 @@ func move(size_of_scene, center):
 	else:
 		distance_just_traveled = floor( owner.center.distance_to(mouse_pos) ) * current_movement_modifier 
 #	print("DISTANCE JUST TRAVELED", distance_just_traveled, " ", global_position, " ", mouse_pos)
-	global_position = new_position 
+#	global_position = new_position 
 	remain_distance -= distance_just_traveled
  
-	return  global_position 
+	return  new_position  
 		
 func abort_movement():
+	print("CALLED ABORT MOVEMENT ", global_start_turn_position)
 	Globals.moving_unit = null
-	global_position = global_start_turn_position
+#	global_position = global_start_turn_position
 	remain_distance = base_movement_range
-	#print(   global_start_turn_position, "AFTER")
 	return    global_start_turn_position       
 	
 func process_for_next_turn():
@@ -71,6 +71,7 @@ func process_for_next_turn():
 	return global_start_turn_position
 	
 func  set_new_start_turn_point():
+	print("SETTING NEW START TURN POS",global_position)
 	global_start_turn_position = global_position
 #	position = to_local(global_start_turn_position)
 	return global_start_turn_position

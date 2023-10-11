@@ -108,6 +108,7 @@ debug_color = Color(0.835294, 0.301961, 0.623529, 0.419608)
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="animation_finished" from="ErrorAnimation" to="." method="_on_error_animation_finished"]
 [connection signal="hp_changed" from="HealthComponent" to="." method="_on_health_component_hp_changed"]
+[connection signal="ran_out_of_movement" from="movement_comp" to="." method="_on_movement_comp_ran_out_of_movement"]
 [connection signal="remain_movement_changed" from="movement_comp" to="." method="___on_movement_changed"]
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_entered"]
 [connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited"]

@@ -70,6 +70,7 @@ func _ready():
 		return
 	place_house()
 	outline_node = Utils.polygon_to_line2d($Polygon2D, 2)
+	outline_node.z_index = 20
 	add_child(outline_node)
 #	check_overlaps_other_towns()
 

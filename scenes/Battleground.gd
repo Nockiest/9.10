@@ -9,8 +9,6 @@ var river_scene: PackedScene = preload("res://structures/river.tscn")
 var forrest_scene:PackedScene = preload("res://structures/forrest/forrest.tscn")
 var road_scene:PackedScene = preload("res://structures/road/road.tscn")
 var bridge_scene:PackedScene = preload("res://structures/bridge.tscn")
- 
- 
 @onready var players = get_tree().get_nodes_in_group("players")
  
 func put_unit_into_teams():
@@ -23,16 +21,7 @@ func put_unit_into_teams():
 		unit.is_newly_bought = false
 	Globals.placed_unit = null
 
-var nodes_list = []
-func get_z_indexes(node,nodes_list):
-	if node is CanvasItem:
-		nodes_list.append([node, node.z_index])
-	for child in node.get_children():
-		get_z_indexes(child,nodes_list)
-func sort_by_z_index_desc(a, b):
-	return a[1] < b[1]
  
-
 func _ready():
 #	Engine.time_scale = 0.5
 	Globals.tenders= get_tree().get_nodes_in_group("player_tenders")
@@ -182,7 +171,6 @@ func add_bridges():
 			$Structures.add_child(bridge_instance)
  
 
-
 func instantiate_roads(start, end):
 	var road_instance = road_scene.instantiate() as Node2D
 	var collision_area = road_instance.get_node("Area2D")
@@ -217,7 +205,6 @@ func _on_canvas_next_turn_pressed():
 	for unit in units:
 		unit.update_for_next_turn()
 	for support_action in support_actions:
-#		print (support_action, " supportaction ", support_action.get_parent())
 		support_action.provide_buffs()
 	for town in towns:
 		town.make_next_turn_calculations()

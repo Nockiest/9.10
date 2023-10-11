@@ -99,10 +99,10 @@ var city_turn_income = 10
 var min_town_spacing_distance = 200
  
 ## game stats
-#num_turns =  0  
-#num_attacks =  0, 0 
-#killed_units = 0
-#enemies_killed = 0
-#money_spent = 0
-#shots_fired = 0
+# var num_turns =  0  
+# var num_attacks =  0, 0 
+# var killed_units = 0
+# var enemies_killed = 0
+# var money_spent = 0
+# var shots_fired = 0
  
