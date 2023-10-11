@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://wsc5c2qarhv5"]
+
+[ext_resource type="PackedScene" uid="uid://jsotvstucd7a" path="res://scenes/screens/levels/units/melee_unit.tscn" id="1_i0vs8"]
+[ext_resource type="Texture2D" uid="uid://bu7erw8ki7qkq" path="res://img/shield.png" id="2_kxoo6"]
+
+[node name="Shield" instance=ExtResource("1_i0vs8")]
+movement_range = 75
+action_range = 75
+
+[node name="Sprite2D" parent="." index="1"]
+texture = ExtResource("2_kxoo6")

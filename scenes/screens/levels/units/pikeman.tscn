@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://chuyge75bmvyd"]
+
+[ext_resource type="PackedScene" uid="uid://jsotvstucd7a" path="res://scenes/screens/levels/units/melee_unit.tscn" id="1_bxgu7"]
+[ext_resource type="Script" path="res://scenes/screens/levels/units/pikeman.gd" id="2_5y5su"]
+[ext_resource type="Texture2D" uid="uid://cruq5yov8ljr1" path="res://img/pikeman.png" id="2_ti0hy"]
+
+[node name="Pikeman" instance=ExtResource("1_bxgu7")]
+script = ExtResource("2_5y5su")
+movement_range = 150
+action_range = 100
+
+[node name="Sprite2D" parent="." index="1"]
+texture = ExtResource("2_ti0hy")
