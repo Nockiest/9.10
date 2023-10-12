@@ -3,7 +3,11 @@ extends Node2D
 signal remain_movement_changed( )
 signal ran_out_of_movement()
 const base_movement_points:int = 1
-const base_movement_range:int = 500  
+var base_movement_range:int:
+	set(new_range):
+		base_movement_range = new_range
+#		if remain_distance == null:
+		remain_distance = base_movement_range 
 @onready var global_start_turn_position :Vector2 =  to_global(position) 
 var remain_distance  = base_movement_range:
 	set(new_distance):
@@ -16,6 +20,7 @@ var remain_distance  = base_movement_range:
 		return remain_distance
 var remain_movement:int = base_movement_points:
 	set(new_movement):
+		print("NEW MOVEMENT ", new_movement)
 		remain_movement = new_movement
 		emit_signal("remain_movement_changed"  )
 	get:

@@ -7,6 +7,8 @@
 
 [node name="RangedUnit" instance=ExtResource("1_gwte3")]
 script = ExtResource("2_3n43o")
+movement_range = null
+action_range = null
 
 [node name="Sprite2D" parent="." index="1"]
 position = Vector2(21.75, 28.5)

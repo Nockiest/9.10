@@ -11,6 +11,8 @@ size = Vector2(50, 50)
 [node name="SupplyCart" instance=ExtResource("1_8hcme")]
 z_index = 2
 script = ExtResource("2_yvb64")
+movement_range = null
+action_range = null
 
 [node name="ColorRect" parent="." index="0"]
 offset_right = 49.0
@@ -44,6 +46,8 @@ position = Vector2(-2, -13)
 position = Vector2(0, 0)
 
 [node name="ResupplyAction" parent="ActionComponent" index="0" groups=["SupportActions"] instance=ExtResource("3_40yky")]
+movement_range = 500
+action_range = 300
 metadata/_edit_lock_ = true
 
 [node name="OutlinePolygon" parent="." index="8"]

@@ -6,10 +6,9 @@
 
 [node name="SupportUnit" instance=ExtResource("1_2rr4a")]
 script = ExtResource("2_q1tfr")
+movement_range = null
+action_range = null
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(0.75, 0.734375)
 texture = ExtResource("3_074yq")
-
-[node name="CollisionArea" parent="." index="5"]
-collision_mask = 27

@@ -5,3 +5,5 @@
 
 [node name="HealingAction" instance=ExtResource("1_yllpa")]
 script = ExtResource("2_hkoup")
+movement_range = 500
+action_range = 300

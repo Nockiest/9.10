@@ -1,12 +1,12 @@
 extends Node2D
-class_name  BattleUnit
+class_name BattleUnit
 signal unit_selected 
 signal unit_deselected 
 signal interferes_with_area
 signal bought(cost)
 signal died(this)
 const base_movement:int = 1
-const base_movement_range:int = 250  
+@export var base_movement_range:int = 250  
 var action_component 
 var attack_resistances =  {"base_resistance":  0.1  }  
 @onready var center = $Center.global_position 
@@ -16,7 +16,8 @@ var attack_resistances =  {"base_resistance":  0.1  }
 
 var cost:int = 20   
 var color: Color  
-var original_position = position  # Store the current position
+#var original_position = position  # Store the current position
+ 
 var unit_name: String = "default"
 var start_hp: int = 2
 var outline_node
@@ -35,6 +36,8 @@ var support_giving_units:Array = []
 func _ready(): 
 	# The code here has to come after the code in th echildren compoennts
 	$HealthComponent.hp = start_hp
+	$movement_comp.base_movement_range = base_movement_range
+	
 	$Center.position = to_local(Utils.get_collision_shape_center($CollisionArea))
 	$ErrorAnimation.position = $Center.position  
 	center = $Center.global_position 

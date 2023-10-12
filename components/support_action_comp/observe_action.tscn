@@ -5,3 +5,5 @@
 
 [node name="ObserveAction" instance=ExtResource("1_u0mjj")]
 script = ExtResource("2_x4xld")
+movement_range = 500
+action_range = 300

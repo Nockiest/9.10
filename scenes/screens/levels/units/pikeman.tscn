@@ -6,6 +6,8 @@
 
 [node name="Pikeman" instance=ExtResource("1_jnsvq")]
 script = ExtResource("2_n1p0o")
+movement_range = null
+action_range = null
 
 [node name="Sprite2D" parent="." index="1"]
 position = Vector2(24.5, 23.5)
