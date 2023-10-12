@@ -22,8 +22,14 @@ offset_top = 48.0
 offset_bottom = 48.0
 
 [node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
-text = "Hp
+text = " 
 "
+
+[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="1"]
+text = " "
+
+[node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="1"]
+text = " "
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="UnitStatsBar/ColorRect/VBoxContainer" index="3"]
 layout_mode = 2
@@ -36,8 +42,8 @@ expand_mode = 1
 
 [node name="Ammo2" type="Label" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer4" index="1"]
 unique_name_in_owner = true
+z_index = 11
 layout_mode = 2
-text = "Ammo"
 
 [node name="RangedAttackComp" parent="ActionComponent" index="0" instance=ExtResource("4_5x482")]
 position = Vector2(-1, 1)

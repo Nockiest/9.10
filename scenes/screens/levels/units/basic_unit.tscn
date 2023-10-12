@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dkrdjtyb1p88n"]
+[gd_scene load_steps=11 format=3 uid="uid://dkrdjtyb1p88n"]
 
 [ext_resource type="Script" path="res://scenes/screens/levels/units/DefaultUnit.gd" id="1_vdjhd"]
 [ext_resource type="Texture2D" uid="uid://ixa58p2rs7m1" path="res://img/knight.png" id="2_bl1id"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://blji7c3clubrn" path="res://img/HealthIcon.png" id="4_ixxuq"]
 [ext_resource type="PackedScene" uid="uid://ckpuh02hucwvd" path="res://components/HealthComponent.tscn" id="4_oq3j3"]
 [ext_resource type="Texture2D" uid="uid://k1ksfcdaid3c" path="res://img/anime/slash/frame-3.png" id="5_8052n"]
+[ext_resource type="Texture2D" uid="uid://cv143uo2lmdgk" path="res://img/move.png" id="5_wmhhx"]
 [ext_resource type="PackedScene" uid="uid://bsghedd31qfoa" path="res://components/movement_comp/movement_comp.tscn" id="6_0pp86"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3ojo"]
@@ -54,7 +55,6 @@ offset_bottom = 74.0
 [node name="HBoxContainer" type="HBoxContainer" parent="UnitStatsBar/ColorRect/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 4
-alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(16, 16)
@@ -70,6 +70,12 @@ text = "Hp"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="UnitStatsBar/ColorRect/VBoxContainer"]
 layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("5_wmhhx")
+expand_mode = 1
 
 [node name="Movement" type="Label" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true

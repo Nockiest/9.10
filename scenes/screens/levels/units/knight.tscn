@@ -12,6 +12,7 @@ scale = Vector2(1.02083, 0.979167)
 
 [node name="UnitStatsBar" parent="." index="4"]
 visible = false
+z_index = 1
 offset_left = 1.0
 offset_right = 1.0
 
@@ -20,15 +21,6 @@ layout_mode = 0
 offset_left = 0.0
 offset_right = 48.0
 offset_bottom = 74.0
-
-[node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
-text = "Health:"
-
-[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="0"]
-text = "Actions:"
-
-[node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="1"]
-text = "Attacks:"
 
 [node name="HealthComponent" parent="." index="5"]
 visible = false

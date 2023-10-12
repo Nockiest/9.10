@@ -26,11 +26,11 @@ offset_bottom = 74.0
 [node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
 text = "Health:"
 
-[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="0"]
-text = "Actions:"
+[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="1"]
+text = " "
 
 [node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="1"]
-text = "Attacks:"
+text = " "
 
 [node name="HealthComponent" parent="." index="5"]
 visible = false

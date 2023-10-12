@@ -12,3 +12,6 @@ cost = 40
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(0.75, 0.734375)
 texture = ExtResource("3_074yq")
+
+[node name="UnitStatsBar" parent="." index="3"]
+z_index = 11

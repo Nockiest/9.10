@@ -20,8 +20,6 @@ var attack_resistances =  {"base_resistance":  0.1  }
 
   
 var color: Color  
-#var original_position = position  # Store the current position
- 
 var unit_name: String = "default"
 var start_hp: int = 2
 var outline_node
@@ -40,7 +38,6 @@ func _ready():
 	# The code here has to come after the code in th echildren compoennts
 	$HealthComponent.hp = start_hp
 	$movement_comp.base_movement_range = base_movement_range
-	
 	$Center.position = to_local(Utils.get_collision_shape_center($CollisionArea))
 	$ErrorAnimation.position = $Center.position  
 	center = $Center.global_position 
@@ -268,8 +265,8 @@ func toggle_show_information():
 	$HealthComponent.visible = !$HealthComponent.visible
 
 func update_stats_bar():
-	%Health.text = "Hp "+str($HealthComponent.hp)
-	%Movement.text = "Moves "+str($movement_comp.remain_movement)
+	%Health.text =  str($HealthComponent.hp)
+	%Movement.text =   str($movement_comp.remain_movement)
 	if action_component:
 		%Actions.text = str(action_component.remain_actions)
 	$RemainMovementLabel.text = "Remain Movement:\n" + str($movement_comp.remain_distance ) + " " + str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    

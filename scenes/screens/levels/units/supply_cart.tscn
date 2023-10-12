@@ -34,6 +34,9 @@ offset_left = 0.0
 offset_right = 48.0
 offset_bottom = 74.0
 
+[node name="HBoxContainer" parent="UnitStatsBar/ColorRect/VBoxContainer" index="0"]
+alignment = 1
+
 [node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
 text = "Health:"
 

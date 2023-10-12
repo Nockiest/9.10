@@ -31,14 +31,17 @@ offset_left = 0.0
 offset_right = 48.0
 offset_bottom = 74.0
 
-[node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
-text = "Health:"
+[node name="HBoxContainer" parent="UnitStatsBar/ColorRect/VBoxContainer" index="0"]
+alignment = 1
 
-[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="0"]
-text = "Actions:"
+[node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
+text = " "
+
+[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="1"]
+text = " "
 
 [node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="1"]
-text = "Attacks:"
+text = " "
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UnitStatsBar" index="1"]
 layout_mode = 0
