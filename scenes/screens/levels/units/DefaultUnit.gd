@@ -6,15 +6,16 @@ signal interferes_with_area
 signal bought(cost)
 signal died(this)
 const base_movement:int = 1
-@export var base_movement_range:int = 250  
+@export var base_movement_range:int = 250 
+@export var cost:int = 20   
 var action_component 
 var attack_resistances =  {"base_resistance":  0.1  }  
 @onready var center = $Center.global_position 
 @onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2
-@onready var global_start_turn_position :Vector2 = get_global_transform().get_origin() # Vector2((position[0]+round(size[0]/2)),(position[1]+round(size[1]/2)))
+#@onready var global_start_turn_position :Vector2 = get_global_transform().get_origin()  
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
 
-var cost:int = 20   
+  
 var color: Color  
 #var original_position = position  # Store the current position
  
@@ -26,7 +27,6 @@ var is_newly_bought:bool = true:
 		return is_newly_bought
 	set(new_value):
 		is_newly_bought = new_value
-		print(new_value)
 		if new_value == false and get_tree() != null:
 			var tween = get_tree().create_tween()
 			tween.tween_property($ColorRect, "modulate", Color(1,1,1), 0.2)
@@ -63,7 +63,8 @@ func get_boost():
 	print("THIS UNIT DOESNT HAVE A BOOST FOR KILLING A UNIT")
  
 func move():
-	position = $movement_comp.move(size,)
+	position = $movement_comp.move(size )
+	print("POSITION JUST SET ", position)
 	center =  $Center.global_position #Utils.get_collision_shape_center($CollisionArea) #$CollisionArea/CollisionShape2D.global_position +$CollisionArea/CollisionShape2D.shape.extents/2 
 	var can_move = true
 	for unit in get_tree().get_nodes_in_group("living_units"):
@@ -161,7 +162,7 @@ func _process(_delta):
 	if  Globals.placed_unit == self:
 		position = get_global_mouse_position() - size / 2
 #		center = get_global_mouse_position() - size / 2
-		global_start_turn_position = get_global_mouse_position() - size / 2
+#		global_start_turn_position = get_global_mouse_position() - size / 2
 		process_unit_placement()
 		return   
 	if Globals.placed_unit != null:
@@ -187,13 +188,13 @@ func deselect_movement():
 	if Globals.moving_unit == self:
 		$movement_comp.remain_movement -= 1
 		Globals.moving_unit = null 
-	global_start_turn_position = $movement_comp.set_new_start_turn_point() 
+#	global_start_turn_position = $movement_comp.set_new_start_turn_point() 
 
 func use_movement_component_abort():
-	toggle_moving_appearance("off")	
-	position = $movement_comp.abort_movement()
-	print("POSNOW", position)
 	Globals.moving_unit = null 
+	toggle_moving_appearance("off")	
+	global_position = $movement_comp.abort_movement()
+	print("POSNOW", global_position, position)
 
 func toggle_move():
 	if Globals.moving_unit == self:
@@ -220,7 +221,7 @@ func toggle_move():
  
 
 func _on_movement_comp_ran_out_of_movement():
-	use_movement_component_abort()
+	call_deferred_thread_group("use_movement_component_abort")
 	print("POSITION", position, " ", global_position)
 
 func update_for_next_turn():

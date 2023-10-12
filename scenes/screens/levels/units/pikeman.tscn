@@ -6,8 +6,6 @@
 
 [node name="Pikeman" instance=ExtResource("1_jnsvq")]
 script = ExtResource("2_n1p0o")
-movement_range = null
-action_range = null
 
 [node name="Sprite2D" parent="." index="1"]
 position = Vector2(24.5, 23.5)
@@ -33,8 +31,13 @@ visible = false
 position = Vector2(-8, -15)
 
 [node name="ActionComponent" parent="." index="8"]
-visible = false
 position = Vector2(0, 0)
+
+[node name="melee_attack_comp" parent="ActionComponent" index="0"]
+position = Vector2(0, 0)
+
+[node name="OutlinePolygon" parent="." index="9"]
+metadata/_edit_lock_ = true
 
 [node name="RemainMovementLabel" parent="." index="10"]
 offset_left = -40.0
@@ -51,6 +54,7 @@ metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" parent="CollisionArea" index="0"]
 position = Vector2(25, 25.5)
+metadata/_edit_lock_ = true
 
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_area_2d_area_entered" flags=18]
 [connection signal="mouse_entered" from="CollisionArea" to="." method="_on_collision_area_mouse_entered" flags=18]

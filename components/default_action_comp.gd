@@ -28,6 +28,7 @@ var aciton_range_modifiers = {
 		aciton_range_modifiers = value
 		action_range = base_action_range *Utils.sum_dict_values(aciton_range_modifiers)
 var center
+var highlight_color = "white"
 
 func update_from_observer_boost():
 	action_range = base_action_range * Utils.sum_dict_values(aciton_range_modifiers)
@@ -107,7 +108,7 @@ func toggle_action_screen():
 func highlight_units_in_range(): 
 	print("HIGHLIGHTING UNITS", units_in_action_range)
 	for unit in units_in_action_range:
-		unit.get_node("ColorRect").modulate = Color("white")
+		unit.get_node("ColorRect").modulate = Color(highlight_color)
  
 func unhighlight_units_in_range():
 	for enemy in units_in_action_range:

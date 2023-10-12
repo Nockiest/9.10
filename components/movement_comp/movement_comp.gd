@@ -6,15 +6,13 @@ const base_movement_points:int = 1
 var base_movement_range:int:
 	set(new_range):
 		base_movement_range = new_range
-#		if remain_distance == null:
 		remain_distance = base_movement_range 
-@onready var global_start_turn_position :Vector2 =  to_global(position) 
+@onready var global_start_turn_position :Vector2 =   global_position 
 var remain_distance  = base_movement_range:
 	set(new_distance):
 		remain_distance =new_distance 
 		emit_signal("remain_movement_changed"  )
 		if new_distance < 0 :
-			print("EMMITTING RAN OUT OF MOVEMENT")
 			emit_signal("ran_out_of_movement") 
 	get:
 		return remain_distance
@@ -34,20 +32,20 @@ var movement_modifieres:Dictionary = {
 		print("SETTING", new_value)
 		movement_modifieres = new_value 
 		current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
-		if movement_modifieres["on_road"] == 0 and on_bridge == false:
-			ran_out_of_movement.emit()
+#		if movement_modifieres["on_road"] == 0 and on_bridge == false:
+#			ran_out_of_movement.emit()
 	get:
 		return movement_modifieres
 var current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
 var on_bridge:bool = false 
-var on_river:bool=false
+var on_river:bool= false
 func _ready():
 	$MovementRangeArea/MovementRangeArea.shape = CircleShape2D.new()
 	$MovementRangeArea/MovementRangeArea.shape.radius = base_movement_range
-	$MovementRangeArea/MovementRangeArea.hide()
-	global_start_turn_position =  global_position  
-	
+ 
 func move(size_of_scene):
+	if Globals.moving_unit != owner:
+		return
 	var mouse_pos = get_global_mouse_position() 
 	var new_position = global_position
 	var distance_just_traveled =  0
@@ -65,7 +63,6 @@ func move(size_of_scene):
 func abort_movement():
 	print("CALLED ABORT MOVEMENT ", global_start_turn_position)
 	Globals.moving_unit = null
-#	global_position = global_start_turn_position
 	remain_distance = base_movement_range
 	return    global_start_turn_position       
 	
@@ -78,5 +75,4 @@ func process_for_next_turn():
 func  set_new_start_turn_point():
 	print("SETTING NEW START TURN POS",global_position)
 	global_start_turn_position = global_position
-#	position = to_local(global_start_turn_position)
 	return global_start_turn_position

@@ -7,6 +7,7 @@ var increase_ammount = 200
 var color = Color(1, 0.75, 0.8) 
 var area_support = false
 func _ready():
+	highlight_color = "pink"
 	$SupportConnnection.modulate = color
 	$SupportConnnection.z_index = 1000
 	base_action_range = 100

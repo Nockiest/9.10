@@ -27,3 +27,8 @@ func deselect_supported_entity():
 		support_entity_action_comp["observer"] = 0
 		supported_entity.action_component.update_from_observer_boost()
 	super.deselect_supported_entity()
+
+func _on_area_entered(area):
+	if area.get_parent() is MeleeUnit:
+		return
+	super._on_area_entered(area)
