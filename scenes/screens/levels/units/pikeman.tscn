@@ -7,33 +7,12 @@
 [node name="Pikeman" instance=ExtResource("1_jnsvq")]
 script = ExtResource("2_n1p0o")
 
-[node name="UnitStatsBar@VBoxContainer@HBoxContainer3@Actions" type="Label" parent="." index="0"]
-unique_name_in_owner = true
-theme_override_font_sizes/font_size = 10
-text = "Attacks:"
-
-[node name="UnitStatsBar@VBoxContainer@HBoxContainer2@Movement" type="Label" parent="." index="1"]
-unique_name_in_owner = true
-theme_override_font_sizes/font_size = 10
-text = "Actions:"
-
-[node name="UnitStatsBar@VBoxContainer@HBoxContainer@Health" type="Label" parent="." index="2"]
-unique_name_in_owner = true
-theme_override_font_sizes/font_size = 10
-text = "Health:"
-
-[node name="UnitStatsBar@VBoxContainer@HBoxContainer3" type="HBoxContainer" parent="." index="3"]
-
-[node name="UnitStatsBar@VBoxContainer@HBoxContainer2" type="HBoxContainer" parent="." index="4"]
-
-[node name="UnitStatsBar@VBoxContainer@HBoxContainer" type="HBoxContainer" parent="." index="5"]
-
-[node name="Sprite2D" parent="." index="7"]
+[node name="Sprite2D" parent="." index="1"]
 position = Vector2(24.5, 23.5)
 scale = Vector2(1.02083, 0.979167)
 texture = ExtResource("2_fsxjr")
 
-[node name="UnitStatsBar" parent="." index="10"]
+[node name="UnitStatsBar" parent="." index="4"]
 visible = false
 offset_left = 1.0
 offset_right = 1.0
@@ -44,37 +23,37 @@ offset_left = 0.0
 offset_right = 48.0
 offset_bottom = 74.0
 
-[node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="0"]
+[node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
 text = "Health:"
 
 [node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="0"]
 text = "Actions:"
 
-[node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="0"]
+[node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="1"]
 text = "Attacks:"
 
-[node name="HealthComponent" parent="." index="11"]
+[node name="HealthComponent" parent="." index="5"]
 visible = false
 position = Vector2(-8, -15)
 
-[node name="ActionComponent" parent="." index="13"]
+[node name="ActionComponent" parent="." index="7"]
 position = Vector2(0, 0)
 
 [node name="melee_attack_comp" parent="ActionComponent" index="0"]
 position = Vector2(0, 0)
 
-[node name="OutlinePolygon" parent="." index="14"]
+[node name="OutlinePolygon" parent="." index="8"]
 metadata/_edit_lock_ = true
 
-[node name="RemainMovementLabel" parent="." index="15"]
+[node name="RemainMovementLabel" parent="." index="9"]
 offset_left = -40.0
 offset_top = 0.0
 offset_bottom = 23.0
 
-[node name="Center" parent="." index="16"]
+[node name="Center" parent="." index="10"]
 position = Vector2(25, 25)
 
-[node name="CollisionArea" parent="." index="17" groups=["unit_collision_areas"]]
+[node name="CollisionArea" parent="." index="11" groups=["unit_collision_areas"]]
 light_mask = 2
 visibility_layer = 2
 metadata/_edit_lock_ = true

@@ -25,7 +25,7 @@ func _ready():
 func update_stats_bar():
 	super.update_stats_bar()
 	if action_component:
-		%Ammo2.text = "Ammo "+str(action_component.ammo)
+		%Ammo2.text =  str(action_component.ammo)
 #	$UnitStatsBar/VBoxContainer/Attacks.text = "Attacks "+str(action_component.remain_actions)
 
 func _on_ranged_attack_comp_ammo_changed(_ammo):
