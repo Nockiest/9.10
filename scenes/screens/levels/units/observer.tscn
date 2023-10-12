@@ -25,9 +25,6 @@ offset_top = 49.0
 offset_right = 1.0
 offset_bottom = 49.0
 
-[node name="Attacks" parent="UnitStatsBar/VBoxContainer" index="2"]
-text = ""
-
 [node name="HealthComponent" parent="." index="5"]
 visible = false
 position = Vector2(-6, -15)

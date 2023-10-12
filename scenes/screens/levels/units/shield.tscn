@@ -24,9 +24,6 @@ metadata/_edit_lock_ = true
 offset_top = 0.0
 offset_bottom = 74.0
 
-[node name="Attacks" parent="UnitStatsBar/VBoxContainer" index="2"]
-text = ""
-
 [node name="HealthComponent" parent="." index="6"]
 visible = false
 position = Vector2(-4, -14)

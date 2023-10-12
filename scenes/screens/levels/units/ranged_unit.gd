@@ -6,7 +6,6 @@ var bullet_scene:PackedScene = preload("res://scenes/screens/levels/projectiles/
 #var ranged_unit_range = 300
 func _ready():
 	action_component = $ActionComponent/RangedAttackComp 
- 
 	action_component.max_ammo = start_ammo 
 	action_component.ammo = start_ammo 
 #	action_component.action_range = ranged_unit_range
@@ -25,8 +24,8 @@ func _ready():
  
 func update_stats_bar():
 	super.update_stats_bar()
-	$UnitStatsBar/VBoxContainer/Ammo.text = "Ammo "+str(action_component.ammo)
-	$UnitStatsBar/VBoxContainer/Attacks.text = "Attacks "+str(action_component.remain_actions)
+	%Ammo.text = "Ammo "+str(action_component.ammo)
+#	$UnitStatsBar/VBoxContainer/Attacks.text = "Attacks "+str(action_component.remain_actions)
 
 func _on_ranged_attack_comp_ammo_changed(_ammo):
 	update_stats_bar()

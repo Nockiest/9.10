@@ -14,4 +14,4 @@ func update_stats_bar():
 	super.update_stats_bar()
 	if action_component == null:
 		return
-	$UnitStatsBar/VBoxContainer/Attacks.text = "Attacks "+str(action_component.remain_actions)
+ 

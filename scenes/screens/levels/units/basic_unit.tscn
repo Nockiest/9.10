@@ -48,17 +48,29 @@ layout_mode = 0
 offset_right = 48.0
 offset_bottom = 74.0
 
-[node name="Health" type="Label" parent="UnitStatsBar/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UnitStatsBar/VBoxContainer"]
+layout_mode = 2
+
+[node name="Health" type="Label" parent="UnitStatsBar/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 text = "Health:"
 
-[node name="Actions" type="Label" parent="UnitStatsBar/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="UnitStatsBar/VBoxContainer"]
+layout_mode = 2
+
+[node name="Movement" type="Label" parent="UnitStatsBar/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 text = "Actions:"
 
-[node name="Attacks" type="Label" parent="UnitStatsBar/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="UnitStatsBar/VBoxContainer"]
+layout_mode = 2
+
+[node name="Actions" type="Label" parent="UnitStatsBar/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 text = "Attacks:"

@@ -265,8 +265,10 @@ func toggle_show_information():
 	$HealthComponent.visible = !$HealthComponent.visible
 
 func update_stats_bar():
-	$UnitStatsBar/VBoxContainer/Health.text = "Health "+str($HealthComponent.hp)
-	$UnitStatsBar/VBoxContainer/Actions.text = "Moves "+str($movement_comp.remain_movement)
+	%Health.text = "Health "+str($HealthComponent.hp)
+	%Movement.text = "Moves "+str($movement_comp.remain_movement)
+	if action_component:
+		%Actions.text = "Attacks "+str(action_component.remain_actions)
 	$RemainMovementLabel.text = "Remain Movement:\n" + str($movement_comp.remain_distance ) + " " + str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
 
 ## here is a call for function spwning a death cross
