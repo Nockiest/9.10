@@ -1,28 +1,33 @@
 extends Button
 signal buy_unit
-var unit_class
+ 
 @onready var UnitClass: PackedScene:
 	set(value):
 		UnitClass= value
 		var instance = UnitClass.instantiate() as  Node2D
-		$MarginContainer/Container/Cost.text = str(instance.cost)
+		%Cost.text = str(instance.cost)
+		call_deferred_thread_group("change_buy_button_label")
 		instance.queue_free()
-@onready var texture_rect = get_node("%TextureRect")  # Replace with your actual node path
+#@onready var texture_rect = get_node("%TextureRect")  # Replace with your actual node path
 @export var instanced_units_index = 0
-
+@onready var battleground = get_tree().get_root().get_node("Battleground") #$"../../../.."
 #@export var connected_unit_scene = null
+func change_buy_button_label():
+	var instance = UnitClass.instantiate() as  Node2D
+	%UnitTypeLabel.text = str(instance.unit_name)
+
 func _ready():
-	texture_rect.set_size(Vector2(32,32))
-	texture_rect.size.x = 32
-	texture_rect.size.y = 32
+	%TextureRect.set_size(Vector2(32,32))
+	%TextureRect.size.x = 32
+	%TextureRect.size.y = 32
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color(1, 0, 0, 1)  # Change to your desired color
 	set("custom_styles/normal", style)
 	UnitClass = Globals.unit_packed_scenes_arr[instanced_units_index]
+	call_deferred_thread_group("change_buy_button_label")
 func _on_pressed(): 
 	## bohuřžel nemůžžu psát proěné jako reference k jiným proměnným, což komplikuje kod
 	var mock_unit = UnitClass.instantiate() as  Node2D
-	var battleground = $"../../../.."
 #	var buy_area = battleground.get_node("BlueBuyArea")  if Globals.cur_player == "blue" else  battleground.get_node("RedBuyArea")
 	if Globals.cur_player == "blue":
 		if Globals.blue_player_money < mock_unit.cost:

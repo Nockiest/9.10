@@ -5,7 +5,7 @@ func _ready():
 	buffed_variable = "ammo"
 	increase_ammount = 1
 #	constant_buff = false
-	color = Color(0.5,0.5,0.5)
+#	color = Color(0.5,0.5,0.5)
 	$AnimatedSprite2D.hide()  # Hide the AnimatedSprite node on ready
 	super._ready()
 #func _on_next_turn():

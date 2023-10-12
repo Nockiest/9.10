@@ -41,8 +41,6 @@ position = Vector2(0, 0)
 metadata/_edit_lock_ = true
 
 [node name="HealingAction" parent="ActionComponent" index="0" groups=["SupportActions"] instance=ExtResource("3_sqnr2")]
-movement_range = 500
-action_range = 300
 metadata/_edit_lock_ = true
 
 [node name="RemainMovementLabel" parent="." index="9"]

@@ -28,12 +28,18 @@ position = Vector2(800, 56)
 
 [node name="Canon" parent="LivingUnits" instance=ExtResource("5_5bohv")]
 position = Vector2(412, 224)
+movement_range = null
+action_range = null
 
 [node name="Canon2" parent="LivingUnits" instance=ExtResource("5_5bohv")]
 position = Vector2(417, 301)
+movement_range = null
+action_range = null
 
 [node name="Canon3" parent="LivingUnits" instance=ExtResource("5_5bohv")]
 position = Vector2(413, 146)
+movement_range = null
+action_range = null
 
 [node name="Knight" parent="LivingUnits" instance=ExtResource("5_8qfw8")]
 position = Vector2(412, 363)

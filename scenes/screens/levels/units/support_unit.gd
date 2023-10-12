@@ -10,8 +10,8 @@ func _on_support_action_invalid_support():
 	print("invaliid_action") 
 	
 func _ready():
-	unit_name = "support_unit"
 	super._ready()
+	unit_name = "support_unit"
 ## override for the supper funcion
 func process_action():
 #	action_component.toggle_action_screen()

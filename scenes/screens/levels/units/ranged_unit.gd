@@ -11,7 +11,7 @@ func _ready():
 	action_component.ammo = start_ammo 
 #	action_component.action_range = ranged_unit_range
 #	action_component.position = to_local(center)
-	action_component.owner =self
+#	action_component.owner =self
 	super._ready()
 	unit_name = "ranged_unit"
 #	action_range = 300 

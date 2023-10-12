@@ -11,6 +11,7 @@ script = ExtResource("1_yjral")
 
 [node name="SupportConnnection" type="Line2D" parent="."]
 z_index = 1000
+default_color = Color(0.564706, 1, 0.6, 1)
 
 [node name="AttackRangeShape" type="CollisionShape2D" parent="."]
 light_mask = 2

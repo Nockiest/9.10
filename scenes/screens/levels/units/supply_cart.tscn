@@ -46,8 +46,6 @@ position = Vector2(-2, -13)
 position = Vector2(0, 0)
 
 [node name="ResupplyAction" parent="ActionComponent" index="0" groups=["SupportActions"] instance=ExtResource("3_40yky")]
-movement_range = 500
-action_range = 300
 metadata/_edit_lock_ = true
 
 [node name="OutlinePolygon" parent="." index="8"]

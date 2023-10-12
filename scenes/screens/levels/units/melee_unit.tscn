@@ -7,6 +7,7 @@
 
 [node name="MeleeUnit" instance=ExtResource("1_7vyga")]
 script = ExtResource("2_bnftf")
+base_movement_range = 100
 
 [node name="Sprite2D" parent="." index="1"]
 position = Vector2(24, 23)

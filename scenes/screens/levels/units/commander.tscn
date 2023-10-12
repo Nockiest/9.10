@@ -9,8 +9,6 @@ size = Vector2(49.875, 50)
 
 [node name="Commander" instance=ExtResource("1_bwifa")]
 script = ExtResource("1_qvunc")
-movement_range = null
-action_range = null
 
 [node name="Sprite2D" parent="." index="1"]
 position = Vector2(24.5, 24)
