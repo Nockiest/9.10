@@ -16,17 +16,20 @@ scale = Vector2(0.332031, 0.304688)
 texture = ExtResource("3_kdekp")
 
 [node name="UnitStatsBar" parent="." index="3"]
+z_index = 1
 offset_top = 48.0
 offset_bottom = 48.0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="UnitStatsBar/VBoxContainer" index="3"]
+[node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="0"]
+text = "Hp
+"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="UnitStatsBar/ColorRect/VBoxContainer" index="3"]
 layout_mode = 2
 
-[node name="Ammo" type="Label" parent="UnitStatsBar/VBoxContainer/HBoxContainer4" index="0"]
+[node name="Ammo2" type="Label" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer4" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Ammo:"
 
 [node name="RangedAttackComp" parent="ActionComponent" index="0" instance=ExtResource("4_5x482")]
 position = Vector2(-1, 1)

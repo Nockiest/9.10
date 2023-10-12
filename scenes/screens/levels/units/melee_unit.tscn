@@ -16,9 +16,5 @@ position = Vector2(24, 23)
 z_index = 4000
 z_as_relative = false
 
-[node name="VBoxContainer" parent="UnitStatsBar" index="1"]
-offset_top = 10.0
-offset_bottom = 84.0
-
 [node name="melee_attack_comp" parent="ActionComponent" index="0" instance=ExtResource("4_uxegk")]
 position = Vector2(18, 13)

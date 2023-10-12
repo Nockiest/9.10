@@ -8,7 +8,10 @@ signal died(this)
 const base_movement:int = 1
 @export var base_movement_range:int = 250 
 @export var cost:int = 20   
-var action_component 
+var action_component:
+	set(value):
+		action_component = value
+		action_component.connect("remain_actions_updated", update_stats_bar)
 var attack_resistances =  {"base_resistance":  0.1  }  
 @onready var center = $Center.global_position 
 @onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2
@@ -265,10 +268,10 @@ func toggle_show_information():
 	$HealthComponent.visible = !$HealthComponent.visible
 
 func update_stats_bar():
-	%Health.text = "Health "+str($HealthComponent.hp)
+	%Health.text = "Hp "+str($HealthComponent.hp)
 	%Movement.text = "Moves "+str($movement_comp.remain_movement)
 	if action_component:
-		%Actions.text = "Attacks "+str(action_component.remain_actions)
+		%Actions.text = str(action_component.remain_actions)
 	$RemainMovementLabel.text = "Remain Movement:\n" + str($movement_comp.remain_distance ) + " " + str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
 
 ## here is a call for function spwning a death cross

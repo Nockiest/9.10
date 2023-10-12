@@ -10,45 +10,75 @@ size = Vector2(49.875, 50)
 [node name="Commander" instance=ExtResource("1_bwifa")]
 script = ExtResource("1_qvunc")
 
-[node name="Sprite2D" parent="." index="1"]
+[node name="UnitStatsBar@VBoxContainer@HBoxContainer3@Actions" type="Label" parent="." index="0"]
+unique_name_in_owner = true
+theme_override_font_sizes/font_size = 10
+text = "Attacks:"
+
+[node name="UnitStatsBar@VBoxContainer@HBoxContainer2@Movement" type="Label" parent="." index="1"]
+unique_name_in_owner = true
+theme_override_font_sizes/font_size = 10
+text = "Actions:"
+
+[node name="UnitStatsBar@VBoxContainer@HBoxContainer@Health" type="Label" parent="." index="2"]
+unique_name_in_owner = true
+theme_override_font_sizes/font_size = 10
+text = "Health:"
+
+[node name="UnitStatsBar@VBoxContainer@HBoxContainer3" type="HBoxContainer" parent="." index="3"]
+
+[node name="UnitStatsBar@VBoxContainer@HBoxContainer2" type="HBoxContainer" parent="." index="4"]
+
+[node name="UnitStatsBar@VBoxContainer@HBoxContainer" type="HBoxContainer" parent="." index="5"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="7"]
+position = Vector2(24.875, 24.5625)
+shape = SubResource("RectangleShape2D_840qd")
+
+[node name="Sprite2D" parent="." index="8"]
 position = Vector2(24.5, 24)
 scale = Vector2(0.765625, 0.75)
 texture = ExtResource("3_nb2vr")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
-
-[node name="UnitStatsBar" parent="." index="5"]
+[node name="UnitStatsBar" parent="." index="11"]
 visible = false
 offset_left = 1.0
 offset_right = 1.0
 
-[node name="VBoxContainer" parent="UnitStatsBar" index="1"]
-offset_top = 0.0
+[node name="ColorRect" parent="UnitStatsBar" index="0"]
+layout_mode = 0
+offset_left = 0.0
+offset_right = 48.0
 offset_bottom = 74.0
 
-[node name="HealthComponent" parent="." index="6"]
+[node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="0"]
+text = "Health:"
+
+[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="0"]
+text = "Actions:"
+
+[node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="0"]
+text = "Attacks:"
+
+[node name="HealthComponent" parent="." index="12"]
 visible = false
 position = Vector2(-8, -15)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="8"]
-position = Vector2(24.875, 24.5625)
-shape = SubResource("RectangleShape2D_840qd")
-
-[node name="ActionComponent" parent="." index="9"]
+[node name="ActionComponent" parent="." index="14"]
 position = Vector2(0, 0)
 
 [node name="melee_attack_comp" parent="ActionComponent" index="0"]
 position = Vector2(1, 0)
 
-[node name="RemainMovementLabel" parent="." index="11"]
+[node name="RemainMovementLabel" parent="." index="16"]
 offset_left = -40.0
 offset_top = 0.0
 offset_bottom = 23.0
 
-[node name="Center" parent="." index="12"]
+[node name="Center" parent="." index="17"]
 position = Vector2(25, 25)
 
-[node name="CollisionArea" parent="." index="13" groups=["unit_collision_areas"]]
+[node name="CollisionArea" parent="." index="18" groups=["unit_collision_areas"]]
 light_mask = 2
 visibility_layer = 2
 metadata/_edit_lock_ = true
