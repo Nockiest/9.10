@@ -17,9 +17,12 @@ scale = Vector2(0.332031, 0.304688)
 texture = ExtResource("3_kdekp")
 
 [node name="UnitStatsBar" parent="." index="3"]
-z_index = 1
+z_index = 1000
 offset_top = 48.0
 offset_bottom = 48.0
+
+[node name="ColorRect" parent="UnitStatsBar" index="0"]
+offset_bottom = 92.0
 
 [node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
 text = " 
@@ -35,14 +38,15 @@ text = " "
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer4" index="0"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(18, 24)
 layout_mode = 2
 texture = ExtResource("4_iesuh")
 expand_mode = 1
+stretch_mode = 3
+flip_h = true
 
 [node name="Ammo2" type="Label" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer4" index="1"]
 unique_name_in_owner = true
-z_index = 11
 layout_mode = 2
 
 [node name="RangedAttackComp" parent="ActionComponent" index="0" instance=ExtResource("4_5x482")]

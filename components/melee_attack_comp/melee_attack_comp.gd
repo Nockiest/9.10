@@ -9,6 +9,7 @@ func try_attack():
 	var res =super.try_attack()
 	print("RES ", res)
 	if res!="SUCESS":
+		print("ATTACK FAILED", res)
 		return "FAILED"
 	else:
 		print("ATTACK_SUCESS")

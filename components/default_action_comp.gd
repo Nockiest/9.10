@@ -39,6 +39,7 @@ func try_attack( ):
 		print("FAILED ",self, self.get_parent(),  check_can_attack() )
 		return  "FAILED"
 	if not Globals.hovered_unit in units_in_action_range:
+		print_debug(2)
 		return "FAILED"
 	## I will add this to the try_attack component later too
 	print("TOGGLING")
@@ -116,13 +117,18 @@ func unhighlight_units_in_range():
 
 func _on_area_entered(area):
 #	print(area, area.get_parent(), "AREA", area is BattleUnit )
+ 
 	if area.get_parent() == owner:
+		print_debug("FAIL")
 		return 2
 	if area.name != "CollisionArea": 
+		print_debug("isnt unit", area.name)
 		return 3
 	if  area.get_parent().color == null:
+		print_debug("FAIL")
 		return 5
 	if area.get_parent().color == owner.color:
+		print_debug("ISNT SAME COLOR",area.get_parent().color , owner.color )
 		return "SAME COLOR"
 	units_in_action_range.append(area.get_parent())
 	return 6

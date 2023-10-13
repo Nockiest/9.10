@@ -23,12 +23,14 @@ texture = ExtResource("2_3ai4u")
 
 [node name="UnitStatsBar" parent="." index="3"]
 visible = false
+z_index = 1000
 offset_left = 1.0
 offset_top = 49.0
 offset_right = 1.0
 offset_bottom = 49.0
 
 [node name="ColorRect" parent="UnitStatsBar" index="0"]
+z_index = 100
 layout_mode = 0
 offset_left = 0.0
 offset_right = 48.0
@@ -40,7 +42,7 @@ alignment = 1
 [node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
 text = "Health:"
 
-[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="0"]
+[node name="Movement" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer2" index="1"]
 text = "Actions:"
 
 [node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="1"]

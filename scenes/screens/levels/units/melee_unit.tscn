@@ -16,6 +16,9 @@ position = Vector2(24, 23)
 z_index = 4000
 z_as_relative = false
 
+[node name="UnitStatsBar" parent="." index="4"]
+z_index = 1000
+
 [node name="Health" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer" index="1"]
 text = " "
 

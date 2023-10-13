@@ -14,4 +14,4 @@ scale = Vector2(0.75, 0.734375)
 texture = ExtResource("3_074yq")
 
 [node name="UnitStatsBar" parent="." index="3"]
-z_index = 11
+z_index = 1000

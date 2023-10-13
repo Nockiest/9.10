@@ -64,7 +64,6 @@ func get_boost():
  
 func move():
 	position = $movement_comp.move(size )
-	print("POSITION JUST SET ", position)
 	center =  $Center.global_position #Utils.get_collision_shape_center($CollisionArea) #$CollisionArea/CollisionShape2D.global_position +$CollisionArea/CollisionShape2D.shape.extents/2 
 	var can_move = true
 	for unit in get_tree().get_nodes_in_group("living_units"):

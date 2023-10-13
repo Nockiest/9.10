@@ -5,6 +5,7 @@
 
 [node name="Knight" instance=ExtResource("1_404sw")]
 script = ExtResource("2_guskw")
+base_movement_range = 300
 
 [node name="Sprite2D" parent="." index="1"]
 position = Vector2(24.5, 23.5)
