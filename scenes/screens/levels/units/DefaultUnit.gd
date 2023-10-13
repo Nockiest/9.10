@@ -280,7 +280,10 @@ func _on_tree_exiting():
 func ___on_movement_changed():
 	update_stats_bar()
  
-func _on_collision_area_entered(_area):
+func _on_collision_area_entered(area):
+	if area is UnitsMainCollisionArea:
+		$movement_comp.abort_movement()
+	
 	for overlapping in $CollisionArea.get_overlapping_areas():
 		if overlapping.get_parent().get_parent() is Forrest:
 			$movement_comp.movement_modifieres["in_forrest"] = 0.5

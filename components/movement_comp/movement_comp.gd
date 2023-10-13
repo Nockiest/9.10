@@ -94,7 +94,6 @@ func move(size_of_scene):
 	## save it as the last position
 	## compare the distance between the last position and the new position
 	## new position will be the position of the mouse - the mouse offset
-	print("CALLED MOVEMENT")
 	if Globals.moving_unit != owner:
 		return
 	var mouse_pos = get_global_mouse_position() 
@@ -107,32 +106,20 @@ func move(size_of_scene):
 		distance_just_traveled = floor( owner.position.distance_to(new_position) ) * current_movement_modifier  
 	remain_distance -= distance_just_traveled
 	owner.position= new_position
-	var can_move = true
-	for unit in get_tree().get_nodes_in_group("living_units"):
-		if unit == get_parent():
-			continue  # Skip checking collision with itself.
-		if unit.get_node("CollisionArea").get_overlapping_areas().has($"."/CollisionArea):
-			can_move = false
-			break
-	if not can_move: 
-		abort_movement()
-		exit_movement_state()
-#		use_movement_component_abort()
-#	return  new_position  
-#	Globals.moving_unit = null 
-#	toggle_moving_appearance("off")	
-#	global_position = $movement_comp.abort_movement()
-#	print("POSNOW", global_position, position)
-#
+#	for unit in get_tree().get_nodes_in_group("living_units"):
+#		if unit == owner:
+#			continue  # Skip checking collision with itself.
+#		print(unit.get_node("CollisionArea").get_overlapping_areas())
+#		if unit.get_node("CollisionArea").get_overlapping_areas().has($"."/CollisionArea):
+#			abort_movement()
+#			exit_movement_state()
+#			break
+ 
  
 func deselect_movement():
 	global_start_turn_position = global_position
 	exit_movement_state()
-#	toggle_moving_appearance("off")	
-#	if Globals.moving_unit == owner:
-#		remain_movement -= 1
-#		Globals.moving_unit = null 
-
+ 
 
 func abort_movement():
 	print("CALLED ABORT MOVEMENT ", global_start_turn_position)
@@ -140,16 +127,14 @@ func abort_movement():
 	remain_distance = base_movement_range
 	owner.position = global_start_turn_position
 	call_deferred_thread_group("exit_movement_state")
-#	return    global_start_turn_position       
-	
+ 
 
 func process_for_next_turn():
 	remain_movement =  base_movement_points
 	remain_distance = base_movement_range
 	set_new_start_turn_point()  
 	owner.position = global_start_turn_position
-#	return global_start_turn_position
-	
+
 func  set_new_start_turn_point():
 	print("SETTING NEW START TURN POS",global_position)
 	global_start_turn_position = global_position
