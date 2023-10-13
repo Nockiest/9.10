@@ -37,8 +37,6 @@ position = Vector2(413, 146)
 
 [node name="Knight" parent="LivingUnits" instance=ExtResource("5_8qfw8")]
 position = Vector2(412, 363)
-movement_range = null
-action_range = null
 
 [node name="Projectiles" type="Node2D" parent="."]
 

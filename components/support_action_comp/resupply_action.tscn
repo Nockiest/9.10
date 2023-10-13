@@ -61,8 +61,6 @@ animations = [{
 
 [node name="ResupplyAction" instance=ExtResource("1_8cgp0")]
 script = ExtResource("2_nscl3")
-movement_range = 500
-action_range = 300
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
 position = Vector2(-1, 9.53674e-07)

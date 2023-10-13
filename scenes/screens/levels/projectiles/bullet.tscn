@@ -13,10 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://2mgps41hkgwp" path="res://img/anime/bullet_flying_animation/pixil-frame-7.png" id="11_yj1xv"]
 [ext_resource type="Texture2D" uid="uid://ooq0ssuo6r6k" path="res://img/anime/bullet_flying_animation/pixil-frame-8.png" id="12_sc6j2"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l6eco"]
-radius = 7.0
-height = 16.0
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_b5yqj"]
 animations = [{
 "frames": [{
@@ -52,6 +48,10 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l6eco"]
+radius = 7.0
+height = 16.0
+
 [node name="Bullet" instance=ExtResource("1_fditi")]
 light_mask = 32
 visibility_layer = 9
@@ -62,12 +62,12 @@ visible = false
 position = Vector2(5, 0.999981)
 texture = ExtResource("2_skx2m")
 
-[node name="CollisionShape2D" parent="." index="2"]
-shape = SubResource("CapsuleShape2D_l6eco")
-
 [node name="BulletFlyingAnimation" type="AnimatedSprite2D" parent="." index="3"]
 position = Vector2(-0.999982, 5)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_b5yqj")
 animation = &"BulletFlyingAnimation"
 autoplay = "BulletFlyingAnimation"
+
+[node name="CollisionShape2D" parent="." index="4"]
+shape = SubResource("CapsuleShape2D_l6eco")
