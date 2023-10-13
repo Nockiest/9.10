@@ -46,6 +46,7 @@ func _ready():
 	var outline = Utils.polygon_to_line2d($OutlinePolygon , 4) 
 	outline_node = outline
 	add_child(outline)
+	$movement_comp.exit_movement_state()
 	update_stats_bar()
 	emit_signal("bought", cost)
 	if action_component != null:
@@ -63,21 +64,6 @@ func _on_default_attack_comp_remain_attacks_updated(_new_attacks):
 
 func get_boost():
 	print("THIS UNIT DOESNT HAVE A BOOST FOR KILLING A UNIT")
- 
-func move():
-	position = $movement_comp.move(size )
-	center =  $Center.global_position #Utils.get_collision_shape_center($CollisionArea) #$CollisionArea/CollisionShape2D.global_position +$CollisionArea/CollisionShape2D.shape.extents/2 
-	var can_move = true
-	for unit in get_tree().get_nodes_in_group("living_units"):
-		if unit == self:
-			continue  # Skip checking collision with itself.
-		if unit.get_node("CollisionArea").get_overlapping_areas().has($CollisionArea):
-			can_move = false
-			break
-	if not can_move: 
-		use_movement_component_abort()
- 
- 
 
 func add_to_team(team):
 	color = Color(team)
@@ -86,7 +72,6 @@ func add_to_team(team):
 	var color_rect = get_node("ColorRect")
 	color_rect.modulate = color
 
- 
 func process_action():
 	if  action_component.try_attack() ==  "FAILED":
 		$ErrorAnimation.show()
@@ -97,7 +82,8 @@ func process_input():
 	if Color(Globals.cur_player) !=  color :
 		return
 	elif Globals.moving_unit == self and Input.is_action_just_pressed("right_click"): 
-		use_movement_component_abort()
+		$movement_comp.abort_movement()#exit_movement_state()
+#		use_movement_component_abort()
 	elif Globals.hovered_unit == self : 
 		if Input.is_action_just_pressed("left_click"): 
 			toggle_move()
@@ -160,6 +146,7 @@ func process_unit_placement():
 
 func _process(_delta):
 	queue_redraw()
+	$movement_comp.process(_delta)
 	if  Globals.placed_unit == self:
 		position = get_global_mouse_position() - size / 2
 #		center = get_global_mouse_position() - size / 2
@@ -169,37 +156,38 @@ func _process(_delta):
 	if Globals.placed_unit != null:
 		return
 	process_input()
-	if Globals.moving_unit == self:
-		move() 
+#	if Globals.moving_unit == self:
+#		move() 
+#
+#func toggle_moving_appearance(toggle):
+#	if toggle == "on":
+#		outline_node.modulate = Color("black")
+#		$ColorRect.modulate = Color("gray")
+#
+#	elif toggle == "off":
+#		outline_node.modulate = Color("white")
+#		$ColorRect.modulate = color
+#	else:
+#		print("ARGUMENT ", toggle)
+#		assert(false, "TOGGLE MOVEMENT COLOR GOT BAD ARGUMENT" )
 
-func toggle_moving_appearance(toggle):
-	if toggle == "on":
-		outline_node.modulate = Color("black")
-		$ColorRect.modulate = Color("gray")
- 
-	elif toggle == "off":
-		outline_node.modulate = Color("white")
-		$ColorRect.modulate = color
-	else:
-		print("ARGUMENT ", toggle)
-		assert(false, "TOGGLE MOVEMENT COLOR GOT BAD ARGUMENT" )
-
-func deselect_movement():
-	toggle_moving_appearance("off")	
-	if Globals.moving_unit == self:
-		$movement_comp.remain_movement -= 1
-		Globals.moving_unit = null 
+#func deselect_movement():
+#	toggle_moving_appearance("off")	
+#	if Globals.moving_unit == self:
+#		$movement_comp.remain_movement -= 1
+#		Globals.moving_unit = null 
 #	global_start_turn_position = $movement_comp.set_new_start_turn_point() 
 
-func use_movement_component_abort():
-	Globals.moving_unit = null 
-	toggle_moving_appearance("off")	
-	global_position = $movement_comp.abort_movement()
-	print("POSNOW", global_position, position)
+#func use_movement_component_abort():
+#	Globals.moving_unit = null 
+#	toggle_moving_appearance("off")	
+#	global_position = $movement_comp.abort_movement()
+#	print("POSNOW", global_position, position)
 
 func toggle_move():
 	if Globals.moving_unit == self:
-		deselect_movement()
+		$movement_comp.deselect_movement()#exit_movement_state()
+#		deselect_movement()
 		print("CASE 1")
 		return
 	elif Globals.hovered_unit != self:
@@ -215,10 +203,12 @@ func toggle_move():
 	elif $movement_comp.remain_movement <= 0:
 		print("CASE 5")
 		return
-	Globals.moving_unit = self
-	Globals.action_taking_unit = null
-	print("TURNING MOVEMENT LOOK ON")
-	toggle_moving_appearance("on")
+	$movement_comp.enter_movement_state()
+#	Globals.moving_unit = self
+#	Globals.action_taking_unit = null
+#	print("TURNING MOVEMENT LOOK ON")
+#	$movement_comp.mouse_pos_offset = position.distance_to(get_global_mouse_position())
+#	toggle_moving_appearance("on")
  
 
 func _on_movement_comp_ran_out_of_movement():
@@ -301,7 +291,8 @@ func _on_collision_area_entered(_area):
 		elif overlapping.get_parent() is Bridge:
 			$movement_comp.on_bridge = true
 		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and   $movement_comp.movement_modifieres["on_road"] == 0:
-			use_movement_component_abort()
+			$movement_comp.abort_movement()##$movement_comp.exit_movement_state()
+#		use_movement_component_abort()
 		if  overlapping.get_parent() is RiverSegment:
 			$movement_comp.on_river = true
 	#print("MOVEMENT MODIFIERS ", Utils.sum_dict_values($movement_comp.movement_modifieres) , $movement_comp.movement_modifieres)
@@ -309,20 +300,18 @@ func _on_collision_area_entered(_area):
 func _on_collision_area_area_exited(area): ## zde je možné, že když rychle vystoupíz jednoho leasa do druhého bude se myslet že není v lese
 	#var in_forrest = false
 	#var on_road = false
-#	for overlapping in $CollisionArea.get_overlapping_areas():
-	if area.get_parent().get_parent() is Forrest:
+	for overlapping in $CollisionArea.get_overlapping_areas():
 		$movement_comp.movement_modifieres["in_forrest"] = 0
-	elif area.get_parent()   is Road:
 		$movement_comp.movement_modifieres["on_road"] = 0
-	elif area.get_parent() is Bridge:
 		$movement_comp.on_bridge = false
+		if area.get_parent().get_parent() is Forrest:
+			$movement_comp.movement_modifieres["in_forrest"] = 0.5
+		elif area.get_parent()   is Road:
+			$movement_comp.movement_modifieres["on_road"] = -0.5
+		elif area.get_parent() is Bridge:
+			$movement_comp.on_bridge = true
  
-	#if !in_forrest:
-	#	$movement_comp.movement_modifieres["in_forrest"] = 0
-	#elif !on_road:
-	#	$movement_comp.movement_modifieres["on_road"] = 0
-	#	print("ROAD LEDT ", $movement_comp.movement_modifieres  )
-	$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
+#	$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 
 
 func _on_error_animation_finished():
