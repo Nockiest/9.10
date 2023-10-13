@@ -10,6 +10,7 @@
 script = ExtResource("2_3n43o")
 base_movement_range = 150
 cost = 35
+action_range = 250
 
 [node name="Sprite2D" parent="." index="1"]
 position = Vector2(21.75, 28.5)

@@ -3,22 +3,23 @@ extends DefaultAttackComponent
 signal attack_failed
 signal attack_suceeded
  
-	
-func try_attack():
-	print("CALLED TRY ATTACK")
-	var res =super.try_attack()
-	print("RES ", res)
-	if res!="SUCESS":
-		print("ATTACK FAILED", res)
-		return "FAILED"
-	else:
-		print("ATTACK_SUCESS")
- 
-	return "SUCESS"
+#
+#func try_attack():
+#	print("CALLED TRY ATTACK")
+#	var res =super.try_attack()
+#	print("RES ", res)
+#	if res!="SUCESS":
+#		print("ATTACK FAILED", res)
+#		return "FAILED"
+#	else:
+#		print("ATTACK_SUCESS")
+#
+#	return "SUCESS"
 func play_slash_animation():
-	var collision_shape = Globals.hovered_unit.get_node("CollisionArea/CollisionShape2D")  # Replace with your actual node path
-	var shape_size = collision_shape.shape.extents * 2  # For RectangleShape2D and CapsuleShape2D
-	var pos = Globals.hovered_unit.global_position + shape_size / 2
+	print("PLAYING SLASH")
+#	var collision_shape = Globals.hovered_unit.get_node("CollisionArea/CollisionShape2D")  # Replace with your actual node path
+#	var shape_size = collision_shape.shape.extents * 2  # For RectangleShape2D and CapsuleShape2D
+	var pos = Globals.hovered_unit.center # + shape_size / 2
 	Utils.play_animation_at_position($SlashAnimation,"slash",pos) 
 func attack():
 	super.attack()
@@ -27,11 +28,11 @@ func attack():
 	print("PLAYING SLASH ANIMATION")
 	play_slash_animation()
 
-func process_action():
-	
-#	print("CALLED")
-#	super.try_attack()
-	try_attack()
+#func process_action():
+#
+##	print("CALLED")
+##	super.try_attack()
+#	try_attack()
 # toggle_action_screen()
 #func play_attack_animation(attacked_entity):
 #	$SlashAnimation.z_index = 1000

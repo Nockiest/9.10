@@ -7,7 +7,8 @@ signal bought(cost)
 signal died(this)
 const base_movement:int = 1
 @export var base_movement_range:int = 250 
-@export var cost:int = 20   
+@export var cost:int = 20  
+@export var action_range = 100 
 var action_component:
 	set(value):
 		action_component = value
@@ -50,6 +51,7 @@ func _ready():
 	if action_component != null:
 		action_component.center = $Center.position
 		action_component.owner = self
+		action_component.base_action_range = action_range
 	if  is_newly_bought:
 		Globals.placed_unit = self
 		Globals.hovered_unit = null

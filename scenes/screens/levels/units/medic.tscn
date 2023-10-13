@@ -19,7 +19,6 @@ offset_bottom = 48.0
 texture = ExtResource("3_nauth")
 
 [node name="UnitStatsBar" parent="." index="3"]
-visible = false
 offset_left = 1.0
 offset_top = 49.0
 offset_right = 1.0

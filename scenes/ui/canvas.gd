@@ -39,3 +39,9 @@ func _on_check_button_pressed():
 	for unit in get_tree().get_nodes_in_group("living_units"):
 		unit.get_node("ColorRect").visible = !unit.get_node("ColorRect").visible
 		unit.get_node("Sprite2D").visible = !unit.get_node("Sprite2D").visible
+
+
+func _on_check_button_2_pressed():
+	for unit in get_tree().get_nodes_in_group("living_units"):
+		unit.get_node("ActionComponent").visible = !unit.get_node("ActionComponent").visible
+
