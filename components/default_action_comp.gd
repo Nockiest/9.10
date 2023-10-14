@@ -21,21 +21,25 @@ var action_range:int = base_action_range:
 		units_in_action_range = []
 		$AttackRangeShape.shape = CircleShape2D.new()
 		$AttackRangeShape.shape.radius = action_range
+		$AttackRangeCircle.queue_redraw() 
+ 
 var aciton_range_modifiers = {
 	"base_modifier": 1,
 	"observer": 0
-	}:
-	set(value):
-		print("VALUE AUGMENTED", base_action_range *Utils.sum_dict_values(aciton_range_modifiers))
-		aciton_range_modifiers = value
-		action_range = floor( base_action_range * Utils.sum_dict_values(aciton_range_modifiers))
+	}#:
+#	set(value):
+#		print("VALUE AUGMENTED", base_action_range *Utils.sum_dict_values(aciton_range_modifiers))
+#		aciton_range_modifiers = value
+#		action_range = floor( base_action_range * Utils.sum_dict_values(aciton_range_modifiers))
 var center
-var highlight_color = "white"
+@export var highlight_color = "white"
 enum States {
 	Idle,
 	TakingAction
 }
 var current_state = States.Idle
+  
+ 
 func enter_action_state():
 	print("ENTERING ACTION STATE")
 	entering_action_state.emit()
@@ -109,10 +113,6 @@ func  update_for_next_turn():
 
 func _process(_delta):
 	pass
-#	if Globals.action_taking_unit == owner:
-#		$AttackRangeCircle.show()
-#	else:
-#		$AttackRangeCircle.hide()
  
 func toggle_action_screen():
 	if Globals.action_taking_unit == owner:
@@ -144,7 +144,6 @@ func unhighlight_units_in_range():
 		enemy.get_node("ColorRect").modulate = enemy.color
 
 func _on_area_entered(area):
-#	print(area, area.get_parent(), "AREA", area is BattleUnit )
  
 	if area.get_parent() == owner:
 #		print_debug("FAIL")
@@ -168,4 +167,63 @@ func process_action():
 func _on_area_exited(area):
 	if area.name == "CollisionArea" and units_in_action_range.has(area.get_parent()):
 		units_in_action_range.erase(area.get_parent()) 
+ 
+
+
+#    def find_obstacles_in_line_to_enemies(self, enemy, line_points):
+#        # I could only reset the line to that specific unit instead of deleting the whole array
+#        ######################### x FIND BLOCKING UNITS ##############
+#        blocked = False
+#        for unit in game_state.living_units.array:
+#            if unit == enemy:
+#                continue
+#            elif unit.color == self.color:
+#                continue
+#            point_x, point_y, interferes = check_precalculated_line_square_interference(
+#                unit, line_points)
+#            distance_between_units = get_two_units_center_distance(unit  , enemy )
+#
+#            if interferes and abs(distance_between_units )> max(enemy.size//2, unit.size//2):
+#                print("this unit is blocking the way", unit, enemy)
+#                blocked = True
+#                self.lines_to_enemies_in_range.append({
+#                    "enemy": enemy,
+#                    "start": self.center,
+#                    "interference_point": (point_x, point_y),
+#                    "end": enemy.center})
+#
+#                break
+#        if not blocked:
+#            self.lines_to_enemies_in_range.append({
+#                "enemy": enemy,
+#                "start": self.center,
+#                "interference_point": None,
+#                "end": enemy.center})
+#
+#        return blocked
+#
+  
+#    def draw_lines_to_enemies_in_range(self):
+#        for line in self.lines_to_enemies_in_range:
+#            start = line["start"]
+#            end = line["end"]
+#            interference_point = line["interference_point"]
+#
+#            if interference_point is not None:
+#                pygame.draw.line(screen, DARK_RED, start,
+#                                 interference_point, 3)
+#                pygame.draw.line(screen, (HOUSE_PURPLE),
+#                                 interference_point, end, 3)
+#            else:
+#                pygame.draw.line(screen, DARK_RED, start, end, 3)
+#                midpoint = ((start[0] + end[0]) // 2,
+#                            (start[1] + end[1]) // 2)
+#                distance = math.sqrt(
+#                    (start[0] - end[0]) ** 2 + (start[1] - end[1]) ** 2)
+#                font = pygame.font.Font(None, 20)
+#                text_surface = font.render(
+#                    f"{int(distance)} meters", True, WHITE)
+#                text_rect = text_surface.get_rect(center=midpoint)
+#                screen.blit(text_surface, text_rect)
+# 
  

@@ -27,10 +27,24 @@ func _ready():
 #	LoadingScreen.render_loading_screen()
 	set_process_input(true)
 	put_unit_into_teams()
-	for i in range(Globals.num_towns):
-		var town_instance = town_scene.instantiate() as Area2D
-		town_instance.global_position = Vector2(randf_range(200, get_viewport().size.x-200 ), randf_range(100, get_viewport().size.y-100))
-		$Structures.add_child(town_instance)
+#	for i in range(Globals.num_towns):
+	var town_place_tries = 0
+	var max_placement_tries = 100
+	var placement_positions= []
+	while  town_place_tries < max_placement_tries and Globals.num_towns > len(get_tree().get_nodes_in_group("towns")):
+		var new_point = Vector2(randf_range(25, get_viewport().size.x-150 ), randf_range(25, get_viewport().size.y-150))# Utils.get_random_point_in_square(placment_area.get_node("CollisionShape2D").shape.extents*2)
+		var valid_position = true
+		for point in placement_positions:
+			if not Utils.are_points_far_enough(point, new_point, 150):
+				valid_position = false
+				break
+		if valid_position:
+			placement_positions.append(new_point)
+			var town_instance = town_scene.instantiate() as Area2D
+			town_instance.global_position = new_point #Vector2(randf_range(750, get_viewport().size.x-75 ), randf_range(25, get_viewport().size.y-25))
+			$Structures.add_child(town_instance)
+		town_place_tries+=1
+ 
 	for town in get_tree().get_nodes_in_group("towns"):
 		town.connect_to_other_towns()
 #	print("TOWN NUMBER BEFORE CONNECTING ROADS ",len(get_tree().get_nodes_in_group("towns")))
@@ -40,7 +54,7 @@ func _ready():
 			instantiate_roads(Utils.get_collision_shape_center(town  ), Utils.get_collision_shape_center(other_town ))
 	for i in range(2):
 		var supply_depo_instance = supply_depo_scene.instantiate() as Area2D
-		supply_depo_instance.global_position = Vector2(randf_range(0, get_viewport().size.x), randf_range(0, get_viewport().size.y))
+		supply_depo_instance.global_position =  Vector2(randf_range(200, get_viewport().size.x-200 ), randf_range(100, get_viewport().size.y-100))
 		$Structures.add_child(supply_depo_instance)
 
 	for i in range(Globals.num_forests):
@@ -77,10 +91,13 @@ func _ready():
 		$Structures.add_child(river_instance)
 	create_roads_to_edges()
 	Globals.tenders= get_tree().get_nodes_in_group("player_tenders")
+	call_deferred_thread_group("process_place_units")
+#place_starting_units($RedBuyArea, "red", Globals.red_player_units  )
+#	call_deferred_thread_group("place_starting_units",$BlueBuyArea, "blue", Globals.blue_player_units )
+	#place_starting_units($BlueBuyArea, "blue", Globals.blue_player_units  )
+func process_place_units():
 	call_deferred_thread_group("place_starting_units",$RedBuyArea, "red", Globals.red_player_units ) #place_starting_units($RedBuyArea, "red", Globals.red_player_units  )
 	call_deferred_thread_group("place_starting_units",$BlueBuyArea, "blue", Globals.blue_player_units )
-	#place_starting_units($BlueBuyArea, "blue", Globals.blue_player_units  )
- 
 var added = false
 func _process(_delta):
 	if !added:

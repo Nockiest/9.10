@@ -34,7 +34,6 @@ z_index = 100
 z_as_relative = false
 
 [node name="UnitStatsBar" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_top = 50.0

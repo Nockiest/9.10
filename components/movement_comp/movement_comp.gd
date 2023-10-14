@@ -49,6 +49,7 @@ enum state {
 var current_state = state.Idle
  
 func _ready():
+#	$State.init(self)
 	call_deferred_thread_group("calculate_total_movement_modifier")
 	last_position = owner.position
 	
@@ -90,10 +91,6 @@ func process(delta):
  
 
 func move(size_of_scene):
-	## get the current position of the parent scene
-	## save it as the last position
-	## compare the distance between the last position and the new position
-	## new position will be the position of the mouse - the mouse offset
 	if Globals.moving_unit != owner:
 		return
 	var mouse_pos = get_global_mouse_position() 
@@ -106,15 +103,11 @@ func move(size_of_scene):
 		distance_just_traveled = floor( owner.position.distance_to(new_position) ) * current_movement_modifier  
 	remain_distance -= distance_just_traveled
 	owner.position= new_position
-#	for unit in get_tree().get_nodes_in_group("living_units"):
-#		if unit == owner:
-#			continue  # Skip checking collision with itself.
-#		print(unit.get_node("CollisionArea").get_overlapping_areas())
-#		if unit.get_node("CollisionArea").get_overlapping_areas().has($"."/CollisionArea):
-#			abort_movement()
-#			exit_movement_state()
-#			break
  
+## get the current position of the parent scene
+## save it as the last position
+## compare the distance between the last position and the new position
+## new position will be the position of the mouse - the mouse offset
  
 func deselect_movement():
 	global_start_turn_position = global_position

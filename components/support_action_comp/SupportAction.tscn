@@ -8,6 +8,7 @@ radius = 100.005
 
 [node name="SupportAction" type="Area2D" groups=["support_actions"]]
 script = ExtResource("1_yjral")
+highlight_color = "pink"
 
 [node name="SupportConnnection" type="Line2D" parent="."]
 z_index = 1000

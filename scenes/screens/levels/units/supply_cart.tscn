@@ -22,6 +22,7 @@ scale = Vector2(0.765625, 0.75)
 texture = ExtResource("2_3ai4u")
 
 [node name="UnitStatsBar" parent="." index="3"]
+visible = false
 offset_left = 1.0
 offset_top = 49.0
 offset_right = 1.0

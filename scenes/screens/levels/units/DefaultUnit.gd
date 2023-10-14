@@ -56,6 +56,8 @@ func _ready():
 	if  is_newly_bought:
 		Globals.placed_unit = self
 		Globals.hovered_unit = null
+		
+	Globals.tenders = get_tree().get_nodes_in_group("player_tenders")
 	for tender in Globals.tenders:
 		tender.update_tender()
  
@@ -156,34 +158,8 @@ func _process(_delta):
 	if Globals.placed_unit != null:
 		return
 	process_input()
-#	if Globals.moving_unit == self:
-#		move() 
-#
-#func toggle_moving_appearance(toggle):
-#	if toggle == "on":
-#		outline_node.modulate = Color("black")
-#		$ColorRect.modulate = Color("gray")
-#
-#	elif toggle == "off":
-#		outline_node.modulate = Color("white")
-#		$ColorRect.modulate = color
-#	else:
-#		print("ARGUMENT ", toggle)
-#		assert(false, "TOGGLE MOVEMENT COLOR GOT BAD ARGUMENT" )
 
-#func deselect_movement():
-#	toggle_moving_appearance("off")	
-#	if Globals.moving_unit == self:
-#		$movement_comp.remain_movement -= 1
-#		Globals.moving_unit = null 
-#	global_start_turn_position = $movement_comp.set_new_start_turn_point() 
-
-#func use_movement_component_abort():
-#	Globals.moving_unit = null 
-#	toggle_moving_appearance("off")	
-#	global_position = $movement_comp.abort_movement()
-#	print("POSNOW", global_position, position)
-
+## tohle bych měl také posunout do movement componentu
 func toggle_move():
 	if Globals.moving_unit == self:
 		$movement_comp.deselect_movement()#exit_movement_state()
@@ -204,12 +180,6 @@ func toggle_move():
 		print("CASE 5")
 		return
 	$movement_comp.enter_movement_state()
-#	Globals.moving_unit = self
-#	Globals.action_taking_unit = null
-#	print("TURNING MOVEMENT LOOK ON")
-#	$movement_comp.mouse_pos_offset = position.distance_to(get_global_mouse_position())
-#	toggle_moving_appearance("on")
- 
 
 func _on_movement_comp_ran_out_of_movement():
 	call_deferred_thread_group("use_movement_component_abort")
@@ -217,8 +187,7 @@ func _on_movement_comp_ran_out_of_movement():
 
 func update_for_next_turn():
 	$movement_comp.process_for_next_turn()
-	#$movement_comp.remain_movement =  $movement_comp.base_movement 
-#	remain_actions = action_component.base_actions
+	center = $Center.global_position 
 #	if has_node("RangedAttackComp"):
 #		$RangedAttackComp.ammo += 1
 	if action_component != null:
@@ -236,7 +205,6 @@ func _on_health_component_hp_changed(hp, prev_hp):
 			tween.tween_property($ColorRect, "modulate", Color(0,0,0), 0.2)
 		else:
 			tween.tween_property($ColorRect, "modulate", Color(1,1,1), 0.2)
-		
 		tween.tween_property($ColorRect, "modulate",   color, 0.2)
 	if hp <= 0:
 		queue_free()

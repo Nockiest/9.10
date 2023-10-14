@@ -90,6 +90,7 @@ button_pressed = true
 text = "Show Units"
 
 [node name="CheckButton2" type="CheckButton" parent="."]
+visible = false
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0

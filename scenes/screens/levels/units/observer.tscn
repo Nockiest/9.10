@@ -17,6 +17,7 @@ scale = Vector2(0.78125, 0.78125)
 texture = ExtResource("2_8ghb8")
 
 [node name="UnitStatsBar" parent="." index="3"]
+visible = false
 offset_left = 1.0
 offset_top = 49.0
 offset_right = 1.0
@@ -37,35 +38,6 @@ text = " "
 [node name="Actions" parent="UnitStatsBar/ColorRect/VBoxContainer/HBoxContainer3" index="1"]
 text = " "
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UnitStatsBar" index="1"]
-layout_mode = 0
-offset_right = 48.0
-offset_bottom = 74.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UnitStatsBar/VBoxContainer" index="0"]
-layout_mode = 2
-
-[node name="Health" type="Label" parent="UnitStatsBar/VBoxContainer/HBoxContainer" index="0"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Health:"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="UnitStatsBar/VBoxContainer" index="1"]
-layout_mode = 2
-
-[node name="Movement" type="Label" parent="UnitStatsBar/VBoxContainer/HBoxContainer2" index="0"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Actions:"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="UnitStatsBar/VBoxContainer" index="2"]
-layout_mode = 2
-
-[node name="Actions" type="Label" parent="UnitStatsBar/VBoxContainer/HBoxContainer3" index="0"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Attacks:"
-
 [node name="HealthComponent" parent="." index="4"]
 visible = false
 position = Vector2(-6, -15)
@@ -74,6 +46,7 @@ position = Vector2(-6, -15)
 position = Vector2(0, 0)
 
 [node name="ObserveAction" parent="ActionComponent" index="0" groups=["SupportActions"] instance=ExtResource("4_r6a0c")]
+highlight_color = "white"
 metadata/_edit_lock_ = true
 
 [node name="RemainMovementLabel" parent="." index="8"]

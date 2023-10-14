@@ -12,21 +12,17 @@ enum SupportStates {
 	ProvidingSupport
 }
 var current_support_state = SupportStates.Idle
-func start_supporting():
+func start_supporting(new_supported_entity):
 	current_support_state = SupportStates.ProvidingSupport
-	
+	supported_entity = new_supported_entity
+	print("CUR STATE ",current_support_state, )
+## this is independent of the parent exit action function
 func stop_supporting():
-	exit_action_state()
+	print("STOPPED SUPPORTING")
+#	exit_action_state()
 	current_support_state = SupportStates.Idle
 	supported_entity = null
-	unhighlight_units_in_range()
-func _ready():
-	highlight_color = "pink"
- 
-#	$SupportConnnection.modulate = color
-	$SupportConnnection.z_index = 1000
-	base_action_range = 100
-	super._ready()
+#	unhighlight_units_in_range()
  
 func _process(_delta):
 	super._process(_delta)
@@ -40,9 +36,9 @@ func _process(_delta):
 
 func check_can_support():
 	if Globals.hovered_unit == owner or Globals.hovered_unit == null or Globals.hovered_unit == supported_entity:
-		print(owner," 1")
-		stop_supporting()
-#		deselect_supported_entity()
+#		print(owner," 1")
+#		stop_supporting()
+#		exit_action_state()
 		return false
 	if Globals.hovered_unit.color != owner.color:
 		print(owner," 2")
@@ -57,14 +53,15 @@ func check_can_support():
 
 func choose_supported():
 #	print("CHOOSING SUPPORTED", check_can_support())
-	if not check_can_support(): 
+	if not check_can_support():
+		stop_supporting() 
+		exit_action_state()
 		#deselect_supported_entity()
 		return
-#	print("PASSED THE TEST")
-	supported_entity = Globals.hovered_unit
-	
-	enter_action_state()
-#	toggle_action_screen()
+	print("STARTING TO SUPPORT")
+	start_supporting(Globals.hovered_unit)
+#	supported_entity = Globals.hovered_unit
+	exit_action_state()
 	return "SUCCESS"
  
  
@@ -83,7 +80,7 @@ func provide_buffs():
  
 func update_for_next_turn():
 	provide_buffs()
-	
+
 
 func draw_line_to_supported_entity():
 	$SupportConnnection.clear_points()  # Clear any existing points
@@ -98,10 +95,10 @@ func draw_line_to_supported_entity():
 			stop_supporting()
 #			deselect_supported_entity()
  
-#			var distance = local_start.distance_to(local_end)
-#		if distance > action_range:
-#			deselect_supported_entity()
-#			return
+		var distance = local_start.distance_to(local_end)
+		if distance > action_range:
+			stop_supporting()
+			return
  
  
 func _on_area_entered(area):
@@ -110,7 +107,6 @@ func _on_area_entered(area):
 	if not("color" in owner) :#not( owner.has("color") ):
 		print("SUPPORT ACTION OWNER DOEST HAVE COLOR")
 		return
- 
 	if area.owner.color != owner.color:
 		return
 	if str(super._on_area_entered(area)) == "SAME COLOR":
@@ -118,72 +114,7 @@ func _on_area_entered(area):
 		if area.owner.color != owner.color:
 			return
 		units_in_action_range.append(area.get_parent())
-
-#    def find_obstacles_in_line_to_enemies(self, enemy, line_points):
-#        # I could only reset the line to that specific unit instead of deleting the whole array
-#        ######################### x FIND BLOCKING UNITS ##############
-#        blocked = False
-#        for unit in game_state.living_units.array:
-#            if unit == enemy:
-#                continue
-#            elif unit.color == self.color:
-#                continue
-#            point_x, point_y, interferes = check_precalculated_line_square_interference(
-#                unit, line_points)
-#            distance_between_units = get_two_units_center_distance(unit  , enemy )
-#
-#            if interferes and abs(distance_between_units )> max(enemy.size//2, unit.size//2):
-#                print("this unit is blocking the way", unit, enemy)
-#                blocked = True
-#                self.lines_to_enemies_in_range.append({
-#                    "enemy": enemy,
-#                    "start": self.center,
-#                    "interference_point": (point_x, point_y),
-#                    "end": enemy.center})
-#
-#                break
-#        if not blocked:
-#            self.lines_to_enemies_in_range.append({
-#                "enemy": enemy,
-#                "start": self.center,
-#                "interference_point": None,
-#                "end": enemy.center})
-#
-#        return blocked
-#
-  
-#    def draw_lines_to_enemies_in_range(self):
-#        for line in self.lines_to_enemies_in_range:
-#            start = line["start"]
-#            end = line["end"]
-#            interference_point = line["interference_point"]
-#
-#            if interference_point is not None:
-#                pygame.draw.line(screen, DARK_RED, start,
-#                                 interference_point, 3)
-#                pygame.draw.line(screen, (HOUSE_PURPLE),
-#                                 interference_point, end, 3)
-#            else:
-#                pygame.draw.line(screen, DARK_RED, start, end, 3)
-#                midpoint = ((start[0] + end[0]) // 2,
-#                            (start[1] + end[1]) // 2)
-#                distance = math.sqrt(
-#                    (start[0] - end[0]) ** 2 + (start[1] - end[1]) ** 2)
-#                font = pygame.font.Font(None, 20)
-#                text_surface = font.render(
-#                    f"{int(distance)} meters", True, WHITE)
-#                text_rect = text_surface.get_rect(center=midpoint)
-#                screen.blit(text_surface, text_rect)
-# 
  
-
  
-#func _draw():
-#	var local_start_turn_pos  = to_local(global_start_turn_position)
-#	if Globals.moving_unit == self:
-#		var fill_color = Utils.lighten_color(color, 0.4)
-#		# Draw an arc from 0 to PI radians (half a circle).
-#		draw_arc(local_start_turn_pos, base_movement_range, 0,  PI*2, 100, fill_color, 3)
-#		# Set the collision shape to match the drawn circle. 
 
  

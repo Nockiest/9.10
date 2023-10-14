@@ -68,17 +68,14 @@ func get_collision_shape_center(area: Area2D, node_name: String= "CollisionShape
 		assert (false, "Unsupported collision shape type")
 		return Vector2(0, 0)
  
-func play_animation_at_position(animation_node, animation  , position: Vector2) -> void:
+func play_animation_at_position(animation_node, animation  , position: Vector2, z_index=4096) -> void:
 	if animation_node == null:
 		print("No animation found with name: ", animation_node)
 		return
-	animation_node.z_index = 100000
+	animation_node.z_index = z_index
 	animation_node.show()
 	# Set the position of the animation
 	animation_node.global_position = position
-
-	# Play the animation
-#	animation.play()
 	animation_node.play(animation)
 	print("playing animation",animation_node, animation  , position)
 	# Hide the animation after it finishes playing

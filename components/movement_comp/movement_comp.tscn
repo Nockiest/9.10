@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsghedd31qfoa"]
+[gd_scene load_steps=5 format=3 uid="uid://bsghedd31qfoa"]
 
 [ext_resource type="Script" path="res://components/movement_comp/movement_comp.gd" id="1_i5omy"]
-[ext_resource type="Script" path="res://components/State.gd" id="2_k625q"]
+[ext_resource type="Script" path="res://components/movement_comp/state_machine.gd" id="2_evtpk"]
+[ext_resource type="Script" path="res://components/movement_comp/Moving.gd" id="3_7w4gi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3tkyc"]
 radius = 10.6301
@@ -21,8 +22,9 @@ shape = SubResource("CircleShape2D_3tkyc")
 debug_color = Color(0.537255, 0.568627, 0.0862745, 0.862745)
 
 [node name="State" type="Node" parent="."]
-script = ExtResource("2_k625q")
+script = ExtResource("2_evtpk")
 
 [node name="Moving" type="Node" parent="State"]
+script = ExtResource("3_7w4gi")
 
 [node name="Idle" type="Node" parent="State"]
