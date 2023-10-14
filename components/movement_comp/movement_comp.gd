@@ -26,18 +26,18 @@ var remain_movement:int = base_movement_points:
 		emit_signal("remain_movement_changed"  )
 	get:
 		return remain_movement
-var movement_modifieres:Dictionary = {
+var movement_modifiers:Dictionary = {
 	"base_modifier": 1,
 	"on_road": 0,
 	"in_forrest": 0
-}:
-	set(new_value):
-		print("SETTING", new_value)
-		movement_modifieres = new_value 
-		calculate_total_movement_modifier()
-	get:
-		return movement_modifieres
-var current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
+}#A SET FUNCTION DOESNT WORK ON DICTIONARIES:
+#	set(new_value):
+#		print("SETTING", new_value)
+#		movement_modifiers = new_value 
+#		calculate_total_movement_modifier()
+#	get:
+#		return movement_modifiers
+var current_movement_modifier =  calculate_total_movement_modifier()
 var on_bridge:bool = false 
 var on_river:bool= false
 var last_position:Vector2
@@ -82,7 +82,7 @@ func toggle_moving_appearance(toggle):
 
 
 func calculate_total_movement_modifier():
-	current_movement_modifier = Utils.sum_dict_values(movement_modifieres)
+	current_movement_modifier = Utils.sum_dict_values(movement_modifiers)
 	print("RECALCULATING MOVEMENT MODIFIERS")
 func process(delta):
 	if current_state == state.Moving:
