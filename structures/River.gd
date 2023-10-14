@@ -19,11 +19,35 @@ func add_river_segment(segment_start, segment_end,   ):
 	var collision_area = river_segment_instance.get_node("Area2D")
 	collision_area.position = (segment_start+ segment_end ) / 2
 	collision_area.rotation = segment_start.direction_to(segment_end).angle()
+#	var enlarged_area = river_segment_instance.get_node("EnlargedColArea")
+#	enlarged_area.position = (segment_start+ segment_end ) / 2
+#	enlarged_area.rotation = segment_start.direction_to(segment_end).angle()
 	var length = segment_start.distance_to(segment_end)
 	var rect = RectangleShape2D.new()
+#	var rect2 = rect
 	var collision_shape = collision_area.get_node("CollisionShape2D")
-	rect.extents = Vector2(length / 2, 5)
+#	var enlarged_collision_shape = enlarged_area.get_node("CollisionShape2D")
+#	rect.extents = Vector2(length / 2, 5)
+#	rect2.extents = Vector2(length / 2, 50)
 	collision_shape.shape = rect
+#	enlarged_collision_shape.shape = rect2
+	var enlarged_area = river_segment_instance.get_node("EnlargedColArea")
+	enlarged_area.position = (segment_start + segment_end) / 2
+	enlarged_area.rotation = segment_start.direction_to(segment_end).angle()
+
+	var polygon =  Polygon2D.new()
+	var enlarged_collision_shape = enlarged_area.get_node("CollisionShape2D")
+	enlarged_collision_shape.shape = polygon
+
+	var points = PackedVector2Array([
+		Vector2(-length / 2, -50),
+		Vector2(length / 2, -50),
+		Vector2(length / 2, 50),
+		Vector2(-length / 2, 50)
+	])
+	polygon.set_polygon(points)
+	enlarged_area.add_child(polygon)
+	polygon.add_to_group("enlarged_river_collision_areas")
 	river_segment_instance.get_node("Line2D").add_point(  segment_end )
 	river_segment_instance.get_node("Line2D").add_point( segment_start )
 	segment_edges.append([segment_start, segment_end]) ## used for bridge angle calculation

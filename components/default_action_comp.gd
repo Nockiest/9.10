@@ -10,7 +10,7 @@ var units_in_action_range:Array= []
 var base_action_range:int = 100:
 	set(value):
 		base_action_range = value
-		action_range = base_action_range * Utils.sum_dict_values(aciton_range_modifiers)
+		action_range =floor( base_action_range * Utils.sum_dict_values(aciton_range_modifiers))
 var action_range:int = base_action_range:
 	get:
 		return action_range
@@ -26,7 +26,7 @@ var aciton_range_modifiers = {
 	set(value):
 		print("VALUE AUGMENTED", base_action_range *Utils.sum_dict_values(aciton_range_modifiers))
 		aciton_range_modifiers = value
-		action_range = base_action_range *Utils.sum_dict_values(aciton_range_modifiers)
+		action_range = floor( base_action_range * Utils.sum_dict_values(aciton_range_modifiers))
 var center
 var highlight_color = "white"
 
@@ -119,16 +119,16 @@ func _on_area_entered(area):
 #	print(area, area.get_parent(), "AREA", area is BattleUnit )
  
 	if area.get_parent() == owner:
-		print_debug("FAIL")
+#		print_debug("FAIL")
 		return 2
 	if area.name != "CollisionArea": 
-		print_debug("isnt unit", area.name)
+#		print_debug("isnt unit", area.name)
 		return 3
 	if  area.get_parent().color == null:
-		print_debug("FAIL")
+#		print_debug("FAIL")
 		return 5
 	if area.get_parent().color == owner.color:
-		print_debug("ISNT SAME COLOR",area.get_parent().color , owner.color )
+#		print_debug("ISNT SAME COLOR",area.get_parent().color , owner.color )
 		return "SAME COLOR"
 	units_in_action_range.append(area.get_parent())
 	return 6

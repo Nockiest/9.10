@@ -21,7 +21,9 @@ func find_child_with_variable(parent, variable):
 		if variable in child:
 			return child
 	return null
-
+func is_point_inside_rect(area_2d: Area2D, extents: Vector2, point: Vector2) -> bool:
+	var rect = Rect2(area_2d.position - extents, area_2d.position + extents)
+	return rect.has_point(point)
 #func debug(position: Vector2, value):
 #	# Create a new Label node.
 #	var label = Label.new()
@@ -104,7 +106,7 @@ func lighten_color(color: Color, points: int) -> Color:
 	# Convert the lightened color back to Color format
 	return Color(r / 255.0, g / 255.0, b / 255.0)
  
-## untested
+## doesnt work
 func area_to_line2d(area: Area2D, width: float) -> Line2D:
 	var line = Line2D.new()
 	line.width = width
@@ -159,20 +161,20 @@ func do_lines_intersect(p1, p2, p3, p4):
 			return Vector2(intersect_x, intersect_y)
 
 	return false
+ 
+func calculate_is_inside(polygon, point = Vector2(100,100)):
+#	print(collision_shape.polygon)
+	var point_in_local = polygon.to_local(point ) #.get_global_transform()
+	var vertecies =polygon.get_polygon()
+	var global_vertecies = []
+	for v in vertecies:
+		global_vertecies.append(polygon.to_global(v))  
+#	print(global_transform)
+ 
+	print(global_vertecies, point, Geometry2D.is_point_in_polygon(point,global_vertecies))
+	var res = Geometry2D.is_point_in_polygon(point,global_vertecies)
+	return res
 
-#func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  num_segments:int) -> Array:
-#	var points = []
-#	var t:float = 0
-#	while t <= 1:
-#		# Define the control points for the Bézier curve 
-##		var control_point_2 = Vector2(50, 100)
-#		var q0 = start.lerp(control_point, t)
-#		var q1 = control_point.lerp(end , t)
-#		var point = q0.lerp(q1, t)
-#		# Generate two random points between the start and end points
-#		points.append(point)
-#		t += 1.0/num_segments
-#	return points
 func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  num_segments:int):
 	var t:float = 0
 	var points = []
@@ -190,10 +192,38 @@ func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  n
 		t += 1.0/num_segments
 	return segments
 
-
-#func _on_timer_timeout(sprite):
-#    # Remove the Sprite node from the scene tree when the timer times out
-#	sprite.queue_free()
+## a function from reddit choosing a random point in an area
+#func get_placement_pos(area_pos: Vector2, area_size: Vector2, obj_size: Vector2, including_edges: bool = false) -> Vector2:
+#	assert(obj_size.x < area_size.x)
+#	assert(obj_size.y < area_size.y)
+#
+#	var x := int(area_pos.x)
+#	var y := int(area_pos.y)
+#	var w := int(area_size.x)
+#	var h := int(area_size.y)
+#
+#	var max_x = area_size.x - obj_size.x
+#	var max_y = area_size.y - obj_size.y
+#
+#	if including_edges:
+#		w += 1
+#		h += 1
+#	else:
+#		x += 1
+#		y += 1
+#		w -= 1
+#		h -= 1
+#		max_x -= 1
+#		max_y -= 1
+#
+#	randomize()
+#	var random_x = x + (randi() % w)
+#	var random_y = y + (randi() % h)
+#	var random_pos := Vector2(random_x, random_y)
+#
+#	random_pos.x = min(random_pos.x, max_x)
+#	random_pos.y = min(random_pos.y, max_y)
+#	return random_pos
 #func move():
 #	var mouse_pos = get_global_mouse_position()
 #	var distance_to_mouse = global_start_turn_position.distance_to(mouse_pos)
@@ -238,3 +268,18 @@ func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  n
 #	if distance_to_mouse < base_movement:
 #		position = mouse_pos - size / 2		
 #		move_and_slide(  )
+
+
+#func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  num_segments:int) -> Array:
+#	var points = []
+#	var t:float = 0
+#	while t <= 1:
+#		# Define the control points for the Bézier curve 
+##		var control_point_2 = Vector2(50, 100)
+#		var q0 = start.lerp(control_point, t)
+#		var q1 = control_point.lerp(end , t)
+#		var point = q0.lerp(q1, t)
+#		# Generate two random points between the start and end points
+#		points.append(point)
+#		t += 1.0/num_segments
+#	return points

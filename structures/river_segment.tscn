@@ -15,6 +15,7 @@ width = 5.0
 default_color = Color(0.160784, 0.388235, 0.486275, 1)
 
 [node name="Area2D" type="Area2D" parent="." groups=["river_segment_collision_shapes"]]
+visible = false
 light_mask = 8
 visibility_layer = 9
 collision_layer = 8
@@ -22,5 +23,9 @@ collision_mask = 11
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_xotdu")
+
+[node name="EnlargedColArea" type="Area2D" parent="." groups=["river_segment_enlarged_col_shape"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnlargedColArea"]
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

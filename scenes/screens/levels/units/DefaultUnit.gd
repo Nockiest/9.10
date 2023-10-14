@@ -15,8 +15,7 @@ var action_component:
 		action_component.connect("remain_actions_updated", update_stats_bar)
 var attack_resistances =  {"base_resistance":  0.1  }  
 @onready var center = $Center.global_position 
-@onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2
-#@onready var global_start_turn_position :Vector2 = get_global_transform().get_origin()  
+@onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2 
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
 
   
