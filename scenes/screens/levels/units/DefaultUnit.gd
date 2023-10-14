@@ -298,21 +298,22 @@ func _on_collision_area_entered(area):
 #		use_movement_component_abort()
 		if  overlapping.get_parent() is RiverSegment:
 			$movement_comp.on_river = true
+	print("NEW MODIFIERS ", $movement_comp.movement_modifieres)
 	#print("MOVEMENT MODIFIERS ", Utils.sum_dict_values($movement_comp.movement_modifieres) , $movement_comp.movement_modifieres)
  
 func _on_collision_area_area_exited(area): ## zde je možné, že když rychle vystoupíz jednoho leasa do druhého bude se myslet že není v lese
-	#var in_forrest = false
-	#var on_road = false
+	$movement_comp.movement_modifieres["in_forrest"] = 0
+	$movement_comp.movement_modifieres["on_road"] = 0
+	$movement_comp.on_bridge = false
 	for overlapping in $CollisionArea.get_overlapping_areas():
-		$movement_comp.movement_modifieres["in_forrest"] = 0
-		$movement_comp.movement_modifieres["on_road"] = 0
-		$movement_comp.on_bridge = false
-		if area.get_parent().get_parent() is Forrest:
-			$movement_comp.movement_modifieres["in_forrest"] = 0.5
-		elif area.get_parent()   is Road:
-			$movement_comp.movement_modifieres["on_road"] = -0.5
-		elif area.get_parent() is Bridge:
+		if overlapping.get_parent().get_parent() is Forrest:
+			$movement_comp.movement_modifiers.set("in_forrest",  0.5)  
+		elif overlapping.get_parent()   is Road:
+			$movement_comp.movement_modifiers.set("on_road",  -0.5)  
+		elif overlapping.get_parent() is Bridge:
 			$movement_comp.on_bridge = true
+	
+	print("AREA EXITED",	$movement_comp.movement_modifieres)
  
 #	$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifieres)
 

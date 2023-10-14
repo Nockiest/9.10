@@ -240,7 +240,7 @@ start_value = 3
 layout_mode = 2
 attached_settings_variable = "num_rivers"
 label_text = "Number of Rivers"
-slider_range = [0, 10]
+slider_range = [0, 5]
 start_value = 3
 
 [node name="ForrestSlider" parent="SettingsScreen/Structures" instance=ExtResource("2_hthqh")]

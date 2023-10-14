@@ -21,6 +21,7 @@ func _ready():
 	$VBoxContainer/Label.text = label_text
 	$VBoxContainer/HSlider.min_value = slider_range[0]
 	$VBoxContainer/HSlider.max_value = slider_range[1]
+	print(self," ",	$VBoxContainer/HSlider.max_value  )
 #	var a = Globals.get(attached_settings_variable)
 #	if attached_settings_variable in Globals and not(a  is Dictionary):
 #		print("ABLE TO SET VALUE ", Globals.get(attached_settings_variable)," ",attached_settings_variable)
