@@ -168,12 +168,8 @@ func calculate_is_inside(polygon, point = Vector2(100,100)):
 	var vertecies =polygon.get_polygon()
 	var global_vertecies = []
 	for v in vertecies:
-		global_vertecies.append(polygon.to_global(v))  
-#	print(global_transform)
- 
-	print(global_vertecies, point, Geometry2D.is_point_in_polygon(point,global_vertecies))
-	var res = Geometry2D.is_point_in_polygon(point,global_vertecies)
-	return res
+		global_vertecies.append(polygon.to_global(v))   
+	return Geometry2D.is_point_in_polygon(point,global_vertecies)
 
 func generate_bezier_curve(start:Vector2, end:Vector2, control_point:Vector2,  num_segments:int):
 	var t:float = 0

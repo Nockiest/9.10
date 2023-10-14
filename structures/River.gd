@@ -14,30 +14,24 @@ var segment_edges:Array = []
 
 func add_river_segment(segment_start, segment_end,   ):
 	var river_segment_instance = river_segment_scene.instantiate() as Node2D
-#			river_segment_instance.owner  =self
 	river_segment_instance.connect("intersects_another_river", set_river_intersection   )
 	var collision_area = river_segment_instance.get_node("Area2D")
 	collision_area.position = (segment_start+ segment_end ) / 2
 	collision_area.rotation = segment_start.direction_to(segment_end).angle()
-#	var enlarged_area = river_segment_instance.get_node("EnlargedColArea")
-#	enlarged_area.position = (segment_start+ segment_end ) / 2
-#	enlarged_area.rotation = segment_start.direction_to(segment_end).angle()
 	var length = segment_start.distance_to(segment_end)
 	var rect = RectangleShape2D.new()
 #	var rect2 = rect
 	var collision_shape = collision_area.get_node("CollisionShape2D")
-#	var enlarged_collision_shape = enlarged_area.get_node("CollisionShape2D")
-#	rect.extents = Vector2(length / 2, 5)
-#	rect2.extents = Vector2(length / 2, 50)
 	collision_shape.shape = rect
-#	enlarged_collision_shape.shape = rect2
 	var enlarged_area = river_segment_instance.get_node("EnlargedColArea")
 	enlarged_area.position = (segment_start + segment_end) / 2
 	enlarged_area.rotation = segment_start.direction_to(segment_end).angle()
 
 	var polygon =  Polygon2D.new()
-	var enlarged_collision_shape = enlarged_area.get_node("CollisionShape2D")
-	enlarged_collision_shape.shape = polygon
+	
+## I HAVE DELETED THE COLLISION SHAPE FOR THE ENLARGED AREA
+#	var enlarged_collision_shape = enlarged_area.get_node("CollisionShape2D")
+#	enlarged_collision_shape.shape = polygon
 
 	var points = PackedVector2Array([
 		Vector2(-length / 2, -50),
@@ -46,6 +40,7 @@ func add_river_segment(segment_start, segment_end,   ):
 		Vector2(-length / 2, 50)
 	])
 	polygon.set_polygon(points)
+	polygon.hide()
 	enlarged_area.add_child(polygon)
 	polygon.add_to_group("enlarged_river_collision_areas")
 	river_segment_instance.get_node("Line2D").add_point(  segment_end )

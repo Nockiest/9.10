@@ -6,38 +6,43 @@ var buffed_variable = "action_range"
 var increase_ammount = 200
 #var color = Color(1, 0.75, 0.8) 
 var area_support = false
+
+enum SupportStates {
+	Idle,
+	ProvidingSupport
+}
+var current_support_state = SupportStates.Idle
+func start_supporting():
+	current_support_state = SupportStates.ProvidingSupport
+	
+func stop_supporting():
+	exit_action_state()
+	current_support_state = SupportStates.Idle
+	supported_entity = null
+	unhighlight_units_in_range()
 func _ready():
 	highlight_color = "pink"
+ 
 #	$SupportConnnection.modulate = color
 	$SupportConnnection.z_index = 1000
 	base_action_range = 100
 	super._ready()
-#enum support_comp_state {
-#	no_support_connection,
-#	new_support_connection,
-#	support_already_provided
-#}
-#var current_state:State  = support_comp_state.no_support_connection
+ 
 func _process(_delta):
 	super._process(_delta)
-	draw_line_to_supported_entity()
+	if current_support_state == SupportStates.ProvidingSupport:
+		draw_line_to_supported_entity()
+ 
 
-#	match current_state:
-#		current_state.no_support_connection :
-#			print("NOT PROVIDING SUPPORT CONNECTION")
-#		current_state.new_support_connection :
-#			print("CREATED NEW SUPPORT CONNECTION")
-#		current_state.support_already_provided:
-#			print("ALREADY PROVIDED SUPPORT")
-
-func deselect_supported_entity():
-	supported_entity = null
-	unhighlight_units_in_range()
+#func deselect_supported_entity():
+#	supported_entity = null
+#	unhighlight_units_in_range()
 
 func check_can_support():
 	if Globals.hovered_unit == owner or Globals.hovered_unit == null or Globals.hovered_unit == supported_entity:
 		print(owner," 1")
-		deselect_supported_entity()
+		stop_supporting()
+#		deselect_supported_entity()
 		return false
 	if Globals.hovered_unit.color != owner.color:
 		print(owner," 2")
@@ -57,7 +62,9 @@ func choose_supported():
 		return
 #	print("PASSED THE TEST")
 	supported_entity = Globals.hovered_unit
-	toggle_action_screen()
+	
+	enter_action_state()
+#	toggle_action_screen()
 	return "SUCCESS"
  
  
@@ -88,7 +95,8 @@ func draw_line_to_supported_entity():
 		$SupportConnnection.add_point(local_end )  # Add the supported entity's position as a point
 		# Calculate the distance between the start and end points
 		if not  get_overlapping_areas().has(supported_entity.get_node("CollisionArea")):
-			deselect_supported_entity()
+			stop_supporting()
+#			deselect_supported_entity()
  
 #			var distance = local_start.distance_to(local_end)
 #		if distance > action_range:
@@ -99,6 +107,10 @@ func draw_line_to_supported_entity():
 func _on_area_entered(area):
 	if area.name != "CollisionArea": 
 		return  
+	if not("color" in owner) :#not( owner.has("color") ):
+		print("SUPPORT ACTION OWNER DOEST HAVE COLOR")
+		return
+ 
 	if area.owner.color != owner.color:
 		return
 	if str(super._on_area_entered(area)) == "SAME COLOR":

@@ -1,6 +1,8 @@
 extends Area2D
 class_name DefaultAttackComponent
 signal remain_actions_updated(new_attacks)
+signal entering_action_state()
+signal exiting_action_state()
 var base_actions:int = 1
 var remain_actions: int = base_actions:
 	set(new_attacks):
@@ -29,41 +31,66 @@ var aciton_range_modifiers = {
 		action_range = floor( base_action_range * Utils.sum_dict_values(aciton_range_modifiers))
 var center
 var highlight_color = "white"
+enum States {
+	Idle,
+	TakingAction
+}
+var current_state = States.Idle
+func enter_action_state():
+	print("ENTERING ACTION STATE")
+	entering_action_state.emit()
+	current_state = States.TakingAction
+	Globals.action_taking_unit = owner
+	highlight_units_in_range()
+	Globals.attacking_component = self
+	$AttackRangeCircle.show()
+func exit_action_state():
+	print("EXITING ACTION STATE")
+	exiting_action_state.emit()
+	unhighlight_units_in_range()
+	current_state = States.Idle
+	Globals.action_taking_unit = null
+	Globals.attacking_component = null
+	$AttackRangeCircle.hide()
 
 func update_from_observer_boost():
 	action_range = base_action_range * Utils.sum_dict_values(aciton_range_modifiers)
 	print("NEW ACTION RANGE", action_range)
+
+
 func try_attack( ):
 	print("processing", Globals.hovered_unit,Globals.action_taking_unit  )
 	if !check_can_attack():
+		exit_action_state()
 		print("FAILED ",self, self.get_parent(),  check_can_attack() )
 		return  "FAILED"
 	if not Globals.hovered_unit in units_in_action_range:
 		print_debug(2)
 		return "FAILED"
 	## I will add this to the try_attack component later too
-	print("TOGGLING")
-	toggle_action_screen()
+#	print("TOGGLING")
+#	toggle_action_screen()
 	attack()
 	return "SUCESS"
 
 ## ranged attack has an overide for this function  
 func attack():
 	Globals.last_attacker = owner
-	toggle_action_screen()
+	exit_action_state()
+#	toggle_action_screen()
 
 func check_can_attack():
 	print("GLOBALS ", Globals.action_taking_unit, owner, Globals.action_taking_unit == owner )
 	if  Globals.action_taking_unit != owner:
 		print_debug(1, Globals.action_taking_unit)
-		toggle_action_screen()
+#		toggle_action_screen()
 		return false
 	if not Globals.hovered_unit:
-		toggle_action_screen()
+#		toggle_action_screen()
 		print_debug(2,   Globals.hovered_unit)
 		return false
 	if Globals.hovered_unit.color == owner.color:
-		toggle_action_screen()
+#		toggle_action_screen()
 		print_debug(3,  Globals.hovered_unit.color , owner.color)
 		return false
 	if remain_actions <= 0:
@@ -73,6 +100,7 @@ func check_can_attack():
 	return true
 
 func _ready():
+	$AttackRangeCircle.hide()
 	pass
  
 func  update_for_next_turn():
@@ -80,16 +108,15 @@ func  update_for_next_turn():
 	unhighlight_units_in_range()
 
 func _process(_delta):
-	if Globals.action_taking_unit == owner:
-		$AttackRangeCircle.show()
-	else:
-		$AttackRangeCircle.hide()
+	pass
+#	if Globals.action_taking_unit == owner:
+#		$AttackRangeCircle.show()
+#	else:
+#		$AttackRangeCircle.hide()
  
 func toggle_action_screen():
 	if Globals.action_taking_unit == owner:
-		Globals.action_taking_unit = null
-		Globals.attacking_component = null
-		unhighlight_units_in_range()
+		exit_action_state()
 		print_debug("1 ", self)
 		return
 	if Globals.hovered_unit != owner:
@@ -99,11 +126,12 @@ func toggle_action_screen():
 		print_debug("3 ", self,  Globals.action_taking_unit)
 		return
 	## switch between moving and doing action
-	owner.deselect_movement()
+#	owner.deselect_movement()
 	if remain_actions > 0:
-		Globals.action_taking_unit = owner
-		highlight_units_in_range()
-		Globals.attacking_component = self
+		enter_action_state()
+#		Globals.action_taking_unit = owner
+#		highlight_units_in_range()
+#		Globals.attacking_component = self
 	print("ACTION TAKING UNIT", Globals.action_taking_unit)
  
 func highlight_units_in_range(): 

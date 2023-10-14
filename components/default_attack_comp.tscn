@@ -19,6 +19,7 @@ shape = SubResource("CircleShape2D_dya2i")
 debug_color = Color(0.843137, 0.294118, 0.619608, 0.756863)
 
 [node name="AttackRangeCircle" type="Node2D" parent="."]
+visible = false
 script = ExtResource("2_np0wa")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -21,12 +21,12 @@ func provide_buffs():
 		support_entity_action_comp["observer"] = 1
 		supported_entity.action_component.update_from_observer_boost()
 		
-func deselect_supported_entity():
+func stop_supporting():
 	if supported_entity != null:
 		var support_entity_action_comp = supported_entity.action_component.get("aciton_range_modifiers")
 		support_entity_action_comp["observer"] = 0
 		supported_entity.action_component.update_from_observer_boost()
-	super.deselect_supported_entity()
+	super.stop_supporting()
 
 func _on_area_entered(area):
 	if area.get_parent() is MeleeUnit:

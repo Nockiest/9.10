@@ -151,3 +151,30 @@
 #		rect.extents = Vector2(length / 2, 10)
 #		new_shape.shape = rect
  
+	
+#	for segment in enlarged_areas:
+##		var enlarged_area = segment.get_node("EnlargedColArea")
+##		var polygon = enlarged_area.get_child_by_type(Polygon2D)
+#		print(Utils.calculate_is_inside(segment))
+#	var Geometry = Geometry2D.new()
+#	Geometry.is_point_bin_polygon()
+#	var enlarged_river_segments = []
+#
+#	for segment in river_segments:
+#		print("RIVER SEGMENT")
+#		var area_2d = segment.get_node("Area2D/CollisionShape2D")
+#		var shape = area_2d.shape
+#		var new_extents = shape.extents + Vector2(50, 50)
+#		shape.extents = new_extents
+#		enlarged_river_segments.append(area_2d)
+#	print("ENLARGED",enlarged_river_segments, )
+
+
+
+#	match current_state:
+#		current_state.no_support_connection :
+#			print("NOT PROVIDING SUPPORT CONNECTION")
+#		current_state.new_support_connection :
+#			print("CREATED NEW SUPPORT CONNECTION")
+#		current_state.support_already_provided:
+#			print("ALREADY PROVIDED SUPPORT")

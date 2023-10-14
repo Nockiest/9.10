@@ -24,29 +24,28 @@ func put_unit_into_teams():
  
 func _ready():
 #	Engine.time_scale = 0.5
-	Globals.tenders= get_tree().get_nodes_in_group("player_tenders")
 #	LoadingScreen.render_loading_screen()
 	set_process_input(true)
 	put_unit_into_teams()
-#	for i in range(Globals.num_towns):
-#		var town_instance = town_scene.instantiate() as Area2D
-#		town_instance.global_position = Vector2(randf_range(0, get_viewport().size.x ), randf_range(0, get_viewport().size.y))
-#		$Structures.add_child(town_instance)
-#	for town in get_tree().get_nodes_in_group("towns"):
-#		town.connect_to_other_towns()
-##	print("TOWN NUMBER BEFORE CONNECTING ROADS ",len(get_tree().get_nodes_in_group("towns")))
-#	for town in get_tree().get_nodes_in_group("towns"):
-##		print("CONNECTING", town.connected_towns)
-#		for other_town in town.connected_towns:
-#			instantiate_roads(Utils.get_collision_shape_center(town  ), Utils.get_collision_shape_center(other_town ))
-#	for i in range(2):
-#		var supply_depo_instance = supply_depo_scene.instantiate() as Area2D
-#		supply_depo_instance.global_position = Vector2(randf_range(0, get_viewport().size.x), randf_range(0, get_viewport().size.y))
-#		$Structures.add_child(supply_depo_instance)
- 
-#	for i in range(Globals.num_forests):
-#		var forrest_instance = forrest_scene.instantiate() as Node2D
-#		$Structures.add_child(forrest_instance)
+	for i in range(Globals.num_towns):
+		var town_instance = town_scene.instantiate() as Area2D
+		town_instance.global_position = Vector2(randf_range(200, get_viewport().size.x-200 ), randf_range(100, get_viewport().size.y-100))
+		$Structures.add_child(town_instance)
+	for town in get_tree().get_nodes_in_group("towns"):
+		town.connect_to_other_towns()
+#	print("TOWN NUMBER BEFORE CONNECTING ROADS ",len(get_tree().get_nodes_in_group("towns")))
+	for town in get_tree().get_nodes_in_group("towns"):
+#		print("CONNECTING", town.connected_towns)
+		for other_town in town.connected_towns:
+			instantiate_roads(Utils.get_collision_shape_center(town  ), Utils.get_collision_shape_center(other_town ))
+	for i in range(2):
+		var supply_depo_instance = supply_depo_scene.instantiate() as Area2D
+		supply_depo_instance.global_position = Vector2(randf_range(0, get_viewport().size.x), randf_range(0, get_viewport().size.y))
+		$Structures.add_child(supply_depo_instance)
+
+	for i in range(Globals.num_forests):
+		var forrest_instance = forrest_scene.instantiate() as Node2D
+		$Structures.add_child(forrest_instance)
 	var all_segments = []
 	for i in range(Globals.num_rivers):
 		var top_point =  Vector2(randi_range(100, get_viewport().size.x  -100), 0)
@@ -77,8 +76,9 @@ func _ready():
 			river_instance.add_river_segment(segment[0], segment[1]   )
 		$Structures.add_child(river_instance)
 	create_roads_to_edges()
+	Globals.tenders= get_tree().get_nodes_in_group("player_tenders")
 	call_deferred_thread_group("place_starting_units",$RedBuyArea, "red", Globals.red_player_units ) #place_starting_units($RedBuyArea, "red", Globals.red_player_units  )
-#	call_deferred_thread_group("place_starting_units",$BlueBuyArea, "blue", Globals.blue_player_units )
+	call_deferred_thread_group("place_starting_units",$BlueBuyArea, "blue", Globals.blue_player_units )
 	#place_starting_units($BlueBuyArea, "blue", Globals.blue_player_units  )
  
 var added = false
@@ -87,35 +87,15 @@ func _process(_delta):
 		add_bridges()
 		added=true
 
-#func is_point_inside_rect(area_2d: Area2D, extents: Vector2, point: Vector2) -> bool:
-#    var rect = Rect2(area_2d.position - extents, area_2d.position + extents)
-#    return rect.has_point(point)
-#
+ 
 func place_starting_units(placment_area: Area2D, color, units_list  ):
 	var total_unit_number = Utils.sum_dict_values(units_list)
 	var placement_positions = []
 	var minimal_gap = 65
 	var tries = 0
 	var max_tries = 1000
-#	var river_segments = get_tree().get_nodes_in_group("river_segments")
 	var enlarged_areas = get_tree().get_nodes_in_group("enlarged_river_collision_areas")  
-	
-#	for segment in enlarged_areas:
-##		var enlarged_area = segment.get_node("EnlargedColArea")
-##		var polygon = enlarged_area.get_child_by_type(Polygon2D)
-#		print(Utils.calculate_is_inside(segment))
-#	var Geometry = Geometry2D.new()
-#	Geometry.is_point_bin_polygon()
-#	var enlarged_river_segments = []
-#
-#	for segment in river_segments:
-#		print("RIVER SEGMENT")
-#		var area_2d = segment.get_node("Area2D/CollisionShape2D")
-#		var shape = area_2d.shape
-#		var new_extents = shape.extents + Vector2(50, 50)
-#		shape.extents = new_extents
-#		enlarged_river_segments.append(area_2d)
-#	print("ENLARGED",enlarged_river_segments, )
+ 
 	while len(placement_positions) < total_unit_number and tries < max_tries:
 		var new_point = Utils.get_random_point_in_square(placment_area.get_node("CollisionShape2D").shape.extents*2)
 		var valid_position = true
@@ -127,20 +107,8 @@ func place_starting_units(placment_area: Area2D, color, units_list  ):
 			tries+=1
 			continue
 		for segment in enlarged_areas:
-#		var enlarged_area = segment.get_node("EnlargedColArea")
-#		var polygon = enlarged_area.get_child_by_type(Polygon2D)
-#			var collision_shape = $CollisionShape2D
-#			var shape = collision_shape.shape
-#			var polygon = segment.get_polygon()
-#			var global_transform = segment.get_global_transform()
-#
-#			for i in range(polygon.size()):
-#				var vertex = polygon[i]
-#				vertex = global_transform.xform(vertex)
-#				print(vertex)
 			var global_new_point = placment_area.global_position + new_point
 			var res = Utils.calculate_is_inside(segment, global_new_point) 
-#			print("RES", res, segment.get_polygon() , " #### ", new_point)
 			if res:
 				valid_position= false
 				print("CANT PLACE IT ON POINT", new_point )
@@ -180,8 +148,6 @@ func create_roads_to_edges():
 	for edge_point in edge_points:
 		var closest_town_center_pos
 		for town in get_tree().get_nodes_in_group("towns"):
-#			print(town, Utils. get_collision_shape_center(town ) )
-#			print( Utils. get_collision_shape_center(town ).distance_to(edge_point) , closest_town_center_pos)
 			if closest_town_center_pos == null:
 				closest_town_center_pos = Utils. get_collision_shape_center(town )  
 			elif Utils. get_collision_shape_center(town ).distance_to(edge_point) < closest_town_center_pos.distance_to(edge_point):
