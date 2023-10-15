@@ -6,7 +6,7 @@ var base_movement_range:int:
 	set(new_range):
 		base_movement_range = new_range
 		remain_distance = base_movement_range 
-@onready var global_start_turn_position :Vector2 =  global_position#owner.center
+@onready var global_start_turn_position :Vector2 =  global_position 
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
 
 var remain_distance  = base_movement_range:
@@ -57,13 +57,13 @@ func enter_movement_state():
 func exit_movement_state():
 	current_state = state.Idle
 	toggle_moving_appearance("off")
-	global_start_turn_position = owner.center
+	global_start_turn_position = owner.global_position
 	if Globals.moving_unit == owner:
 		Globals.moving_unit = null
+	remain_distance = base_movement_range
 
 func exit_placed_state():
 	print("EXITING PLAcED STATE",  owner.center, to_global(owner.center), owner.position, owner.get_node("Center").global_position)
-	owner.center = owner.get_node("Center").global_position
 	current_state = state.Idle
 	global_start_turn_position = owner.global_position#center
 #	owner.global_position = global_start_turn_position#Vector2(global_start_turn_position.x + mouse_pos_offset.x, global_start_turn_position.y + mouse_pos_offset.y) 
@@ -73,7 +73,6 @@ func enter_placed_state():
 
 func toggle_moving_appearance(toggle):
 	if toggle == "on":
-		print("TURNING MOVING APPEARANCE ON")
 		owner.outline_node.modulate = Color("black")
 		owner.get_node("ColorRect").modulate = Color("gray")
 	elif toggle == "off":
@@ -95,7 +94,7 @@ func process(_delta):
 		if Input.is_action_just_pressed("left_click"):
 			process_unit_placement()
 	elif current_state == state.Moving:
-		call_deferred_thread_group("move"  ) 
+		move()#call_deferred_thread_group("move"  ) 
 		if Input.is_action_just_pressed("right_click"):
 			abort_movement()
 		elif Input.is_action_just_pressed("left_click"):
@@ -124,7 +123,6 @@ func check_can_turn_movement_on():
 
 
 func move( ):
-#	return
 	if Globals.moving_unit != owner:
 		return
 	if on_river and not on_bridge and movement_modifiers["on_road"] == 0:
@@ -137,7 +135,8 @@ func move( ):
 	var distance_just_traveled = floor( new_position.distance_to(old_position) ) * current_movement_modifier  
 #	print( new_position.distance_to(old_position) , "DISTANCE",mouse_pos_offset,  new_position,   old_position)
 	remain_distance -= distance_just_traveled
-#	owner.position =  new_position  # Vector2(new_position.x - mouse_pos_offset.x, new_position.y - mouse_pos_offset.y) 
+	if remain_distance < 0:
+		return
 	set_owner_position(new_position)
 
 #	if floor( new_position.distance_to(old_position) ) <= 1 :
@@ -147,12 +146,16 @@ func move( ):
 func abort_movement():
 	print("CALLED ABORT MOVEMENT ", global_start_turn_position)
 	Globals.moving_unit = null
-	remain_distance = base_movement_range
-	set_owner_position(global_start_turn_position) #owner.position = global_start_turn_position  
-	call_deferred_thread_group("exit_movement_state")
+	set_owner_position(global_start_turn_position)  
+	exit_movement_state() 
  
+## A very ugly way to deceslect movement
 func set_owner_position(new_position):
+	print("SETTING OWNER POSITION TO ",new_position, " ", remain_distance)
+	if remain_distance == base_movement_range:
+		return
 	owner.global_position = new_position
+	owner.center = owner.get_node("Center").global_position
 	
 func process_for_next_turn():
 	remain_distance = base_movement_range

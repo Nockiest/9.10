@@ -98,6 +98,7 @@ var added = false
 func _process(_delta):
 	if !added:
 		add_bridges()
+		place_bridges_over_road_river_crosssing()
 		added=true
 
  
@@ -169,6 +170,11 @@ func create_roads_to_edges():
 			return
 		instantiate_roads(closest_town_center_pos, edge_point)
  
+
+func place_bridges_over_road_river_crosssing():
+	for road in get_tree().get_nodes_in_group("roads"):
+		print(road.get_node("Line2D"))
+		print(road.get_node("Area2D").get_overlapping_areas())
 
 func add_bridges():
 	for river in get_tree().get_nodes_in_group("rivers"):

@@ -57,7 +57,7 @@ func shoot_bullet(pos, direction):
 	# Set the position and direction of the bullet
 	var collision_shape = bullet.get_node("CollisionShape2D")  # Replace with your actual collision shape node name
 	print(collision_shape, "COL")
-	var shape = collision_shape.shape
+#	var shape = collision_shape.shape
 #	var shape_size = Vector2(0,0) 
 ##	if shape is RectangleShape2D or shape is CapsuleShape2D:
 ##		shape_size = shape.get_extents() * 2  # Calculate the size of the shape

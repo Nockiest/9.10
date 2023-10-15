@@ -27,7 +27,7 @@ var aciton_range_modifiers = {
 	"base_modifier": 1,
 	"observer": 0
 	}
-var center
+#var center
 @export var highlight_color = "white"
 enum States {
 	Idle,
@@ -54,7 +54,7 @@ func exit_action_state():
 	$AttackRangeCircle.hide()
 
 func update_from_observer_boost():
-	action_range = base_action_range * Utils.sum_dict_values(aciton_range_modifiers)
+	action_range = round(base_action_range * Utils.sum_dict_values(aciton_range_modifiers))
 	print("NEW ACTION RANGE", action_range)
 
 

@@ -4,7 +4,7 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mqhyp"]
 
-[node name="Road" type="Node2D"]
+[node name="Road" type="Node2D" groups=["roads"]]
 z_index = 5
 script = ExtResource("1_gt7rl")
 

@@ -42,7 +42,7 @@ func _ready():
 	$ErrorAnimation.position = $Center.position  
 	print("CENTER GLOBAL POSITION" ,$Center.global_position )
 	center = $Center.global_position 
-	$ActionComponent.position =  center#to_local(global_position + Vector2(25,25))# to_local(center) 
+	$ActionComponent.global_position =  center#to_local(global_position + Vector2(25,25))# to_local(center) 
 	var outline = Utils.polygon_to_line2d($OutlinePolygon , 4) 
 	outline_node = outline
 	add_child(outline)
@@ -50,7 +50,7 @@ func _ready():
 	update_stats_bar()
 	emit_signal("bought", cost)
 	if action_component != null:
-		action_component.center = $Center.position
+#		action_component.position = center
 		action_component.owner = self
 		action_component.base_action_range = action_range
 	if  is_newly_bought:
@@ -133,7 +133,6 @@ func toggle_show_information():
 
 func update_stats_bar():
 	%Health.text =  str($HealthComponent.hp)
-#	if $movement_comp:
 	%Movement.text =   str($movement_comp.remain_distance)
 	$RemainMovementLabel.text =  str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
 	if action_component:
