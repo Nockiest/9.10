@@ -46,9 +46,6 @@ func _ready():
  
 	for town in get_tree().get_nodes_in_group("towns"):
 		town.connect_to_other_towns()
-#	print("TOWN NUMBER BEFORE CONNECTING ROADS ",len(get_tree().get_nodes_in_group("towns")))
-	for town in get_tree().get_nodes_in_group("towns"):
-#		print("CONNECTING", town.connected_towns)
 		for other_town in town.connected_towns:
 			instantiate_roads(Utils.get_collision_shape_center(town  ), Utils.get_collision_shape_center(other_town ))
 	for i in range(2):
@@ -188,7 +185,7 @@ func add_bridges():
 		if !has_crossing:
 			var segment_num = randi_range(0, len(river.get_children())-1)
 			var new_bridge_position = to_global(river.get_child(segment_num).get_node("Area2D").global_position)
-			var segment = river.get_child(segment_num)
+#			var segment = river.get_child(segment_num)
 #			var collision_shape = segment.get_node("Area2D/CollisionShape2D").shape 
 			var top_edge = river.segment_edges[segment_num][0]#segment.global_position + Vector2(collision_shape.extents.x, -collision_shape.extents.y)
 			var bottom_edge =river.segment_edges[segment_num][1] # segment.global_position + Vector2(collision_shape.extents.x, collision_shape.extents.y)

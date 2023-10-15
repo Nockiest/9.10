@@ -58,14 +58,14 @@ func shoot_bullet(pos, direction):
 	var collision_shape = bullet.get_node("CollisionShape2D")  # Replace with your actual collision shape node name
 	print(collision_shape, "COL")
 	var shape = collision_shape.shape
-	var shape_size = Vector2(0,0) 
-#	if shape is RectangleShape2D or shape is CapsuleShape2D:
-#		shape_size = shape.get_extents() * 2  # Calculate the size of the shape
-	if shape is CircleShape2D:
-		var radius = shape.get_radius()
-		shape_size = Vector2(radius, radius) * 2
-	else:
-		print("Unsupported shape type")
+#	var shape_size = Vector2(0,0) 
+##	if shape is RectangleShape2D or shape is CapsuleShape2D:
+##		shape_size = shape.get_extents() * 2  # Calculate the size of the shape
+#	if shape is CircleShape2D:
+#		var radius = shape.get_radius()
+#		shape_size = Vector2(radius, radius) * 2
+#	else:
+#		print("Unsupported shape type")
  
  
 	bullet.position = pos #- shape_size / 2   # Adjust the position so that the center of the shape is at pos

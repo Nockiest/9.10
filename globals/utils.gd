@@ -161,7 +161,7 @@ func do_lines_intersect(p1, p2, p3, p4):
  
 func calculate_is_inside(polygon, point = Vector2(100,100)):
 #	print(collision_shape.polygon)
-	var point_in_local = polygon.to_local(point ) #.get_global_transform()
+#	var point_in_local = polygon.to_local(point ) #.get_global_transform()
 	var vertecies =polygon.get_polygon()
 	var global_vertecies = []
 	for v in vertecies:

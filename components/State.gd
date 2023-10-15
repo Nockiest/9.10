@@ -8,7 +8,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 func enter():
@@ -17,8 +17,8 @@ func enter():
 func exit():
 	pass
 	
-func Update(delta:float):
+func Update(_delta:float):
 	pass
 	
-func Physics_Update(delta:float):
+func Physics_Update(_delta:float):
 	pass

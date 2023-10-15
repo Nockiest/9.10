@@ -12,6 +12,7 @@ enum SupportStates {
 	ProvidingSupport
 }
 var current_support_state = SupportStates.Idle
+
 func start_supporting(new_supported_entity):
 	current_support_state = SupportStates.ProvidingSupport
 	supported_entity = new_supported_entity

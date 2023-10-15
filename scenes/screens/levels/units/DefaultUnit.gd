@@ -9,17 +9,17 @@ const base_movement:int = 1
 @export var base_movement_range:int = 250 
 @export var cost:int = 20  
 @export var action_range = 100 
+## tohle budu mwnit nodem
 var action_component:
 	set(value):
 		action_component = value
 		action_component.connect("remain_actions_updated", update_stats_bar)
 #		action_component.connect("enter_action_state", $movement_comp.exit_movement_state  )
-var attack_resistances =  {"base_resistance":  0.1  }  
+@export var movement_comp:Node 
 @onready var center = $Center.global_position 
 @onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2 
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
-
-  
+var attack_resistances =  {"base_resistance":  0.1  } 
 var color: Color  
 var unit_name: String = "default"
 var start_hp: int = 2
@@ -33,8 +33,7 @@ var is_newly_bought:bool = true:
 			var tween = get_tree().create_tween()
 			tween.tween_property($ColorRect, "modulate", Color(1,1,1), 0.2)
 			tween.tween_property($ColorRect, "modulate",   color, 0.2)
-#var support_giving_units:Array = []
-
+ 
 func _ready(): 
 	# The code here has to come after the code in th echildren compoennts
 	$HealthComponent.hp = start_hp
@@ -42,6 +41,7 @@ func _ready():
 	$Center.position = to_local(Utils.get_collision_shape_center($CollisionArea))
 	$ErrorAnimation.position = $Center.position  
 	center = $Center.global_position 
+	$movement_comp.global_position = center
 	$ActionComponent.position =  $Center.position #to_local(global_position + Vector2(25,25))# to_local(center) 
 	var outline = Utils.polygon_to_line2d($OutlinePolygon , 4) 
 	outline_node = outline
@@ -56,6 +56,9 @@ func _ready():
 	if  is_newly_bought:
 		Globals.placed_unit = self
 		Globals.hovered_unit = null
+		$movement_comp.enter_placed_state()
+	else:
+		$movement_comp.exit_placed_state()
 		
 	Globals.tenders = get_tree().get_nodes_in_group("player_tenders")
 	for tender in Globals.tenders:
@@ -64,8 +67,10 @@ func _ready():
 func _on_default_attack_comp_remain_attacks_updated(_new_attacks):
 	update_stats_bar()
 
+
 func get_boost():
 	print("THIS UNIT DOESNT HAVE A BOOST FOR KILLING A UNIT")
+
 
 func add_to_team(team):
 	color = Color(team)
@@ -80,114 +85,38 @@ func process_action():
 		$ErrorAnimation.show()
 		$ErrorAnimation.play("error")
 
-## tohle by se dalo přesunout do componentů
-func process_input():
-	if Color(Globals.cur_player) !=  color :
-		return
-	elif Globals.moving_unit == self and Input.is_action_just_pressed("right_click"): 
-		$movement_comp.abort_movement()
-	elif Globals.hovered_unit == self : 
-		if Input.is_action_just_pressed("left_click"): 
-			toggle_move()
-		if Input.is_action_just_pressed("right_click"):
-			print("ACTION BEGINS")
-			if action_component != null:
-				action_component.toggle_action_screen()
-			else:
-				print("UNIT DOESNT HAVE AN ACTION TO TOGGLE SCREEN FOR")
-	elif  Globals.action_taking_unit == self:
-		if Input.is_action_just_pressed("right_click") :
-			process_action()
-
-
-func process_unit_placement():
-	if Input.is_action_just_pressed("left_click"): 
-		if Globals.hovered_unit != null:
-			print(Globals.hovered_unit == null, Globals.hovered_unit, "POSITION CANNOT BE SET")
-			return
-		var in_valid_buy_area = false
-		## check wheter it is being placed inside the buy bar
-		for buy_area in buy_areas:
-#			print("COLORS",Color(buy_area.team) , color, buy_area.units_inside)
-			if Color(buy_area.team) != color:
-				continue  
-			if self not in buy_area.units_inside:
-				continue
-			print("IN BUY AREA")
-			in_valid_buy_area = true
-		## check wheter it is placed in and of the occupied cities
-		for town in get_tree().get_nodes_in_group("towns"):
-			if town.team_alligiance == null:
-				continue
-			if Color(town.team_alligiance)!= color:
-				continue
-			if self in town.units_inside:
-				print("UNIT IS INSIDE OF AN OCCUPIED CITY")
-				in_valid_buy_area = true
-		
-		for river_segment in get_tree().get_nodes_in_group("river_segments"):
-#			print(river_segment.get_node("Area2D"), river_segment.get_node("Area2D").get_overlapping_areas ( ))
-			for area in  river_segment.get_node("Area2D").get_overlapping_areas ( ):
-				if area == $CollisionArea:
-					print(area, " OVERLAPS")
-					in_valid_buy_area = false
-					break
  
-		if in_valid_buy_area:
-			print(Globals.hovered_unit,"CAN PLACE A UNIT")
-			is_newly_bought = false
-			Globals.placed_unit = null
-			return
-		print(Globals.hovered_unit, in_valid_buy_area, "POSITION CANNOT BE SET")
- 
-
-	if Input.is_action_just_pressed("right_click"): 
-		print("ABORTING BUYING AND GIVING MONEY BACK")
-		queue_free()
-
-
 func _process(_delta):
 	queue_redraw()
-	$movement_comp.process(_delta)
-	if  Globals.placed_unit == self:
-		position = get_global_mouse_position() - size / 2
-#		center = get_global_mouse_position() - size / 2
-#		global_start_turn_position = get_global_mouse_position() - size / 2
-		process_unit_placement()
-		return   
-	if Globals.placed_unit != null:
-		return
-	process_input()
-
+	center = $Center.global_position 
+	if Color(Globals.cur_player) == color:
+		$movement_comp.process(_delta)
+ 
 ## tohle bych měl také posunout do movement componentu
-func toggle_move():
-	if Globals.moving_unit == self:
-		$movement_comp.deselect_movement()#exit_movement_state()
-#		deselect_movement()
-		print("CASE 1")
-		return
-	elif Globals.hovered_unit != self:
-		print("CASE 2")
-		return  
-
-	elif Globals.action_taking_unit != self and Globals.action_taking_unit != null:
-		print("CASE 3")
-		return
-	elif Globals.action_taking_unit != null:
-		print("CASE 4")
-		return 
-#	elif $movement_comp.remain_movement <= 0:
-#		print("CASE 5")
+#func toggle_move():
+#	if Globals.moving_unit == self:
+#		$movement_comp.deselect_movement()#exit_movement_state()
+##		deselect_movement()
+#		print("CASE 1")
 #		return
-	$movement_comp.enter_movement_state()
+#	elif Globals.hovered_unit != self:
+#		print("CASE 2")
+#		return  
+#
+#	elif Globals.action_taking_unit != self and Globals.action_taking_unit != null:
+#		print("CASE 3")
+#		return
+#	elif Globals.action_taking_unit != null:
+#		print("CASE 4")
+#		return 
+#	$movement_comp.enter_movement_state()
 
 func _on_movement_comp_ran_out_of_movement():
-	call_deferred_thread_group("use_movement_component_abort")
+	call_deferred_thread_group("use_$movement_comp_abort")
 	print("POSITION", position, " ", global_position)
 
 func update_for_next_turn():
 	$movement_comp.process_for_next_turn()
-	center = $Center.global_position 
 	if action_component != null:
 		action_component.update_for_next_turn()
 	else:
@@ -223,11 +152,12 @@ func toggle_show_information():
 
 func update_stats_bar():
 	%Health.text =  str($HealthComponent.hp)
+#	if $movement_comp:
 	%Movement.text =   str($movement_comp.remain_distance)
+	$RemainMovementLabel.text =  str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
 	if action_component:
 		%Actions.text = str(action_component.remain_actions)
-	$RemainMovementLabel.text = ""+ str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
-
+ 
 ## here is a call for function spwning a death cross
 func _on_tree_exiting():
 	var other_units = get_tree().get_nodes_in_group("living_units")
@@ -247,6 +177,9 @@ func ___on_movement_changed():
 	update_stats_bar()
  
 func _on_collision_area_entered(area):
+	if Globals.placed_unit != self and  Globals.placed_unit != null :
+		print("IGNORE AREA ENTERED")
+		return
 	if area is UnitsMainCollisionArea:
 		$movement_comp.abort_movement()
 	
@@ -260,33 +193,86 @@ func _on_collision_area_entered(area):
 		elif overlapping.get_parent() is Bridge:
 			$movement_comp.on_bridge = true
 		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and   $movement_comp.movement_modifiers["on_road"] == 0:
+			print("ENETERED RIVER")
 			$movement_comp.abort_movement()##$movement_comp.exit_movement_state()
-#		use_movement_component_abort()
+#		use_$movement_comp_abort()
 		if  overlapping.get_parent() is RiverSegment:
 			$movement_comp.on_river = true
 		$movement_comp.calculate_total_movement_modifier()
 	print("NEW MODIFIERS ", $movement_comp.movement_modifiers)
 	#print("MOVEMENT MODIFIERS ", Utils.sum_dict_values($movement_comp.movement_modifiers) , $movement_comp.movement_modifiers)
  
-func _on_collision_area_area_exited(area): ## zde je možné, že když rychle vystoupíz jednoho leasa do druhého bude se myslet že není v lese
-	$movement_comp.movement_modifiers["in_forrest"] = 0
-	$movement_comp.movement_modifiers["on_road"] = 0
-	$movement_comp.on_bridge = false
+func _on_collision_area_area_exited(_area): ## zde je možné, že když rychle vystoupíz jednoho leasa do druhého bude se myslet že není v lese 
+	var still_on_bridge = false
+	var still_on_road = false
+	var still_on_river = false
+	var still_on_forrest = false
 	for overlapping in $CollisionArea.get_overlapping_areas():
 		if overlapping.get_parent().get_parent() is Forrest:
-			$movement_comp.movement_modifiers["in_forrest"] = 0.5
-		elif overlapping.get_parent()   is Road:
-			$movement_comp.movement_modifiers["on_road"] = -0.5
+			still_on_forrest = true #$movement_comp.movement_modifiers["in_forrest"] = 0.5
+		elif overlapping.get_parent() is Road:
+			still_on_road = true #$movement_comp.movement_modifiers["on_road"] = -0.5
 		elif overlapping.get_parent() is Bridge:
-			$movement_comp.on_bridge = true
-	$movement_comp.calculate_total_movement_modifier()
+			still_on_bridge = true
+		elif overlapping.get_parent() is RiverSegment:
+			still_on_river = true
 	print("AREA EXITED",	$movement_comp.movement_modifiers)
- 
-#	$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifiers)
-
+	if not still_on_road:
+		$movement_comp.movement_modifiers["on_road"] = 0
+	if not still_on_forrest:
+		$movement_comp.movement_modifiers["in_forrest"] = 0
+	$movement_comp.on_bridge = still_on_bridge
+	$movement_comp.on_river = still_on_river
+	$movement_comp.calculate_total_movement_modifier()
 
 func _on_error_animation_finished():
 	$ErrorAnimation.hide()
+
+
+#func process_unit_placement():
+#	if Input.is_action_just_pressed("left_click"): 
+#		if Globals.hovered_unit != null:
+#			print(Globals.hovered_unit == null, Globals.hovered_unit, "POSITION CANNOT BE SET")
+#			return
+#		var in_valid_buy_area = false
+#		## check wheter it is being placed inside the buy bar
+#		for buy_area in buy_areas:
+##			print("COLORS",Color(buy_area.team) , color, buy_area.units_inside)
+#			if Color(buy_area.team) != color:
+#				continue  
+#			if self not in buy_area.units_inside:
+#				continue
+#			print("IN BUY AREA")
+#			in_valid_buy_area = true
+#		## check wheter it is placed in and of the occupied cities
+#		for town in get_tree().get_nodes_in_group("towns"):
+#			if town.team_alligiance == null:
+#				continue
+#			if Color(town.team_alligiance)!= color:
+#				continue
+#			if self in town.units_inside:
+#				print("UNIT IS INSIDE OF AN OCCUPIED CITY")
+#				in_valid_buy_area = true
+#
+#		for river_segment in get_tree().get_nodes_in_group("river_segments"):
+##			print(river_segment.get_node("Area2D"), river_segment.get_node("Area2D").get_overlapping_areas ( ))
+#			for area in  river_segment.get_node("Area2D").get_overlapping_areas ( ):
+#				if area == $CollisionArea:
+#					print(area, " OVERLAPS")
+#					in_valid_buy_area = false
+#					break
+#
+#		if in_valid_buy_area:
+#			print(Globals.hovered_unit,"CAN PLACE A UNIT")
+#			is_newly_bought = false
+#			Globals.placed_unit = null
+#			return
+#		print(Globals.hovered_unit, in_valid_buy_area, "POSITION CANNOT BE SET")
+#
+#
+#	if Input.is_action_just_pressed("right_click"): 
+#		print("ABORTING BUYING AND GIVING MONEY BACK")
+#		queue_free()
 
 
 

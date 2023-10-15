@@ -26,6 +26,8 @@ func _ready():
 	call_deferred_thread_group("change_buy_button_label")
 func _on_pressed(): 
 	## bohuřžel nemůžžu psát proěné jako reference k jiným proměnným, což komplikuje kod
+	if Globals.placed_unit != null:
+		return
 	var mock_unit = UnitClass.instantiate() as  Node2D
 #	var buy_area = battleground.get_node("BlueBuyArea")  if Globals.cur_player == "blue" else  battleground.get_node("RedBuyArea")
 	if Globals.cur_player == "blue":

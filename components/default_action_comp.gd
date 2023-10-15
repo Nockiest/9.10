@@ -26,11 +26,7 @@ var action_range:int = base_action_range:
 var aciton_range_modifiers = {
 	"base_modifier": 1,
 	"observer": 0
-	}#:
-#	set(value):
-#		print("VALUE AUGMENTED", base_action_range *Utils.sum_dict_values(aciton_range_modifiers))
-#		aciton_range_modifiers = value
-#		action_range = floor( base_action_range * Utils.sum_dict_values(aciton_range_modifiers))
+	}
 var center
 @export var highlight_color = "white"
 enum States {
@@ -81,20 +77,16 @@ func try_attack( ):
 func attack():
 	Globals.last_attacker = owner
 	exit_action_state()
-#	toggle_action_screen()
 
 func check_can_attack():
 	print("GLOBALS ", Globals.action_taking_unit, owner, Globals.action_taking_unit == owner )
 	if  Globals.action_taking_unit != owner:
 		print_debug(1, Globals.action_taking_unit)
-#		toggle_action_screen()
 		return false
 	if not Globals.hovered_unit:
-#		toggle_action_screen()
 		print_debug(2,   Globals.hovered_unit)
 		return false
 	if Globals.hovered_unit.color == owner.color:
-#		toggle_action_screen()
 		print_debug(3,  Globals.hovered_unit.color , owner.color)
 		return false
 	if remain_actions <= 0:
@@ -111,9 +103,20 @@ func  update_for_next_turn():
 	remain_actions = base_actions
 	unhighlight_units_in_range()
 
-func _process(_delta):
-	pass
- 
+func _process(_delta): 
+	if "color" in owner:
+		if Color(Globals.cur_player) != owner.color:
+			return
+	if current_state == States.Idle:
+		if Input.is_action_just_pressed("right_click"):
+			toggle_action_screen()
+	elif current_state == States.TakingAction:
+		if Input.is_action_just_pressed("right_click") :
+			owner.process_action()
+#			toggle_action_screen()
+		elif Input.is_action_just_pressed("left_click"):
+			exit_action_state()
+  
 func toggle_action_screen():
 	if Globals.action_taking_unit == owner:
 		exit_action_state()
@@ -161,8 +164,8 @@ func _on_area_entered(area):
 	return 6
 
 
-func process_action():
-	print("CHILDReN OF THIS COMPONENT SHOULd HAVE ATTACK IN THEM")
+#func process_action():
+#	print("CHILDReN OF THIS COMPONENT SHOULd HAVE ATTACK IN THEM")
 
 func _on_area_exited(area):
 	if area.name == "CollisionArea" and units_in_action_range.has(area.get_parent()):

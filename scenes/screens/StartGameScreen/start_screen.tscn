@@ -135,7 +135,6 @@ attached_settings_variable = "city_turn_income"
 label_text = "City Income Per Turn"
 
 [node name="Blue Units" type="VBoxContainer" parent="SettingsScreen"]
-visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -233,7 +232,7 @@ grow_horizontal = 2
 layout_mode = 2
 attached_settings_variable = "num_towns"
 label_text = "Number of Towns"
-slider_range = [0, 10]
+slider_range = [0, 8]
 start_value = 3
 
 [node name="RiverSlider" parent="SettingsScreen/Structures" instance=ExtResource("2_hthqh")]
@@ -251,7 +250,6 @@ slider_range = [0, 10]
 start_value = 2
 
 [node name="Red Units" type="VBoxContainer" parent="SettingsScreen"]
-visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0

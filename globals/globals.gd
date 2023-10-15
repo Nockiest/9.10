@@ -33,6 +33,8 @@ var unit_packed_scenes_arr: Array = [medic_scene,observer_scene,supply_cart_scen
  
 #this could cause potential problems in the future
 @onready var tenders = get_tree().get_nodes_in_group("player_tenders")
+ 
+  
 func update_cur_player():
 	cur_player = players[cur_player_index]
 	emit_signal("cur_player_has_been_changed") 
