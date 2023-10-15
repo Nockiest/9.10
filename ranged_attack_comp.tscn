@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dlin3h71y20cx"]
+[gd_scene load_steps=16 format=3 uid="uid://dlin3h71y20cx"]
 
 [ext_resource type="Script" path="res://ranged_attack_comp.gd" id="1_56ypw"]
 [ext_resource type="PackedScene" uid="uid://blmv0tqwcbn4s" path="res://components/default_attack_comp.tscn" id="1_mrdke"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://cu215v0hfagwt" path="res://img/anime/blast_animation/pixil-frame-8.png" id="10_exe3u"]
 [ext_resource type="Texture2D" uid="uid://c3eiyptqv2v8x" path="res://img/anime/blast_animation/pixil-frame-9.png" id="11_ggwlh"]
 [ext_resource type="Texture2D" uid="uid://d3pdr3rq28br" path="res://img/anime/blast_animation/pixil-frame-10.png" id="12_iof4a"]
+[ext_resource type="PackedScene" uid="uid://gfu781ehv24c" path="res://components/ammo_component.tscn" id="14_7l630"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7qb1l"]
 animations = [{
@@ -55,9 +56,14 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="RangedAttackComp" instance=ExtResource("1_mrdke")]
+[node name="RangedAttackComp" node_paths=PackedStringArray("ammo_component") instance=ExtResource("1_mrdke")]
 script = ExtResource("1_56ypw")
+ammo_component = NodePath("ammo_component")
 
 [node name="BlastAnimation" type="AnimatedSprite2D" parent="." index="2"]
 sprite_frames = SubResource("SpriteFrames_7qb1l")
 animation = &"blast"
+
+[node name="ammo_component" parent="." index="4" instance=ExtResource("14_7l630")]
+
+[connection signal="ammo_changed" from="ammo_component" to="." method="_on_ammo_component_ammo_changed"]

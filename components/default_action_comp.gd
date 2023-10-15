@@ -7,7 +7,7 @@ var base_actions:int = 1
 var remain_actions: int = base_actions:
 	set(new_attacks):
 		remain_actions = new_attacks
-		emit_signal("remain_actions_updated", new_attacks)
+		emit_signal("remain_actions_updated", remain_actions)
 var units_in_action_range:Array= []
 var base_action_range:int = 100:
 	set(value):

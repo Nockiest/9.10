@@ -22,6 +22,6 @@ func provide_buffs():
 		if   unit is RangedUnit:#.has_node( "RangedAttackComp") :
 			#var ranged_attack_comp = unit.get_node("RangedAttackComp")
 			print("GIVING UNIT AMMO ", unit)
-			unit.action_component.ammo += 1
-			Utils.play_animation_at_position($AnimatedSprite2D , "resupply_animation"  , unit.get_node("Center").global_position)
+			unit.action_component.ammo_component.ammo += 1
+#			Utils.play_animation_at_position($AnimatedSprite2D , "resupply_animation"  , unit.get_node("Center").global_position)
  

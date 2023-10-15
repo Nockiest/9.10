@@ -13,7 +13,7 @@ var action_component:
 	set(value):
 		action_component = value
 		action_component.connect("remain_actions_updated", update_stats_bar)
-		action_component.connect("enter_action_state", $movement_comp.exit_movement_state  )
+#		action_component.connect("enter_action_state", $movement_comp.exit_movement_state  )
 var attack_resistances =  {"base_resistance":  0.1  }  
 @onready var center = $Center.global_position 
 @onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2 
@@ -33,7 +33,7 @@ var is_newly_bought:bool = true:
 			var tween = get_tree().create_tween()
 			tween.tween_property($ColorRect, "modulate", Color(1,1,1), 0.2)
 			tween.tween_property($ColorRect, "modulate",   color, 0.2)
-var support_giving_units:Array = []
+#var support_giving_units:Array = []
 
 func _ready(): 
 	# The code here has to come after the code in th echildren compoennts
@@ -74,18 +74,18 @@ func add_to_team(team):
 	var color_rect = get_node("ColorRect")
 	color_rect.modulate = color
 
+
 func process_action():
 	if  action_component.try_attack() ==  "FAILED":
 		$ErrorAnimation.show()
 		$ErrorAnimation.play("error")
 
-	
+## tohle by se dalo přesunout do componentů
 func process_input():
 	if Color(Globals.cur_player) !=  color :
 		return
 	elif Globals.moving_unit == self and Input.is_action_just_pressed("right_click"): 
-		$movement_comp.abort_movement()#exit_movement_state()
-#		use_movement_component_abort()
+		$movement_comp.abort_movement()
 	elif Globals.hovered_unit == self : 
 		if Input.is_action_just_pressed("left_click"): 
 			toggle_move()
@@ -176,9 +176,9 @@ func toggle_move():
 	elif Globals.action_taking_unit != null:
 		print("CASE 4")
 		return 
-	elif $movement_comp.remain_movement <= 0:
-		print("CASE 5")
-		return
+#	elif $movement_comp.remain_movement <= 0:
+#		print("CASE 5")
+#		return
 	$movement_comp.enter_movement_state()
 
 func _on_movement_comp_ran_out_of_movement():
@@ -188,8 +188,6 @@ func _on_movement_comp_ran_out_of_movement():
 func update_for_next_turn():
 	$movement_comp.process_for_next_turn()
 	center = $Center.global_position 
-#	if has_node("RangedAttackComp"):
-#		$RangedAttackComp.ammo += 1
 	if action_component != null:
 		action_component.update_for_next_turn()
 	else:
@@ -225,10 +223,10 @@ func toggle_show_information():
 
 func update_stats_bar():
 	%Health.text =  str($HealthComponent.hp)
-	%Movement.text =   str($movement_comp.remain_movement)
+	%Movement.text =   str($movement_comp.remain_distance)
 	if action_component:
 		%Actions.text = str(action_component.remain_actions)
-	$RemainMovementLabel.text = "Remain Movement:\n" + str($movement_comp.remain_distance ) + " " + str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
+	$RemainMovementLabel.text = ""+ str($movement_comp.current_movement_modifier) + " " + str($movement_comp.on_bridge)    
 
 ## here is a call for function spwning a death cross
 func _on_tree_exiting():

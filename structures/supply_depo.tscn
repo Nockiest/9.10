@@ -31,6 +31,7 @@ texture = ExtResource("2_7800j")
 position = Vector2(2, -3)
 
 [node name="AreaResupplyAction" parent="." index="4" instance=ExtResource("3_73h2c")]
+highlight_color = "white"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

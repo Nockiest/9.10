@@ -18,14 +18,14 @@ var remain_distance  = base_movement_range:
 			emit_signal("ran_out_of_movement") 
 	get:
 		return remain_distance
-var remain_movement:int = base_movement_points:
-	set(new_movement):
-		print("NEW MOVEMENT ", new_movement)
-		remain_movement = new_movement
-#		exit_movement_state()
-		emit_signal("remain_movement_changed"  )
-	get:
-		return remain_movement
+#var remain_movement:int = base_movement_points:
+#	set(new_movement):
+#		print("NEW MOVEMENT ", new_movement)
+#		remain_movement = new_movement
+##		exit_movement_state()
+#		emit_signal("remain_movement_changed"  )
+#	get:
+#		return remain_movement
 var movement_modifiers:Dictionary = {
 	"base_modifier": 1,
 	"on_road": 0,
@@ -54,7 +54,7 @@ func _ready():
 	last_position = owner.position
 	
 func enter_movement_state():
-	print("ENTEREING MOVEMENT STATE")
+#	print("ENTEREING MOVEMENT STATE")
 	Globals.moving_unit = owner
 	Globals.action_taking_unit = null
 	print("TURNING MOVEMENT LOOK ON")
@@ -84,7 +84,7 @@ func toggle_moving_appearance(toggle):
 
 func calculate_total_movement_modifier():
 	current_movement_modifier = Utils.sum_dict_values(movement_modifiers)
-	print("RECALCULATING MOVEMENT MODIFIERS")
+#	print("RECALCULATING MOVEMENT MODIFIERS")
 func process(delta):
 	if current_state == state.Moving:
 		call_deferred_thread_group("move", owner.size)# move(owner.size)
@@ -123,7 +123,7 @@ func abort_movement():
  
 
 func process_for_next_turn():
-	remain_movement =  base_movement_points
+#	remain_movement =  base_movement_points
 	remain_distance = base_movement_range
 	set_new_start_turn_point()  
 	owner.position = global_start_turn_position

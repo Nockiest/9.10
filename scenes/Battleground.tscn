@@ -1,9 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://x55p4342hqhh"]
+[gd_scene load_steps=4 format=3 uid="uid://x55p4342hqhh"]
 
 [ext_resource type="Script" path="res://scenes/Battleground.gd" id="1_conv3"]
 [ext_resource type="PackedScene" uid="uid://cyl4gg4y6i7mv" path="res://scenes/ui/canvas.tscn" id="2_5oida"]
-[ext_resource type="PackedScene" uid="uid://dbbyxoulkwe8s" path="res://scenes/screens/levels/units/canon.tscn" id="5_5bohv"]
-[ext_resource type="PackedScene" uid="uid://c2lwamexhnnl6" path="res://scenes/screens/levels/units/knight.tscn" id="5_8qfw8"]
 [ext_resource type="PackedScene" uid="uid://bs2ojp8fmt43t" path="res://scenes/screens/levels/buy_area.tscn" id="6_tkc11"]
 
 [node name="BattleGround" type="Node2D"]
@@ -25,18 +23,6 @@ position = Vector2(800, 56)
 [node name="Structures" type="Node2D" parent="."]
 
 [node name="LivingUnits" type="Node2D" parent="."]
-
-[node name="Canon" parent="LivingUnits" instance=ExtResource("5_5bohv")]
-position = Vector2(412, 224)
-
-[node name="Canon2" parent="LivingUnits" instance=ExtResource("5_5bohv")]
-position = Vector2(417, 301)
-
-[node name="Canon3" parent="LivingUnits" instance=ExtResource("5_5bohv")]
-position = Vector2(413, 146)
-
-[node name="Knight" parent="LivingUnits" instance=ExtResource("5_8qfw8")]
-position = Vector2(412, 363)
 
 [node name="Projectiles" type="Node2D" parent="."]
 

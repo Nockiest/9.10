@@ -7,6 +7,7 @@
 
 [node name="AreaResupplyAction" groups=["SupportActions"] instance=ExtResource("1_pn5yo")]
 script = ExtResource("2_ag4g7")
+highlight_color = "white"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
 shape = SubResource("CircleShape2D_354cc")

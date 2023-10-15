@@ -1,16 +1,18 @@
 class_name RangedAttackComp
 extends DefaultAttackComponent
 signal ammo_changed(ammo)
+
+@export var ammo_component: Node
 @onready var projectile_scene:PackedScene = preload("res://scenes/screens/levels/projectiles/bullet.tscn")
-var max_ammo: int
-@onready var ammo:int = max_ammo:
-	get:
-		return ammo
-	set(value):
-		ammo = min(value, max_ammo)
-		ammo_changed.emit(ammo)
-		print("CHANGING VALUE OF AMMO ", ammo)
- 
+#var max_ammo: int
+#@onready var ammo:int = max_ammo:
+#	get:
+#		return ammo
+#	set(value):
+#		ammo = min(value, max_ammo)
+#		ammo_changed.emit(ammo)
+#		print("CHANGING VALUE OF AMMO ", ammo)
+#
 
 func _ready():
 	base_action_range = 300
@@ -18,24 +20,25 @@ func _ready():
 	$BlastAnimation.hide()
 #	ammo = 0 ## smazaz!!
 func toggle_action_screen():
-	if ammo <= 0:
+	if ammo_component.ammo <= 0:
 		return
  
 	super.toggle_action_screen()
 	
 func update_for_next_turn():
 	super.update_for_next_turn()
-	ammo += 1
+	ammo_component.ammo += 1
 	
  
  
 func attack():
+	print("ATTACKED")
 #	Globals.last_attacker = owner
 	super.attack()
 	remain_actions -=1
 	var direction = ( Globals.hovered_unit.get_node("Center").global_position  - global_position).normalized()
 	shoot_bullet(owner.get_node("Center").global_position , direction)
-	ammo -=1
+	ammo_component.ammo -=1
 
 #
 func check_can_attack():
@@ -45,7 +48,7 @@ func check_can_attack():
 		if area.get_parent().get_parent() is Forrest:
 			print("RANGED UNIT IS IN FORREST",area.get_parent().get_parent() )
 			return false
-	if ammo < 0:
+	if ammo_component.ammo < 0:
 		return false
 	return super.check_can_attack()
 	
@@ -90,3 +93,7 @@ func shoot_bullet(pos, direction):
 	$BlastAnimation.rotation = direction.angle() - PI/2 *3
 	$BlastAnimation.play("blast")  # Replace "blast" with the name of your animation
 	# Rotate the AnimatedSprite to face the same direction as the bullet	
+
+
+func _on_ammo_component_ammo_changed():
+	ammo_changed.emit(ammo_component.ammo)

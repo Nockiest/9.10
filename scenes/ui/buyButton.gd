@@ -8,9 +8,8 @@ signal buy_unit
 		%Cost.text = str(instance.cost)
 		call_deferred_thread_group("change_buy_button_label")
 		instance.queue_free()
-#@onready var texture_rect = get_node("%TextureRect")  # Replace with your actual node path
 @export var instanced_units_index = 0
-@onready var battleground = get_tree().get_root().get_node("BattleGround") #$"../../../.."
+@onready var battleground = get_tree().get_root().get_node("BattleGround")
 #@export var connected_unit_scene = null
 func change_buy_button_label():
 	var instance = UnitClass.instantiate() as  Node2D

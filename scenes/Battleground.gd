@@ -16,7 +16,6 @@ func put_unit_into_teams():
 	for i in range(len(units)):
 		var unit = units[i]
 		var team = teams[i % len(teams)]
-#		unit.remain_movement = unit.base_actions
 		unit.add_to_team(team)
 		unit.is_newly_bought = false
 	Globals.placed_unit = null
