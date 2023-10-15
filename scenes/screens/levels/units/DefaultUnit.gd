@@ -16,7 +16,7 @@ var action_component:
 		action_component.connect("remain_actions_updated", update_stats_bar)
 #		action_component.connect("enter_action_state", $movement_comp.exit_movement_state  )
 @export var movement_comp:Node 
-@onready var center = $Center.global_position 
+@onready var center = $Center.global_position
 @onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2 
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
 var attack_resistances =  {"base_resistance":  0.1  } 
@@ -40,13 +40,13 @@ func _ready():
 	$movement_comp.base_movement_range = base_movement_range
 	$Center.position = to_local(Utils.get_collision_shape_center($CollisionArea))
 	$ErrorAnimation.position = $Center.position  
+	print("CENTER GLOBAL POSITION" ,$Center.global_position )
 	center = $Center.global_position 
-	$movement_comp.global_position = center
-	$ActionComponent.position =  $Center.position #to_local(global_position + Vector2(25,25))# to_local(center) 
+	$ActionComponent.position =  center#to_local(global_position + Vector2(25,25))# to_local(center) 
 	var outline = Utils.polygon_to_line2d($OutlinePolygon , 4) 
 	outline_node = outline
 	add_child(outline)
-	$movement_comp.exit_movement_state()
+#	$movement_comp.exit_movement_state()
 	update_stats_bar()
 	emit_signal("bought", cost)
 	if action_component != null:
@@ -92,25 +92,6 @@ func _process(_delta):
 	if Color(Globals.cur_player) == color:
 		$movement_comp.process(_delta)
  
-## tohle bych měl také posunout do movement componentu
-#func toggle_move():
-#	if Globals.moving_unit == self:
-#		$movement_comp.deselect_movement()#exit_movement_state()
-##		deselect_movement()
-#		print("CASE 1")
-#		return
-#	elif Globals.hovered_unit != self:
-#		print("CASE 2")
-#		return  
-#
-#	elif Globals.action_taking_unit != self and Globals.action_taking_unit != null:
-#		print("CASE 3")
-#		return
-#	elif Globals.action_taking_unit != null:
-#		print("CASE 4")
-#		return 
-#	$movement_comp.enter_movement_state()
-
 func _on_movement_comp_ran_out_of_movement():
 	call_deferred_thread_group("use_$movement_comp_abort")
 	print("POSITION", position, " ", global_position)
@@ -177,9 +158,11 @@ func ___on_movement_changed():
 	update_stats_bar()
  
 func _on_collision_area_entered(area):
-	if Globals.placed_unit != self and  Globals.placed_unit != null :
-		print("IGNORE AREA ENTERED")
+	if $movement_comp.current_state !=   $movement_comp.state.Moving:
 		return
+#	if Globals.placed_unit != self and  Globals.placed_unit != null :
+#		print("IGNORE AREA ENTERED")
+#		return
 	if area is UnitsMainCollisionArea:
 		$movement_comp.abort_movement()
 	
