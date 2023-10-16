@@ -66,4 +66,7 @@ animation = &"blast"
 
 [node name="ammo_component" parent="." index="4" instance=ExtResource("14_7l630")]
 
+[node name="reachabilityCheckerComp" parent="." index="5"]
+entity_mask_indexes = [7]
+
 [connection signal="ammo_changed" from="ammo_component" to="." method="_on_ammo_component_ammo_changed"]

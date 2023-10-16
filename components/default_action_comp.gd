@@ -11,6 +11,7 @@ var remain_actions: int = base_actions:
 var units_in_action_range:Array= []
 var attack_obstructions_layer_index :int  = 0
 var reachable_units:Array = []
+var projectile_size:int = 0
 var base_action_range:int = 100:
 	set(value):
 		base_action_range = value
@@ -51,31 +52,33 @@ func enter_action_state():
 func check_units_in_range_attackable():
 	for unit in units_in_action_range:
 		# Create a new RayCast2D
-		var raycast = RayCast2D.new()
- 
-			
-		raycast.set_collision_mask_value(7 , true)
-		raycast.set_collision_mask_value(1, false)
-#		rasycast.set_collision_mask_value(1, true)
-		print(raycast.get_collision_mask_value(7))
-		add_child(raycast)
-		raycast.collide_with_areas = true
-		# Set the starting position of the ray (assuming your units have a position property)
-		raycast.position = position#unit.position
-
-		# Set the direction and length of the ray to reach the target unit
-		raycast.target_position = to_local(unit.center )#- target_unit.position
-#		for index in attack_obstructions_layer_indexes:
-		# Check if the ray hits anything
-		raycast.force_raycast_update()
-		if raycast.is_colliding():
-		# There is an obstruction between the units
-			print(raycast.get_collider(),"  ", raycast.get_collision_point())
-			print("Obstruction detected between ", unit.unit_name, " and ", owner.unit_name)
-		else:
-		# The line is clear
-			print( owner.unit_name , " can attack ", unit.unit_name  )
+		if $reachabilityCheckerComp.check_position_reachable(unit.center, projectile_size):
 			reachable_units.append(unit)
+#		var raycast = RayCast2D.new()
+#
+#
+#		raycast.set_collision_mask_value(7 , true)
+#		raycast.set_collision_mask_value(1, false)
+##		rasycast.set_collision_mask_value(1, true)
+#		print(raycast.get_collision_mask_value(7))
+#		add_child(raycast)
+#		raycast.collide_with_areas = true
+#		# Set the starting position of the ray (assuming your units have a position property)
+#		raycast.position = position#unit.position
+#
+#		# Set the direction and length of the ray to reach the target unit
+#		raycast.target_position = to_local(unit.center )#- target_unit.position
+##		for index in attack_obstructions_layer_indexes:
+#		# Check if the ray hits anything
+#		raycast.force_raycast_update()
+#		if raycast.is_colliding():
+#		# There is an obstruction between the units
+#			print(raycast.get_collider(),"  ", raycast.get_collision_point())
+#			print("Obstruction detected between ", unit.unit_name, " and ", owner.unit_name)
+#		else:
+#		# The line is clear
+#			print( owner.unit_name , " can attack ", unit.unit_name  )
+#			reachable_units.append(unit)
 
 		# Remove the RayCast2D from the scene
 #		raycast.queue_free()
@@ -100,10 +103,7 @@ func try_attack( ):
 	if !check_can_attack():
 		exit_action_state()
 		print("FAILED ",self, self.get_parent(),  check_can_attack() )
-		return  "FAILED"
-	if not Globals.hovered_unit in units_in_action_range:
-		print_debug(2)
-		return "FAILED"
+		return  "FAILED" 
 	## I will add this to the try_attack component later too
 #	print("TOGGLING")
 #	toggle_action_screen()
@@ -129,7 +129,10 @@ func check_can_attack():
 	if remain_actions <= 0:
 		print_debug(4,  remain_actions)
 		return false
-	print_debug(5)
+	if not Globals.hovered_unit in reachable_units:
+		print_debug(5)
+		return false
+	print_debug(6)
 	return true
 
 func _ready():
