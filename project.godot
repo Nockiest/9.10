@@ -55,6 +55,9 @@ right_click={
 2d_physics/layer_4="enviroment"
 2d_physics/layer_5="projectile"
 2d_physics/layer_6="movement_area"
+2d_physics/layer_7="forest"
+2d_physics/layer_8="river"
+2d_physics/layer_9="town"
 
 [rendering]
 

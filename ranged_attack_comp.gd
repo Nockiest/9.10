@@ -16,6 +16,7 @@ signal ammo_changed(ammo)
 
 func _ready():
 	base_action_range = 300
+	attack_obstructions_layer_index =7
 	super._ready()
 	$BlastAnimation.hide()
 #	ammo = 0 ## smazaz!!
@@ -97,3 +98,11 @@ func shoot_bullet(pos, direction):
 
 func _on_ammo_component_ammo_changed():
 	ammo_changed.emit(ammo_component.ammo)
+
+func _on_area_entered(area):
+	if area is UnitsMainCollisionArea:
+		if area.get_parent().color == Color(Globals.cur_player):
+#			$reachabilityCheckerComp.check_trajectory_without_trees(Utils.get_collision_shape_center(area))
+			$reachabilityCheckerComp.TARGET = area
+	super._on_area_entered(area)
+ 

@@ -12,3 +12,6 @@ func attack():
 	play_slash_animation()
 
  
+func _ready():
+	attack_obstructions_layer_index  =8
+	super._ready()

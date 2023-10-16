@@ -17,6 +17,7 @@ func _ready():
 		_:
 			print("NOTHING MATCHED, running default instance",forrest_scene_number)
 			forrest_shape_instance = forrest_shape_1.instantiate() as Polygon2D
+#	forrest_shape_instance.collision_layer = 8
 	add_child(forrest_shape_instance)
 	position = Vector2(randi_range(50, get_viewport().size.x-50) ,randi_range(50, get_viewport().size.y-50))
 	scale = Vector2( randf_range(0.5,1.2), randf_range(0.5,1.2) )

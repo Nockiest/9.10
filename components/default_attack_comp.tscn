@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://blmv0tqwcbn4s"]
+[gd_scene load_steps=5 format=3 uid="uid://blmv0tqwcbn4s"]
 
 [ext_resource type="Script" path="res://components/default_action_comp.gd" id="1_dckwc"]
 [ext_resource type="Script" path="res://components/Polygon2D.gd" id="2_np0wa"]
+[ext_resource type="PackedScene" uid="uid://617dtqmgwo25" path="res://components/reachability_checker_component.tscn" id="3_s3vkt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dya2i"]
 
@@ -16,11 +17,13 @@ script = ExtResource("1_dckwc")
 light_mask = 2
 visibility_layer = 32
 shape = SubResource("CircleShape2D_dya2i")
-debug_color = Color(0.843137, 0.294118, 0.619608, 0.756863)
+debug_color = Color(0.721569, 0.47451, 0.184314, 0.2)
 
 [node name="AttackRangeCircle" type="Node2D" parent="."]
 visible = false
 script = ExtResource("2_np0wa")
+
+[node name="reachabilityCheckerComp" parent="." instance=ExtResource("3_s3vkt")]
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

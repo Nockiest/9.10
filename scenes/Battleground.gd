@@ -22,11 +22,12 @@ func put_unit_into_teams():
 
  
 func _ready():
+	Globals.tenders= get_tree().get_nodes_in_group("player_tenders")
 #	Engine.time_scale = 0.5
 #	LoadingScreen.render_loading_screen()
 	set_process_input(true)
 	put_unit_into_teams()
-#	for i in range(Globals.num_towns):
+
 	var town_place_tries = 0
 	var max_placement_tries = 100
 	var placement_positions= []
@@ -86,11 +87,9 @@ func _ready():
 			river_instance.add_river_segment(segment[0], segment[1]   )
 		$Structures.add_child(river_instance)
 	create_roads_to_edges()
-	Globals.tenders= get_tree().get_nodes_in_group("player_tenders")
+#
 	call_deferred_thread_group("process_place_units")
-#place_starting_units($RedBuyArea, "red", Globals.red_player_units  )
-#	call_deferred_thread_group("place_starting_units",$BlueBuyArea, "blue", Globals.blue_player_units )
-	#place_starting_units($BlueBuyArea, "blue", Globals.blue_player_units  )
+ 
 func process_place_units():
 	call_deferred_thread_group("place_starting_units",$RedBuyArea, "red", Globals.red_player_units ) #place_starting_units($RedBuyArea, "red", Globals.red_player_units  )
 	call_deferred_thread_group("place_starting_units",$BlueBuyArea, "blue", Globals.blue_player_units )
@@ -98,7 +97,6 @@ var added = false
 func _process(_delta):
 	if !added:
 		add_bridges()
-		place_bridges_over_road_river_crosssing()
 		added=true
 
  
@@ -170,12 +168,7 @@ func create_roads_to_edges():
 			return
 		instantiate_roads(closest_town_center_pos, edge_point)
  
-
-func place_bridges_over_road_river_crosssing():
-	for road in get_tree().get_nodes_in_group("roads"):
-		print(road.get_node("Line2D"))
-		print(road.get_node("Area2D").get_overlapping_areas())
-
+ 
 func add_bridges():
 	for river in get_tree().get_nodes_in_group("rivers"):
 		var has_crossing = false

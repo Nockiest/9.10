@@ -9,6 +9,8 @@ var remain_actions: int = base_actions:
 		remain_actions = new_attacks
 		emit_signal("remain_actions_updated", remain_actions)
 var units_in_action_range:Array= []
+var attack_obstructions_layer_index :int  = 0
+var reachable_units:Array = []
 var base_action_range:int = 100:
 	set(value):
 		base_action_range = value
@@ -44,6 +46,34 @@ func enter_action_state():
 	highlight_units_in_range()
 	Globals.attacking_component = self
 	$AttackRangeCircle.show()
+	check_units_in_range_attackable()
+
+func check_units_in_range_attackable():
+	for unit in units_in_action_range:
+		# Create a new RayCast2D
+		var raycast = RayCast2D.new()
+		# Add it as a child of your node or scene
+		add_child(raycast)
+
+		# Set the starting position of the ray (assuming your units have a position property)
+		raycast.position = position#unit.position
+
+		# Set the direction and length of the ray to reach the target unit
+		raycast.target_position = unit.position #- target_unit.position
+#		for index in attack_obstructions_layer_indexes:
+		raycast.collision_layer = attack_obstructions_layer_index
+		# Check if the ray hits anything
+		raycast.force_raycast_update()
+		if raycast.is_colliding():
+		# There is an obstruction between the units
+			print("Obstruction detected between ", unit.unit_name, " and ", owner.unit_name)
+		else:
+		# The line is clear
+			print( owner.unit_name , " can attack ", unit.unit_name  )
+
+		# Remove the RayCast2D from the scene
+		raycast.queue_free()
+		
 func exit_action_state():
 	print("EXITING ACTION STATE")
 	exiting_action_state.emit()

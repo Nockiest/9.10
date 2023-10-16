@@ -57,6 +57,9 @@ func is_point_inside_rect(area_2d: Area2D, extents: Vector2, point: Vector2) -> 
 #	return a[1] < b[1]
  
 func get_collision_shape_center(area: Area2D, node_name: String= "CollisionShape2D") -> Vector2:
+	if area.get_node(node_name) == null:
+		print("AREA doesnt haVE A COLLISION SHAPE 2D")
+		return Vector2.ZERO 
 	var shape = area.get_node(node_name).shape 
 	if shape is RectangleShape2D:
 		var rect_shape =  shape   as RectangleShape2D
@@ -66,7 +69,7 @@ func get_collision_shape_center(area: Area2D, node_name: String= "CollisionShape
 		return  area.global_position 
 	else:
 		assert (false, "Unsupported collision shape type")
-		return Vector2(0, 0)
+		return Vector2.ZERO
  
 func play_animation_at_position(animation_node, animation  , position: Vector2, z_index=4096) -> void:
 	if animation_node == null:
@@ -142,8 +145,6 @@ func orientation(p, q, r):
 		return 1 if val > 0 else 2
 
 func do_lines_intersect(p1, p2, p3, p4):
-
- 
 	var o1 = orientation(p1, p2, p3)
 	var o2 = orientation(p1, p2, p4)
 	var o3 = orientation(p3, p4, p1)
@@ -157,8 +158,28 @@ func do_lines_intersect(p1, p2, p3, p4):
 			var intersect_y = (o1 * p3[1] - o2 * p4[1]) / (o1 - o2)
 			return Vector2(intersect_x, intersect_y)
 
-	return false
+	return Vector2.ZERO
  
+func do_lines_intersect_in_viewport(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2) -> Vector2:
+	var o1 = orientation(p1, p2, p3)
+	var o2 = orientation(p1, p2, p4)
+	var o3 = orientation(p3, p4, p1)
+	var o4 = orientation(p3, p4, p2)
+
+	if o1 != o2 and o3 != o4:
+		if min(p1.x, p2.x) <= max(p3.x, p4.x) and min(p3.x, p4.x) <= max(p1.x, p2.x) and \
+			min(p1.y, p2.y) <= max(p3.y, p4.y) and min(p3.y, p4.y) <= max(p1.y, p2.y):
+			# Calculate the point of intersection
+			var intersect_x = (o1 * p3.x - o2 * p4.x) / (o1 - o2)
+			var intersect_y = (o1 * p3.y - o2 * p4.y) / (o1 - o2)
+			var intersection_point = Vector2(intersect_x, intersect_y)
+
+			# Check if the intersection point is inside the viewport
+			if intersection_point.x >= 0 and intersection_point.x <= get_viewport().size.x and \
+			   intersection_point.y >= 0 and intersection_point.y <= get_viewport().size.y:
+				return intersection_point
+
+	return Vector2.ZERO
 func calculate_is_inside(polygon, point = Vector2(100,100)):
 #	print(collision_shape.polygon)
 #	var point_in_local = polygon.to_local(point ) #.get_global_transform()

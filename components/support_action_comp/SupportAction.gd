@@ -30,7 +30,9 @@ func _process(_delta):
 	if current_support_state == SupportStates.ProvidingSupport:
 		draw_line_to_supported_entity()
  
-
+func _ready():
+	super._ready()
+	attack_obstructions_layer_index = 8
 #func deselect_supported_entity():
 #	supported_entity = null
 #	unhighlight_units_in_range()

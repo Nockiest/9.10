@@ -178,3 +178,31 @@
 #			print("CREATED NEW SUPPORT CONNECTION")
 #		current_state.support_already_provided:
 #			print("ALREADY PROVIDED SUPPORT")
+
+#
+#func place_bridges_over_road_river_crosssing():
+#	for road in get_tree().get_nodes_in_group("roads"):
+##		print(road.get_node("Line2D"))
+##		print(road.get_node("Area2D").get_overlapping_areas())
+#		for area in road.get_node("Area2D").get_overlapping_areas():
+#			if area.get_parent() is RiverSegment and not (area is EnlargedColArea):
+#				print("CROSSING A RIVER SEGMENT ", area.get_parent() )
+##				var road_dir = road.get_node("Line2D").get_normal()
+##				var river_dir = area.get_parent().get_direction()
+#				var road_start = road.get_node("Line2D").get_point_position(0)
+#				var road_end = road.get_node("Line2D").get_point_position(1)
+#				var angle_degrees = (road_start - road_end).angle() * 180 / PI
+#				# Calculate the angle between the two vectors
+##				var angle = road_dir.angle_to(river_dir)* 180 / PI 	 
+#				var index =  area.get_parent() .get_index()#.get_parent().get_child_index( area.get_parent())
+#				var top_edge = area.get_parent().get_parent().segment_edges[index][0]#segment.global_position + Vector2(collision_shape.extents.x, -collision_shape.extents.y)
+#				var bottom_edge =area.get_parent().get_parent().segment_edges[index][1]
+#				var interscetion_point = Utils.do_lines_intersect_in_viewport(road_start, road_end, top_edge, bottom_edge)
+#				print(road_start, road_end, top_edge, bottom_edge, interscetion_point)
+#				if interscetion_point:
+#					var bridge_instance = bridge_scene.instantiate() as Sprite2D
+#					bridge_instance.rotation_degrees = angle_degrees
+#					bridge_instance.global_position = interscetion_point
+#					$Structures.add_child(bridge_instance)
+##				print("CROSSING A RIVER SEGMENT ", area.get_parent(), "Angle: ", angle)
+#

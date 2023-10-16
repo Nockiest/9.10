@@ -43,5 +43,5 @@ func _on_check_button_pressed():
 
 func _on_check_button_2_pressed():
 	for unit in get_tree().get_nodes_in_group("living_units"):
-		unit.get_node("ActionComponent").visible = !unit.get_node("ActionComponent").visible
+		unit.action_component.get_node("AttackRangeShape").visible = !unit.action_component.get_node("AttackRangeShape").visible
 

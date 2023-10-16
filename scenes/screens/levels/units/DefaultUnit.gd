@@ -13,8 +13,7 @@ const base_movement:int = 1
 var action_component:
 	set(value):
 		action_component = value
-		action_component.connect("remain_actions_updated", update_stats_bar)
-#		action_component.connect("enter_action_state", $movement_comp.exit_movement_state  )
+		action_component.connect("remain_actions_updated", update_stats_bar) 
 @export var movement_comp:Node 
 @onready var center = $Center.global_position
 @onready var size = $CollisionArea/CollisionShape2D.shape.extents * 2 
