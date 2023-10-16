@@ -45,7 +45,6 @@ func _ready():
 	var outline = Utils.polygon_to_line2d($OutlinePolygon , 4) 
 	outline_node = outline
 	add_child(outline)
-#	$movement_comp.exit_movement_state()
 	update_stats_bar()
 	emit_signal("bought", cost)
 	if action_component != null:

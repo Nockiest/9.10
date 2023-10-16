@@ -43,36 +43,42 @@ func enter_action_state():
 	entering_action_state.emit()
 	current_state = States.TakingAction
 	Globals.action_taking_unit = owner
-	highlight_units_in_range()
 	Globals.attacking_component = self
 	$AttackRangeCircle.show()
 	check_units_in_range_attackable()
+	highlight_units_in_range()
 
 func check_units_in_range_attackable():
 	for unit in units_in_action_range:
 		# Create a new RayCast2D
 		var raycast = RayCast2D.new()
-		# Add it as a child of your node or scene
+ 
+			
+		raycast.set_collision_mask_value(7 , true)
+		raycast.set_collision_mask_value(1, false)
+#		rasycast.set_collision_mask_value(1, true)
+		print(raycast.get_collision_mask_value(7))
 		add_child(raycast)
-
+		raycast.collide_with_areas = true
 		# Set the starting position of the ray (assuming your units have a position property)
 		raycast.position = position#unit.position
 
 		# Set the direction and length of the ray to reach the target unit
-		raycast.target_position = unit.position #- target_unit.position
+		raycast.target_position = to_local(unit.center )#- target_unit.position
 #		for index in attack_obstructions_layer_indexes:
-		raycast.collision_layer = attack_obstructions_layer_index
 		# Check if the ray hits anything
 		raycast.force_raycast_update()
 		if raycast.is_colliding():
 		# There is an obstruction between the units
+			print(raycast.get_collider(),"  ", raycast.get_collision_point())
 			print("Obstruction detected between ", unit.unit_name, " and ", owner.unit_name)
 		else:
 		# The line is clear
 			print( owner.unit_name , " can attack ", unit.unit_name  )
+			reachable_units.append(unit)
 
 		# Remove the RayCast2D from the scene
-		raycast.queue_free()
+#		raycast.queue_free()
 		
 func exit_action_state():
 	print("EXITING ACTION STATE")
@@ -81,6 +87,7 @@ func exit_action_state():
 	current_state = States.Idle
 	Globals.action_taking_unit = null
 	Globals.attacking_component = null
+	reachable_units = []
 	$AttackRangeCircle.hide()
 
 func update_from_observer_boost():
@@ -147,16 +154,18 @@ func _process(_delta):
 		elif Input.is_action_just_pressed("left_click"):
 			exit_action_state()
   
+## ctrl+shift+i == put tabs to text
+#	Callable(toggle_action_screen).call_deferred()
 func toggle_action_screen():
 	if Globals.action_taking_unit == owner:
 		exit_action_state()
-		print_debug("1 ", self)
+#		print_debug("1 ", self)
 		return
 	if Globals.hovered_unit != owner:
-		print_debug ("2 ", self,  Globals.hovered_unit)
+#		print_debug ("2 ", self,  Globals.hovered_unit)
 		return
 	if Globals.action_taking_unit != null:
-		print_debug("3 ", self,  Globals.action_taking_unit)
+#		print_debug("3 ", self,  Globals.action_taking_unit)
 		return
 	## switch between moving and doing action
 #	owner.deselect_movement()
@@ -168,10 +177,13 @@ func toggle_action_screen():
 	print("ACTION TAKING UNIT", Globals.action_taking_unit)
  
 func highlight_units_in_range(): 
-	print("HIGHLIGHTING UNITS", units_in_action_range)
+	print("HIGHLIGHTING UNITS", units_in_action_range, )
+	print("REACHABLE UNITS ",  reachable_units)
 	for unit in units_in_action_range:
-		unit.get_node("ColorRect").modulate = Color(highlight_color)
- 
+		if unit in reachable_units:
+			unit.get_node("ColorRect").modulate = Color(highlight_color)
+		else:
+			unit.get_node("ColorRect").modulate = Color(0.1,0.1,0.1,0.5)
 func unhighlight_units_in_range():
 	for enemy in units_in_action_range:
 		enemy.get_node("ColorRect").modulate = enemy.color
