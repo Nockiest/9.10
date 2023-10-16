@@ -32,16 +32,9 @@ func _process(_delta):
  
 func _ready():
 	super._ready()
-	attack_obstructions_layer_index = 8
-#func deselect_supported_entity():
-#	supported_entity = null
-#	unhighlight_units_in_range()
-
+ 
 func check_can_support():
 	if Globals.hovered_unit == owner or Globals.hovered_unit == null or Globals.hovered_unit == supported_entity:
-#		print(owner," 1")
-#		stop_supporting()
-#		exit_action_state()
 		return false
 	if Globals.hovered_unit.color != owner.color:
 		print(owner," 2")
@@ -59,7 +52,6 @@ func choose_supported():
 	if not check_can_support():
 		stop_supporting() 
 		exit_action_state()
-		#deselect_supported_entity()
 		return
 	print("STARTING TO SUPPORT")
 	start_supporting(Globals.hovered_unit)
