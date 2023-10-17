@@ -14,6 +14,7 @@ var max_ammo: int
 			Utils.play_animation_at_position( $AmmoChangeAnimation, "decrease",  global_position )
 		elif  prev_ammo < ammo:
 			Utils.play_animation_at_position( $AmmoChangeAnimation, "increase",  global_position )
+			$AmmogGainedPlayer.play()
 		print("CHANGING VALUE OF AMMO ", ammo)
  
 

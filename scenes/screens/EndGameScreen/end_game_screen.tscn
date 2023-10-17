@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://jabl0mqew46f"]
+[gd_scene load_steps=3 format=3 uid="uid://jabl0mqew46f"]
 
 [ext_resource type="Script" path="res://scenes/screens/EndGameScreen/end_game_screen.gd" id="1_nhid1"]
+[ext_resource type="AudioStream" uid="uid://dh0pcnd0aoipo" path="res://music/game_over/end_music.wav" id="2_3phxn"]
 
 [node name="EndGame Screen" type="CanvasLayer"]
 script = ExtResource("1_nhid1")
@@ -70,5 +71,8 @@ text = "Blue Earned"
 layout_mode = 2
 text = "Red Earned
 "
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_3phxn")
 
 [connection signal="pressed" from="Button" to="." method="_on_start_screen_btn_pressed"]

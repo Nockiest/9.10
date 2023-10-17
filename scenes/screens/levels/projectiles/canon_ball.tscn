@@ -15,5 +15,8 @@ position = Vector2(0.276367, 0.490242)
 scale = Vector2(0.230888, 0.235889)
 texture = ExtResource("2_ol38u")
 
-[node name="CollisionShape2D" parent="." index="2"]
+[node name="CollisionShape2D" parent="." index="3"]
 shape = SubResource("CircleShape2D_wpjis")
+
+[node name="Explosion" parent="." index="4"]
+volume_db = 24.0

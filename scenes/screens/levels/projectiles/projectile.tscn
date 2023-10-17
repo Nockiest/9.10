@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://i2m0nvduyp0c"]
+[gd_scene load_steps=33 format=3 uid="uid://i2m0nvduyp0c"]
 
 [ext_resource type="Script" path="res://scenes/screens/levels/projectiles/projectile.gd" id="1_jmxrc"]
 [ext_resource type="Texture2D" uid="uid://dk6fv1mbsu3t8" path="res://img/anime/explosion/pixil-frame-0.png" id="2_qshlr"]
@@ -29,6 +29,7 @@
 [ext_resource type="Texture2D" uid="uid://c18iqq1f75kll" path="res://img/anime/explosion/pixil-frame-14.png" id="16_rbbyf"]
 [ext_resource type="Texture2D" uid="uid://be7nuf1hojlb5" path="res://img/anime/explosion/pixil-frame-15.png" id="17_1oiaa"]
 [ext_resource type="Texture2D" uid="uid://h563xc0735gy" path="res://img/anime/explosion/pixil-frame-16.png" id="18_c3jr2"]
+[ext_resource type="AudioStream" uid="uid://bucultkjbfm0i" path="res://music/projectile/explosion.ogg" id="30_chy4d"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_bxjgt"]
 animations = [{
@@ -151,6 +152,9 @@ animation = &"explosion"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 32
 visibility_layer = 25
+
+[node name="Explosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("30_chy4d")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

@@ -30,6 +30,7 @@ func _play_explosion():
 		stop_movement()
 		$Sprite2D.hide()
 		$ExplosionAnimation.show()
+		$Explosion.play()
 		return true
 	return false
 
@@ -48,3 +49,5 @@ func _on_damage_animation_animation_finished():
 
 func _on_error_animation_finished():
 	queue_free()
+
+

@@ -1,9 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://bsghedd31qfoa"]
+[gd_scene load_steps=10 format=3 uid="uid://bsghedd31qfoa"]
 
 [ext_resource type="Script" path="res://components/movement_comp/movement_comp.gd" id="1_i5omy"]
 [ext_resource type="Script" path="res://components/movement_comp/state_machine.gd" id="2_evtpk"]
 [ext_resource type="Script" path="res://components/movement_comp/Moving.gd" id="3_7w4gi"]
 [ext_resource type="Script" path="res://components/movement_comp/MovementSoundPlayer.gd" id="4_yjkke"]
+[ext_resource type="PackedScene" uid="uid://flxe67nfovka" path="res://components/random_music_player/random_music_player.tscn" id="5_sl3ls"]
+[ext_resource type="AudioStream" uid="uid://csy7sqypjcjw6" path="res://music/unit/movement/gravel_step.wav" id="6_6tvuo"]
+[ext_resource type="AudioStream" uid="uid://vledkswyggia" path="res://music/unit/movement/grass_step.wav" id="7_0pdmu"]
+[ext_resource type="AudioStream" uid="uid://rmaordox3dgd" path="res://music/unit/movement/mud_step.wav" id="8_8m0ig"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3tkyc"]
 radius = 10.6301
@@ -32,7 +36,8 @@ script = ExtResource("3_7w4gi")
 
 [node name="SelectSound" type="AudioStreamPlayer" parent="."]
 
-[node name="MovementSoundPlayer" type="AudioStreamPlayer" parent="."]
+[node name="MovementSoundPlayer" type="Node" parent="."]
 script = ExtResource("4_yjkke")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="MovementSoundPlayer"]
+[node name="random_music_player" parent="MovementSoundPlayer" instance=ExtResource("5_sl3ls")]
+sound_list = Array[AudioStream]([ExtResource("6_6tvuo"), ExtResource("7_0pdmu"), ExtResource("8_8m0ig")])

@@ -8,7 +8,7 @@ var base_movement_range:int:
 		remain_distance = base_movement_range 
 @onready var global_start_turn_position :Vector2 =  global_position 
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
-@export var movement_sounds:Array[AudioStream] = []
+#@export var movement_sounds:Array[AudioStream] = []
 var remain_distance  = base_movement_range:
 	set(new_distance):
 		remain_distance =new_distance 
@@ -89,13 +89,13 @@ func calculate_total_movement_modifier():
 #	print("RECALCULATING MOVEMENT MODIFIERS")
 
 func process(_delta):
+	$MovementSoundPlayer.process(current_state)
 	if current_state == state.Placed: 
 		owner.position = get_global_mouse_position() - owner.size / 2
 		print("OWNER POS ", owner.position)
 		if Input.is_action_just_pressed("left_click"):
 			process_unit_placement()
 	elif current_state == state.Moving:
-		$MovementSoundPlayer.process(current_state)
 		move()#call_deferred_thread_group("move"  ) 
 		if Input.is_action_just_pressed("right_click"):
 			abort_movement()

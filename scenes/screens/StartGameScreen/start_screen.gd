@@ -19,4 +19,6 @@ func _on_back_to_start_screen_btn_button_up():
 func _on_exit_btn_button_up():
 	get_tree().quit()
 	
+func _ready() -> void:
+	$AudioStreamPlayer.play()
  

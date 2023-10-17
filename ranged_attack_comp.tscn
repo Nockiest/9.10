@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://dlin3h71y20cx"]
+[gd_scene load_steps=18 format=3 uid="uid://dlin3h71y20cx"]
 
 [ext_resource type="Script" path="res://ranged_attack_comp.gd" id="1_56ypw"]
 [ext_resource type="PackedScene" uid="uid://blmv0tqwcbn4s" path="res://components/default_attack_comp.tscn" id="1_mrdke"]
 [ext_resource type="Texture2D" uid="uid://bpahu66r4rddg" path="res://img/anime/blast_animation/pixil-frame-0.png" id="2_mjfw6"]
+[ext_resource type="AudioStream" uid="uid://caw17dgsr0rhs" path="res://music/unit/canon_shots/musketshot.wav" id="3_6glc6"]
 [ext_resource type="Texture2D" uid="uid://byvsynqne2dy7" path="res://img/anime/blast_animation/pixil-frame-1.png" id="3_svd2n"]
 [ext_resource type="Texture2D" uid="uid://u8k0ku18hm4k" path="res://img/anime/blast_animation/pixil-frame-2.png" id="4_e0bxa"]
 [ext_resource type="Texture2D" uid="uid://c7hx41wh5weia" path="res://img/anime/blast_animation/pixil-frame-3.png" id="5_ebrq5"]
@@ -14,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://c3eiyptqv2v8x" path="res://img/anime/blast_animation/pixil-frame-9.png" id="11_ggwlh"]
 [ext_resource type="Texture2D" uid="uid://d3pdr3rq28br" path="res://img/anime/blast_animation/pixil-frame-10.png" id="12_iof4a"]
 [ext_resource type="PackedScene" uid="uid://gfu781ehv24c" path="res://components/ammo_component.tscn" id="14_7l630"]
+[ext_resource type="AudioStream" uid="uid://5m3hqksm6s6i" path="res://music/unit/canon_shots/artillery-blast.ogg" id="16_2nf3e"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7qb1l"]
 animations = [{
@@ -59,6 +61,7 @@ animations = [{
 [node name="RangedAttackComp" node_paths=PackedStringArray("ammo_component") instance=ExtResource("1_mrdke")]
 script = ExtResource("1_56ypw")
 ammo_component = NodePath("ammo_component")
+process_action_sound = ExtResource("3_6glc6")
 
 [node name="BlastAnimation" type="AnimatedSprite2D" parent="." index="2"]
 sprite_frames = SubResource("SpriteFrames_7qb1l")
@@ -68,5 +71,8 @@ animation = &"blast"
 
 [node name="reachabilityCheckerComp" parent="." index="5"]
 entity_mask_indexes = [7]
+
+[node name="ActionSound" parent="." index="7"]
+stream = ExtResource("16_2nf3e")
 
 [connection signal="ammo_changed" from="ammo_component" to="." method="_on_ammo_component_ammo_changed"]

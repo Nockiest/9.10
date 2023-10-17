@@ -54,34 +54,7 @@ func check_units_in_range_attackable():
 		# Create a new RayCast2D
 		if $reachabilityCheckerComp.check_position_reachable(unit.center, projectile_size):
 			reachable_units.append(unit)
-#		var raycast = RayCast2D.new()
-#
-#
-#		raycast.set_collision_mask_value(7 , true)
-#		raycast.set_collision_mask_value(1, false)
-##		rasycast.set_collision_mask_value(1, true)
-#		print(raycast.get_collision_mask_value(7))
-#		add_child(raycast)
-#		raycast.collide_with_areas = true
-#		# Set the starting position of the ray (assuming your units have a position property)
-#		raycast.position = position#unit.position
-#
-#		# Set the direction and length of the ray to reach the target unit
-#		raycast.target_position = to_local(unit.center )#- target_unit.position
-##		for index in attack_obstructions_layer_indexes:
-#		# Check if the ray hits anything
-#		raycast.force_raycast_update()
-#		if raycast.is_colliding():
-#		# There is an obstruction between the units
-#			print(raycast.get_collider(),"  ", raycast.get_collision_point())
-#			print("Obstruction detected between ", unit.unit_name, " and ", owner.unit_name)
-#		else:
-#		# The line is clear
-#			print( owner.unit_name , " can attack ", unit.unit_name  )
-#			reachable_units.append(unit)
-
-		# Remove the RayCast2D from the scene
-#		raycast.queue_free()
+ 
 		
 func exit_action_state():
 	print("EXITING ACTION STATE")
@@ -114,7 +87,9 @@ func try_attack( ):
 ## ranged attack has an overide for this function  
 func attack():
 	Globals.last_attacker = owner
+	$ActionSound.play()
 	exit_action_state()
+	
 
 func check_can_attack():
 	print("GLOBALS ", Globals.action_taking_unit, owner, Globals.action_taking_unit == owner )
@@ -217,62 +192,5 @@ func _on_area_exited(area):
 	if area.name == "CollisionArea" and units_in_action_range.has(area.get_parent()):
 		units_in_action_range.erase(area.get_parent()) 
  
-
-
-#    def find_obstacles_in_line_to_enemies(self, enemy, line_points):
-#        # I could only reset the line to that specific unit instead of deleting the whole array
-#        ######################### x FIND BLOCKING UNITS ##############
-#        blocked = False
-#        for unit in game_state.living_units.array:
-#            if unit == enemy:
-#                continue
-#            elif unit.color == self.color:
-#                continue
-#            point_x, point_y, interferes = check_precalculated_line_square_interference(
-#                unit, line_points)
-#            distance_between_units = get_two_units_center_distance(unit  , enemy )
-#
-#            if interferes and abs(distance_between_units )> max(enemy.size//2, unit.size//2):
-#                print("this unit is blocking the way", unit, enemy)
-#                blocked = True
-#                self.lines_to_enemies_in_range.append({
-#                    "enemy": enemy,
-#                    "start": self.center,
-#                    "interference_point": (point_x, point_y),
-#                    "end": enemy.center})
-#
-#                break
-#        if not blocked:
-#            self.lines_to_enemies_in_range.append({
-#                "enemy": enemy,
-#                "start": self.center,
-#                "interference_point": None,
-#                "end": enemy.center})
-#
-#        return blocked
-#
-  
-#    def draw_lines_to_enemies_in_range(self):
-#        for line in self.lines_to_enemies_in_range:
-#            start = line["start"]
-#            end = line["end"]
-#            interference_point = line["interference_point"]
-#
-#            if interference_point is not None:
-#                pygame.draw.line(screen, DARK_RED, start,
-#                                 interference_point, 3)
-#                pygame.draw.line(screen, (HOUSE_PURPLE),
-#                                 interference_point, end, 3)
-#            else:
-#                pygame.draw.line(screen, DARK_RED, start, end, 3)
-#                midpoint = ((start[0] + end[0]) // 2,
-#                            (start[1] + end[1]) // 2)
-#                distance = math.sqrt(
-#                    (start[0] - end[0]) ** 2 + (start[1] - end[1]) ** 2)
-#                font = pygame.font.Font(None, 20)
-#                text_surface = font.render(
-#                    f"{int(distance)} meters", True, WHITE)
-#                text_rect = text_surface.get_rect(center=midpoint)
-#                screen.blit(text_surface, text_rect)
-# 
+ 
  

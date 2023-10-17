@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://gfu781ehv24c"]
+[gd_scene load_steps=25 format=3 uid="uid://gfu781ehv24c"]
 
 [ext_resource type="Script" path="res://components/ammo_component.gd" id="1_sar5o"]
 [ext_resource type="Texture2D" uid="uid://c0hnavsl0tf65" path="res://img/anime/bullet-minus/pixil-frame-0.png" id="2_c0tid"]
@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bewhlu71hgiqp" path="res://img/anime/resupply/pixil-frame-9.png" id="20_4dnm7"]
 [ext_resource type="Texture2D" uid="uid://dbhq1d0ck2iw1" path="res://img/anime/resupply/pixil-frame-10.png" id="21_alhw0"]
 [ext_resource type="Texture2D" uid="uid://bst32d1dk5l0p" path="res://img/anime/resupply/pixil-frame-11.png" id="22_4tcpc"]
+[ext_resource type="AudioStream" uid="uid://dgykreqlxn0ls" path="res://music/projectile/gain.wav" id="23_xx5cg"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qkhnj"]
 animations = [{
@@ -105,3 +106,6 @@ script = ExtResource("1_sar5o")
 [node name="AmmoChangeAnimation" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_qkhnj")
 animation = &"increase"
+
+[node name="AmmogGainedPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("23_xx5cg")

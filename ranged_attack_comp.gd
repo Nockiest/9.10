@@ -4,15 +4,7 @@ signal ammo_changed(ammo)
 
 @export var ammo_component: Node
 @onready var projectile_scene:PackedScene = preload("res://scenes/screens/levels/projectiles/bullet.tscn")
-#var max_ammo: int
-#@onready var ammo:int = max_ammo:
-#	get:
-#		return ammo
-#	set(value):
-#		ammo = min(value, max_ammo)
-#		ammo_changed.emit(ammo)
-#		print("CHANGING VALUE OF AMMO ", ammo)
-#
+ 
 
 func _ready():
 	base_action_range = 300
