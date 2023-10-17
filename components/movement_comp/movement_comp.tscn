@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bsghedd31qfoa"]
+[gd_scene load_steps=6 format=3 uid="uid://bsghedd31qfoa"]
 
 [ext_resource type="Script" path="res://components/movement_comp/movement_comp.gd" id="1_i5omy"]
 [ext_resource type="Script" path="res://components/movement_comp/state_machine.gd" id="2_evtpk"]
 [ext_resource type="Script" path="res://components/movement_comp/Moving.gd" id="3_7w4gi"]
+[ext_resource type="Script" path="res://components/movement_comp/MovementSoundPlayer.gd" id="4_yjkke"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3tkyc"]
 radius = 10.6301
@@ -28,3 +29,10 @@ script = ExtResource("2_evtpk")
 script = ExtResource("3_7w4gi")
 
 [node name="Idle" type="Node" parent="State"]
+
+[node name="SelectSound" type="AudioStreamPlayer" parent="."]
+
+[node name="MovementSoundPlayer" type="AudioStreamPlayer" parent="."]
+script = ExtResource("4_yjkke")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="MovementSoundPlayer"]

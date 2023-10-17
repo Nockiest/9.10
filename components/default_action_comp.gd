@@ -9,7 +9,7 @@ var remain_actions: int = base_actions:
 		remain_actions = new_attacks
 		emit_signal("remain_actions_updated", remain_actions)
 var units_in_action_range:Array= []
-var attack_obstructions_layer_index :int  = 0
+@export var process_action_sound:AudioStream
 var reachable_units:Array = []
 var projectile_size:int = 0
 var base_action_range:int = 100:
@@ -102,6 +102,7 @@ func try_attack( ):
 	print("processing", Globals.hovered_unit,Globals.action_taking_unit  )
 	if !check_can_attack():
 		exit_action_state()
+		$ErrorSound.play()
 		print("FAILED ",self, self.get_parent(),  check_can_attack() )
 		return  "FAILED" 
 	## I will add this to the try_attack component later too

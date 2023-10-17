@@ -88,7 +88,7 @@ func draw_line_to_supported_entity():
 		# Calculate the distance between the start and end points
 		if not  get_overlapping_areas().has(supported_entity.get_node("CollisionArea")):
 			stop_supporting()
-#			deselect_supported_entity()
+ 
  
 		var distance = local_start.distance_to(local_end)
 		if distance > action_range:

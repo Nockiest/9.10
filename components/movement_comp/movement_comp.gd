@@ -8,7 +8,7 @@ var base_movement_range:int:
 		remain_distance = base_movement_range 
 @onready var global_start_turn_position :Vector2 =  global_position 
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
-
+@export var movement_sounds:Array[AudioStream] = []
 var remain_distance  = base_movement_range:
 	set(new_distance):
 		remain_distance =new_distance 
@@ -53,7 +53,8 @@ func enter_movement_state():
 	print("MOUSE OFFSET ", mouse_pos_offset, mouse_pos, global_position)
 	toggle_moving_appearance("on")
 	current_state = state.Moving
- 
+	$SelectSound.play()
+#	$MovementSoundPlayer.should_play_sounds = true
 func exit_movement_state():
 	current_state = state.Idle
 	toggle_moving_appearance("off")
@@ -61,7 +62,7 @@ func exit_movement_state():
 	if Globals.moving_unit == owner:
 		Globals.moving_unit = null
 	remain_distance = base_movement_range
-
+#	$MovementSoundPlayer.should_play_sounds = false
 func exit_placed_state():
 	print("EXITING PLAcED STATE",  owner.center, to_global(owner.center), owner.position, owner.get_node("Center").global_position)
 	current_state = state.Idle
@@ -94,6 +95,7 @@ func process(_delta):
 		if Input.is_action_just_pressed("left_click"):
 			process_unit_placement()
 	elif current_state == state.Moving:
+		$MovementSoundPlayer.process(current_state)
 		move()#call_deferred_thread_group("move"  ) 
 		if Input.is_action_just_pressed("right_click"):
 			abort_movement()
@@ -151,7 +153,7 @@ func abort_movement():
  
 ## A very ugly way to deceslect movement
 func set_owner_position(new_position):
-	print("SETTING OWNER POSITION TO ",new_position, " ", remain_distance)
+#	print("SETTING OWNER POSITION TO ",new_position, " ", remain_distance)
 	if remain_distance == base_movement_range:
 		return
 	owner.global_position = new_position

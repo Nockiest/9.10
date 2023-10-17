@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://blmv0tqwcbn4s"]
+[gd_scene load_steps=6 format=3 uid="uid://blmv0tqwcbn4s"]
 
 [ext_resource type="Script" path="res://components/default_action_comp.gd" id="1_dckwc"]
 [ext_resource type="Script" path="res://components/Polygon2D.gd" id="2_np0wa"]
 [ext_resource type="PackedScene" uid="uid://617dtqmgwo25" path="res://components/reachability_checker_component.tscn" id="3_s3vkt"]
+[ext_resource type="AudioStream" uid="uid://52n86tjkblc8" path="res://music/select2.wav" id="4_vqqtx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dya2i"]
 
@@ -24,6 +25,11 @@ visible = false
 script = ExtResource("2_np0wa")
 
 [node name="reachabilityCheckerComp" parent="." instance=ExtResource("3_s3vkt")]
+
+[node name="ErrorSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_vqqtx")
+volume_db = 9.286
+max_polyphony = 3
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

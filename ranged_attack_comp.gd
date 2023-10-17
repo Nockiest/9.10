@@ -16,7 +16,6 @@ signal ammo_changed(ammo)
 
 func _ready():
 	base_action_range = 300
-	attack_obstructions_layer_index =7
 	super._ready()
 	$BlastAnimation.hide()
 #	ammo = 0 ## smazaz!!

@@ -13,5 +13,4 @@ func attack():
 
  
 func _ready():
-	attack_obstructions_layer_index  =8
 	super._ready()
