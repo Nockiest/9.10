@@ -1,3 +1,7 @@
+## move th emovement component to the center and do all the calculations from there
+## move the unit only after checking, that the localtion is valid
+## move only after checking that the line to the position is valid
+## coor the line to see, which place is valid to move to
 class_name MovementComponent
 extends Node2D
 signal remain_movement_changed( )
@@ -14,9 +18,9 @@ var remain_distance  = base_movement_range:
 		remain_distance =new_distance 
 		emit_signal("remain_movement_changed"  )
 		if new_distance < 0 :
-#			print("ABORTING MOVEMENT")
-#			abort_movement()
-			exit_movement_state()
+			abort_movement()
+			remain_distance =  base_movement_range
+			owner.update_stats_bar()
 			emit_signal("ran_out_of_movement") 
 	get:
 		return remain_distance
@@ -38,32 +42,35 @@ var current_state:state = state.Idle
  
 func _ready():
 	call_deferred_thread_group("calculate_total_movement_modifier")
-	$MovementRangeArea/RayCast2D.global_position = Utils.get_collision_shape_center(owner.get_node("CollisionArea"))
+	#$RayCast2D.global_position = Utils.get_collision_shape_center(owner.get_node("CollisionArea"))
 	
 func enter_movement_state():
 	if not check_can_turn_movement_on():
 		exit_movement_state() 
 		return 
+	$Line2D.clear_points()
 	Globals.moving_unit = owner
 	Globals.action_taking_unit = null
 	print("TURNING MOVEMENT LOOK ON")
-	var mouse_pos = get_global_mouse_position()
-	var x_distance = mouse_pos.x - global_position.x
-	var y_distance = mouse_pos.y - global_position.y
-	$MovementRangeArea/RayCast2D.global_position = mouse_pos
-	mouse_pos_offset = Vector2(x_distance, y_distance)#global_position.distance_to(get_global_mouse_position())
-	print("MOUSE OFFSET ", mouse_pos_offset, mouse_pos, global_position)
+#	var mouse_pos = get_global_mouse_position()
+#	var x_distance = mouse_pos.x - global_position.x
+#	var y_distance = mouse_pos.y - global_position.y
+#	$RayCast2D.global_position = mouse_pos
+#	mouse_pos_offset = Vector2(x_distance, y_distance)#global_position.distance_to(get_global_mouse_position())
+#	print("MOUSE OFFSET ", mouse_pos_offset, mouse_pos, global_position)
 	toggle_moving_appearance("on")
 	current_state = state.Moving
 	$SelectSound.play()
 #	$MovementSoundPlayer.should_play_sounds = true
 func exit_movement_state():
+	owner.get_node("UnitStatsBar").visible = false
+	$Line2D.clear_points()
 	current_state = state.Idle
 	toggle_moving_appearance("off")
 	global_start_turn_position = owner.global_position
 	if Globals.moving_unit == owner:
 		Globals.moving_unit = null
-#	$MovementSoundPlayer.should_play_sounds = false
+ 
 func exit_placed_state():
 	print("EXITING PLAcED STATE",  owner.center, to_global(owner.center), owner.position, owner.get_node("Center").global_position)
 	current_state = state.Idle
@@ -102,6 +109,7 @@ func process(_delta):
 			abort_movement()
 		elif Input.is_action_just_pressed("left_click"):
 #			set_new_start_turn_point()
+			set_owner_position($NewPosition.global_position)
 			exit_movement_state()
 	elif current_state == state.Idle:
 		if Input.is_action_just_pressed("left_click"):
@@ -126,27 +134,34 @@ func check_can_turn_movement_on():
 
 
 func move( ):
+	owner.get_node("UnitStatsBar").visible = true
+#	print("CALLED",   Globals.moving_unit != owner, on_river and not on_bridge and movement_modifiers["on_road"] == 0)
 	if Globals.moving_unit != owner:
 		return
 	if on_river and not on_bridge and movement_modifiers["on_road"] == 0:
 		abort_movement()
-
 	## distance just traveled is the distanc ebetween current center and the mousepos with accounted offset that gives the current center
 	var mouse_pos = get_global_mouse_position()
-	$MovementRangeArea/RayCast2D.target_position =to_local( mouse_pos-mouse_pos_offset)
-	$MovementRangeArea/RayCast2D.force_raycast_update()
-	print(to_local( mouse_pos))
-	if $MovementRangeArea/RayCast2D.is_colliding():
+	$Line2D.add_point(to_local(mouse_pos))
+	$RayCast2D.position =to_local($NewPosition.global_position)  #$Line2D.get_point_position( $Line2D.get_point_count() -1) 
+	$RayCast2D.target_position = to_local( mouse_pos )
+	$RayCast2D.force_raycast_update()
+	print($RayCast2D.position,$RayCast2D.target_position  , "X")
+#	print(to_local( mouse_pos))
+	if $RayCast2D.is_colliding():
 	# There is an obstruction between the units
-		print($MovementRangeArea/RayCast2D.get_collider(),"  ", $MovementRangeArea/RayCast2D.get_collision_point())
-	var new_position =  mouse_pos  - mouse_pos_offset  
-	var old_position = owner.global_position
+		print($RayCast2D.get_collider(),"  ", $RayCast2D.get_collision_point())
+	var new_position =  mouse_pos #  - mouse_pos_offset  
+	var old_position = $NewPosition.global_position#owner.global_position
 	var distance_just_traveled = floor( new_position.distance_to(old_position) ) * current_movement_modifier  
 #	print( new_position.distance_to(old_position) , "DISTANCE",mouse_pos_offset,  new_position,   old_position)
 	remain_distance -= distance_just_traveled
 	if remain_distance < 0:
+		print(remain_distance, " REM")
 		return
-	set_owner_position(new_position)
+	$NewPosition.global_position = new_position
+#	print("NEW POS ", position, $Line2D.get_point_count() )
+#	set_owner_position(new_position)
 
 #	if floor( new_position.distance_to(old_position) ) <= 1 :
 #		distance_just_traveled =  0
@@ -161,6 +176,7 @@ func abort_movement():
  
 ## A very ugly way to deceslect movement
 func set_owner_position(new_position):
+	$Line2D.clear_points()
 #	print("SETTING OWNER POSITION TO ",new_position, " ", remain_distance)
 #	if remain_distance == base_movement_range:
 #		return

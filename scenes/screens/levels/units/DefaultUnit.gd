@@ -42,6 +42,7 @@ func _ready():
 	print("CENTER GLOBAL POSITION" ,$Center.global_position )
 	center = $Center.global_position 
 	$ActionComponent.global_position =  center#to_local(global_position + Vector2(25,25))# to_local(center) 
+	$movement_comp.global_position = center
 	var outline = Utils.polygon_to_line2d($OutlinePolygon , 4) 
 	outline_node = outline
 	add_child(outline)

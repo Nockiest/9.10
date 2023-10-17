@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bsghedd31qfoa"]
+[gd_scene load_steps=9 format=3 uid="uid://bsghedd31qfoa"]
 
 [ext_resource type="Script" path="res://components/movement_comp/movement_comp.gd" id="1_i5omy"]
 [ext_resource type="Script" path="res://components/movement_comp/state_machine.gd" id="2_evtpk"]
@@ -9,27 +9,13 @@
 [ext_resource type="AudioStream" uid="uid://vledkswyggia" path="res://music/unit/movement/grass_step.wav" id="7_0pdmu"]
 [ext_resource type="AudioStream" uid="uid://rmaordox3dgd" path="res://music/unit/movement/mud_step.wav" id="8_8m0ig"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_3tkyc"]
-radius = 10.6301
-
 [node name="movement_comp" type="Node2D"]
 light_mask = 2
 script = ExtResource("1_i5omy")
 
-[node name="MovementRangeArea" type="Area2D" parent="."]
-light_mask = 2
-collision_layer = 32
-
-[node name="MovementRangeArea" type="CollisionShape2D" parent="MovementRangeArea"]
-light_mask = 2
-visibility_layer = 3
-shape = SubResource("CircleShape2D_3tkyc")
-debug_color = Color(0.537255, 0.568627, 0.0862745, 0.862745)
-
-[node name="RayCast2D" type="RayCast2D" parent="MovementRangeArea"]
+[node name="RayCast2D" type="RayCast2D" parent="."]
 z_index = 1000
 collision_mask = 459
-hit_from_inside = true
 collide_with_areas = true
 
 [node name="State" type="Node" parent="."]
@@ -47,3 +33,9 @@ script = ExtResource("4_yjkke")
 
 [node name="random_music_player" parent="MovementSoundPlayer" instance=ExtResource("5_sl3ls")]
 sound_list = Array[AudioStream]([ExtResource("6_6tvuo"), ExtResource("7_0pdmu"), ExtResource("8_8m0ig")])
+
+[node name="Line2D" type="Line2D" parent="."]
+z_index = 1000
+default_color = Color(0, 0, 0, 1)
+
+[node name="NewPosition" type="Marker2D" parent="."]
