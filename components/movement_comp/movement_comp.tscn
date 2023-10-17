@@ -26,6 +26,12 @@ visibility_layer = 3
 shape = SubResource("CircleShape2D_3tkyc")
 debug_color = Color(0.537255, 0.568627, 0.0862745, 0.862745)
 
+[node name="RayCast2D" type="RayCast2D" parent="MovementRangeArea"]
+z_index = 1000
+collision_mask = 459
+hit_from_inside = true
+collide_with_areas = true
+
 [node name="State" type="Node" parent="."]
 script = ExtResource("2_evtpk")
 

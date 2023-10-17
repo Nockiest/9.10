@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cgo81acasqhl6"]
+[gd_scene load_steps=6 format=3 uid="uid://cgo81acasqhl6"]
 
 [ext_resource type="PackedScene" uid="uid://c47pmxfmok6yk" path="res://scenes/ui/default_button.tscn" id="1_sje8s"]
 [ext_resource type="Theme" uid="uid://c2qs4dmhjp58x" path="res://buy_button_theme.tres" id="2_0a4sf"]
 [ext_resource type="Script" path="res://scenes/ui/buyButton.gd" id="3_rb343"]
+[ext_resource type="AudioStream" uid="uid://ddvtotwau558i" path="res://music/ui_sounds/menu5.wav" id="4_3okwq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s6hic"]
 size = Vector2(61, 74)
@@ -61,5 +62,8 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 12
 text = "Cost"
 horizontal_alignment = 1
+
+[node name="Pressed" type="AudioStreamPlayer" parent="." index="2"]
+stream = ExtResource("4_3okwq")
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

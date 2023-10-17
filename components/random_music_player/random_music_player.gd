@@ -4,7 +4,6 @@ extends Node
 var active = false
 @export var sound_list:Array[AudioStream]
 func play_random_sound():
-	print("WILL PLAY SOUNDS WHEN I UPDATE THE PATHS")
 	var random_index = randi_range(0, len(sound_list) -1) 
 	var random_sound = sound_list[random_index]
 	$AudioStreamPlayer.stream =  sound_list[random_index]
