@@ -12,7 +12,6 @@ script = ExtResource("1_ig322")
 
 [node name="Line2D" type="Line2D" parent="."]
 z_index = 1
-width = 5.0
 default_color = Color(0.160784, 0.388235, 0.486275, 1)
 
 [node name="Area2D" type="Area2D" parent="." groups=["river_segment_collision_shapes"]]

@@ -17,6 +17,7 @@ script = ExtResource("1_i5omy")
 [node name="RayCast2D" type="RayCast2D" parent="."]
 z_index = 1000
 collision_mask = 459
+hit_from_inside = true
 collide_with_areas = true
 
 [node name="State" type="Node" parent="."]

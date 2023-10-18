@@ -5,8 +5,8 @@ var river_segment_scene:PackedScene = preload("res://structures/river_segment.ts
 var screen_size:Vector2 
 var start_point:Vector2 #= Vector2(randi_range(0, screen_size.x / 2), randi_range(0, screen_size.y / 2))
 # Generate a random end point on the right or bottom side of the screen
-var end_point:Vector2 # = Vector2(randi_range(screen_size.x / 2, screen_size.x), randi_range(screen_size.y / 2, screen_size.y))
-var control_point:Vector2 #  =  Vector2(randi_range(100, screen_size.x-100), randi_range(100, screen_size.y-100))
+var end_point:Vector2 
+var control_point:Vector2  
 var num_segments = 10
 var itersecting_point_index:int
 var segment_edges:Array = []
@@ -29,10 +29,7 @@ func add_river_segment(segment_start, segment_end,   ):
 
 	var polygon =  Polygon2D.new()
 	
-## I HAVE DELETED THE COLLISION SHAPE FOR THE ENLARGED AREA
-#	var enlarged_collision_shape = enlarged_area.get_node("CollisionShape2D")
-#	enlarged_collision_shape.shape = polygon
-
+ 
 	var points = PackedVector2Array([
 		Vector2(-length / 2, -50),
 		Vector2(length / 2, -50),
@@ -51,6 +48,7 @@ func add_river_segment(segment_start, segment_end,   ):
  
 func add_child_to_segments(child):
 	add_child(child)
+	
 func set_river_intersection(segment,colliding_area):
  
 	itersecting_point_index = segment.get_index( )

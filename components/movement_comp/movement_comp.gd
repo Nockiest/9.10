@@ -10,7 +10,7 @@ var base_movement_range:int:
 	set(new_range):
 		base_movement_range = new_range
 		remain_distance = base_movement_range 
-@onready var global_start_turn_position :Vector2 =  owner.global_position -owner.size/2
+var global_start_turn_position :Vector2 #=  owner.global_position -owner.size/2
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
 #@export var movement_sounds:Array[AudioStream] = []
 var remain_distance  = base_movement_range:
@@ -43,8 +43,8 @@ var current_state:state = state.Idle
 func _ready():
 	await owner._ready()
 	call_deferred_thread_group("calculate_total_movement_modifier")
-	#$RayCast2D.global_position = Utils.get_collision_shape_center(owner.get_node("CollisionArea"))
-	
+	global_start_turn_position = owner.global_position -owner.size/2
+
 func enter_movement_state():
 	if not check_can_turn_movement_on():
 		exit_movement_state() 
@@ -97,7 +97,7 @@ func process(_delta):
 	calculate_total_movement_modifier()
 	if current_state == state.Placed: 
 		owner.position = get_global_mouse_position() - owner.size / 2
-		print("OWNER POS ", owner.position)
+#		print("OWNER POS ", owner.position)
 		if Input.is_action_just_pressed("left_click"):
 			process_unit_placement()
 	elif current_state == state.Moving:
@@ -129,120 +129,72 @@ func check_can_turn_movement_on():
 #		print("case 5")
 		return false
 	return true
-
-func _input(event):
-	if current_state == state.Idle:
-		return
-	if event is InputEventMouseMotion:
-		# Get the mouse position in global coordinates
-		var mouse_position = get_global_mouse_position()
-
-		# Get all areas overlapping with the mouse position
-		var overlapping_areas = mouse_position.get_overlapping_areas( )
-
-		# Check if there are any overlapping areas
-		if overlapping_areas.size() > 0:
-			print("Areas at mouse position:", mouse_position)
-
-			# Iterate through each overlapping area
-			for area in overlapping_areas:
-				print(" - Area Name:", area.name)  # Assuming your areas have unique names
-				# Add more information about the area if needed
-
-		else:
-			print("No areas at mouse position:", mouse_position)
-
-func _on_collision_area_area_exited(_area): ## zde je možné, že když rychle vystoupíz jednoho leasa do druhého bude se myslet že není v lese 
-	var still_on_bridge = false
-	var still_on_road = false
-	var still_on_river = false
-	var still_on_forrest = false
-	for overlapping in $CollisionArea.get_overlapping_areas():
-		if overlapping.get_parent().get_parent() is Forrest:
-			still_on_forrest = true #$movement_comp.movement_modifiers["in_forrest"] = 0.5
-		elif overlapping.get_parent() is Road:
-			still_on_road = true #$movement_comp.movement_modifiers["on_road"] = -0.5
-		elif overlapping.get_parent() is Bridge:
-			still_on_bridge = true
-		elif overlapping.get_parent() is RiverSegment:
-			still_on_river = true
-	print("AREA EXITED",	$movement_comp.movement_modifiers)
-	if not still_on_road:
-		$movement_comp.movement_modifiers["on_road"] = 0
-	if not still_on_forrest:
-		$movement_comp.movement_modifiers["in_forrest"] = 0
-	$movement_comp.on_bridge = still_on_bridge
-	$movement_comp.on_river = still_on_river
-	$movement_comp.calculate_total_movement_modifier()
-
-#func _on_collision_area_entered(area):
-#	if $movement_comp.current_state !=   $movement_comp.state.Moving:
-#		return
-##	if Globals.placed_unit != self and  Globals.placed_unit != null :
-##		print("IGNORE AREA ENTERED")
-##		return
-#	if area is UnitsMainCollisionArea:
-#		$movement_comp.abort_movement()
-#
-#	for overlapping in $CollisionArea.get_overlapping_areas():
-#		if overlapping.get_parent().get_parent() is Forrest:
-#			$movement_comp.movement_modifiers["in_forrest"] = 0.5
-#			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifiers)
-#		elif overlapping.get_parent() is Road:
-#			$movement_comp.movement_modifiers["on_road"] = -0.5
-#			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifiers)
-#		elif overlapping.get_parent() is Bridge:
-#			$movement_comp.on_bridge = true
-#		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and   $movement_comp.movement_modifiers["on_road"] == 0:
-#			print("ENETERED RIVER")
-#			$movement_comp.abort_movement()##$movement_comp.exit_movement_state()
-##		use_$movement_comp_abort()
-#		if  overlapping.get_parent() is RiverSegment:
-#			$movement_comp.on_river = true
-#		$movement_comp.calculate_total_movement_modifier()
-#	print("NEW MODIFIERS ", $movement_comp.movement_modifiers)
-#	#print("MOVEMENT MODIFIERS ", Utils.sum_dict_values($movement_comp.movement_modifiers) , $movement_comp.movement_modifiers)
-#
+ 
 func move( ):
 	owner.get_node("UnitStatsBar").visible = true
-#	print("CALLED",   Globals.moving_unit != owner, on_river and not on_bridge and movement_modifiers["on_road"] == 0)
 	if Globals.moving_unit != owner:
 		return
 	if on_river and not on_bridge and movement_modifiers["on_road"] == 0:
 		abort_movement()
-	## distance just traveled is the distanc ebetween current center and the mousepos with accounted offset that gives the current center
 	var mouse_pos = get_global_mouse_position()
+	
+	if $NewPosition.position == mouse_pos:
+		return 0
 	$Line2D.add_point(to_local(mouse_pos))
-	$RayCast2D.position =to_local($NewPosition.global_position)  #$Line2D.get_point_position( $Line2D.get_point_count() -1) 
-	$RayCast2D.target_position = to_local( mouse_pos )
-	$RayCast2D.force_raycast_update()
-#	print($RayCast2D.position,$RayCast2D.target_position  , "X")
-#	print(to_local( mouse_pos))
-	if $RayCast2D.is_colliding():
-	# There is an obstruction between the units
-		print($RayCast2D.get_collider(),$RayCast2D.get_collider().get_parent(),"  ", $RayCast2D.get_collision_point())
+	var segment_difficulty =get_segment_move_difficulty(mouse_pos)
 	var new_position =  mouse_pos  #  - mouse_pos_offset  
 	var old_position = $NewPosition.global_position#owner.global_position
-	var distance_just_traveled = floor( new_position.distance_to(old_position) ) * current_movement_modifier  
-#	print( new_position.distance_to(old_position) , "DISTANCE",mouse_pos_offset,  new_position,   old_position)
+	print(  round(new_position.distance_to(old_position))   * segment_difficulty," ",  round(new_position.distance_to(old_position))  ," ", new_position, " ", old_position," ", segment_difficulty)
+	var distance_just_traveled =  round(new_position.distance_to(old_position))   * segment_difficulty#current_movement_modifier  
 	remain_distance -= distance_just_traveled
-	if remain_distance < 0:
-		print(remain_distance, " REM")
-		return
 	$NewPosition.global_position = new_position
-#	print("NEW POS ", position, $Line2D.get_point_count() )
-#	set_owner_position(new_position)
-
-#	if floor( new_position.distance_to(old_position) ) <= 1 :
-#		distance_just_traveled =  0
-#	else:
-#	var distance_just_traveled  #last_position.distance_to(mouse_pos )#0
+ 
 func abort_movement():
 	print("CALLED ABORT MOVEMENT ", global_start_turn_position)
 	Globals.moving_unit = null
 	remain_distance = base_movement_range
 	set_owner_position(global_start_turn_position-owner.size/2 )  
 	exit_movement_state() 
+ 
+func get_segment_move_difficulty(new_pos) -> float:
+	$RayCast2D.position = $NewPosition.position#to_local($NewPosition.global_position)  #$Line2D.get_point_position( $Line2D.get_point_count() -1) 
+	$RayCast2D.target_position = new_pos -$RayCast2D.global_position #+Vector2(1,1) #to_local( new_pos ) 
+	$RayCast2D.force_raycast_update()
+	var point_count = $Line2D.get_point_count()
+
+	if point_count > 5:
+		$RayCast2D.position = $Line2D.get_point_position(-5)
+	elif point_count == 1:
+		$RayCast2D.position = $Line2D.get_point_position(point_count-1)
+	else:
+		$RayCast2D.position =to_local( owner.center)
+		
+	var segment_difficulty = 1
+	if $RayCast2D.is_colliding():
+		var collider = $RayCast2D.get_collider()
+		var collider_parent = collider.get_parent()
+		
+		# Check if the collider is the owner of the component
+		if collider.get_parent() is BattleUnit and collider == owner.get_node("CollisionArea"):
+			return segment_difficulty  # Skip further processing for self collisions
+ 
+		if collider_parent is RiverSegment:
+			segment_difficulty = 10000
+			print(1)
+		elif collider_parent.get_parent() is Forrest:
+			segment_difficulty += 0.5
+			print(2)
+		elif collider_parent is Road:
+			segment_difficulty -= 0.5
+			print(3)
+		elif collider_parent is Bridge:
+			segment_difficulty -= 0.5
+			print(4)
+		elif collider_parent is BattleUnit:
+			segment_difficulty = 10000
+			print(5)
+#	print(segment_difficulty, $RayCast2D.global_position,$RayCast2D.position,$RayCast2D.target_position  )
+	return segment_difficulty  
  
 ## A very ugly way to deceslect movement
 func set_owner_position(new_position):
