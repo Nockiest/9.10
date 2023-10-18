@@ -10,7 +10,7 @@ var base_movement_range:int:
 	set(new_range):
 		base_movement_range = new_range
 		remain_distance = base_movement_range 
-@onready var global_start_turn_position :Vector2 =  global_position 
+@onready var global_start_turn_position :Vector2 =  owner.global_position -owner.size/2
 @onready var buy_areas = get_tree().get_nodes_in_group("buy_areas")
 #@export var movement_sounds:Array[AudioStream] = []
 var remain_distance  = base_movement_range:
@@ -29,7 +29,7 @@ var movement_modifiers:Dictionary = {
 	"on_road": 0,
 	"in_forrest": 0,
 } 
-var current_movement_modifier =  calculate_total_movement_modifier()
+var current_movement_modifier #=  calculate_total_movement_modifier()
 var on_bridge:bool = false 
 var on_river:bool= false
 var mouse_pos_offset: Vector2 #= Vector2(0,0)
@@ -41,6 +41,7 @@ enum state {
 var current_state:state = state.Idle
  
 func _ready():
+	await owner._ready()
 	call_deferred_thread_group("calculate_total_movement_modifier")
 	#$RayCast2D.global_position = Utils.get_collision_shape_center(owner.get_node("CollisionArea"))
 	
@@ -49,15 +50,11 @@ func enter_movement_state():
 		exit_movement_state() 
 		return 
 	$Line2D.clear_points()
+	$AudioStreamPlayer.play()
 	Globals.moving_unit = owner
 	Globals.action_taking_unit = null
 	print("TURNING MOVEMENT LOOK ON")
-#	var mouse_pos = get_global_mouse_position()
-#	var x_distance = mouse_pos.x - global_position.x
-#	var y_distance = mouse_pos.y - global_position.y
-#	$RayCast2D.global_position = mouse_pos
-#	mouse_pos_offset = Vector2(x_distance, y_distance)#global_position.distance_to(get_global_mouse_position())
-#	print("MOUSE OFFSET ", mouse_pos_offset, mouse_pos, global_position)
+ 
 	toggle_moving_appearance("on")
 	current_state = state.Moving
 	$SelectSound.play()
@@ -65,9 +62,9 @@ func enter_movement_state():
 func exit_movement_state():
 	owner.get_node("UnitStatsBar").visible = false
 	$Line2D.clear_points()
+	$AudioStreamPlayer.stop()
 	current_state = state.Idle
 	toggle_moving_appearance("off")
-	global_start_turn_position = owner.global_position
 	if Globals.moving_unit == owner:
 		Globals.moving_unit = null
  
@@ -91,13 +88,13 @@ func toggle_moving_appearance(toggle):
 		print("ARGUMENT ", toggle)
 		assert(false, "TOGGLE MOVEMENT COLOR GOT BAD ARGUMENT" )
 
-
 func calculate_total_movement_modifier():
 	current_movement_modifier = Utils.sum_dict_values(movement_modifiers)
-#	print("RECALCULATING MOVEMENT MODIFIERS")
-
+	owner.update_stats_bar() #PRO4 TO NEFUNGUJE??
+ 
 func process(_delta):
-	$MovementSoundPlayer.process(current_state)
+#	$MovementSoundPlayer.process(current_state)
+	calculate_total_movement_modifier()
 	if current_state == state.Placed: 
 		owner.position = get_global_mouse_position() - owner.size / 2
 		print("OWNER POS ", owner.position)
@@ -109,13 +106,14 @@ func process(_delta):
 			abort_movement()
 		elif Input.is_action_just_pressed("left_click"):
 #			set_new_start_turn_point()
-			set_owner_position($NewPosition.global_position)
+			set_owner_position($NewPosition.global_position-owner.size/2)
 			exit_movement_state()
 	elif current_state == state.Idle:
 		if Input.is_action_just_pressed("left_click"):
 			enter_movement_state()
 
- 
+func get_area_at_position():
+	pass
 
 func check_can_turn_movement_on():
 	if Globals.hovered_unit != get_parent():
@@ -132,7 +130,79 @@ func check_can_turn_movement_on():
 		return false
 	return true
 
+func _input(event):
+	if current_state == state.Idle:
+		return
+	if event is InputEventMouseMotion:
+		# Get the mouse position in global coordinates
+		var mouse_position = get_global_mouse_position()
 
+		# Get all areas overlapping with the mouse position
+		var overlapping_areas = mouse_position.get_overlapping_areas( )
+
+		# Check if there are any overlapping areas
+		if overlapping_areas.size() > 0:
+			print("Areas at mouse position:", mouse_position)
+
+			# Iterate through each overlapping area
+			for area in overlapping_areas:
+				print(" - Area Name:", area.name)  # Assuming your areas have unique names
+				# Add more information about the area if needed
+
+		else:
+			print("No areas at mouse position:", mouse_position)
+
+func _on_collision_area_area_exited(_area): ## zde je možné, že když rychle vystoupíz jednoho leasa do druhého bude se myslet že není v lese 
+	var still_on_bridge = false
+	var still_on_road = false
+	var still_on_river = false
+	var still_on_forrest = false
+	for overlapping in $CollisionArea.get_overlapping_areas():
+		if overlapping.get_parent().get_parent() is Forrest:
+			still_on_forrest = true #$movement_comp.movement_modifiers["in_forrest"] = 0.5
+		elif overlapping.get_parent() is Road:
+			still_on_road = true #$movement_comp.movement_modifiers["on_road"] = -0.5
+		elif overlapping.get_parent() is Bridge:
+			still_on_bridge = true
+		elif overlapping.get_parent() is RiverSegment:
+			still_on_river = true
+	print("AREA EXITED",	$movement_comp.movement_modifiers)
+	if not still_on_road:
+		$movement_comp.movement_modifiers["on_road"] = 0
+	if not still_on_forrest:
+		$movement_comp.movement_modifiers["in_forrest"] = 0
+	$movement_comp.on_bridge = still_on_bridge
+	$movement_comp.on_river = still_on_river
+	$movement_comp.calculate_total_movement_modifier()
+
+#func _on_collision_area_entered(area):
+#	if $movement_comp.current_state !=   $movement_comp.state.Moving:
+#		return
+##	if Globals.placed_unit != self and  Globals.placed_unit != null :
+##		print("IGNORE AREA ENTERED")
+##		return
+#	if area is UnitsMainCollisionArea:
+#		$movement_comp.abort_movement()
+#
+#	for overlapping in $CollisionArea.get_overlapping_areas():
+#		if overlapping.get_parent().get_parent() is Forrest:
+#			$movement_comp.movement_modifiers["in_forrest"] = 0.5
+#			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifiers)
+#		elif overlapping.get_parent() is Road:
+#			$movement_comp.movement_modifiers["on_road"] = -0.5
+#			$movement_comp.current_movement_modifier = Utils.sum_dict_values($movement_comp.movement_modifiers)
+#		elif overlapping.get_parent() is Bridge:
+#			$movement_comp.on_bridge = true
+#		elif overlapping.get_parent() is RiverSegment and !$movement_comp.on_bridge and  Globals.placed_unit != self and   $movement_comp.movement_modifiers["on_road"] == 0:
+#			print("ENETERED RIVER")
+#			$movement_comp.abort_movement()##$movement_comp.exit_movement_state()
+##		use_$movement_comp_abort()
+#		if  overlapping.get_parent() is RiverSegment:
+#			$movement_comp.on_river = true
+#		$movement_comp.calculate_total_movement_modifier()
+#	print("NEW MODIFIERS ", $movement_comp.movement_modifiers)
+#	#print("MOVEMENT MODIFIERS ", Utils.sum_dict_values($movement_comp.movement_modifiers) , $movement_comp.movement_modifiers)
+#
 func move( ):
 	owner.get_node("UnitStatsBar").visible = true
 #	print("CALLED",   Globals.moving_unit != owner, on_river and not on_bridge and movement_modifiers["on_road"] == 0)
@@ -146,12 +216,12 @@ func move( ):
 	$RayCast2D.position =to_local($NewPosition.global_position)  #$Line2D.get_point_position( $Line2D.get_point_count() -1) 
 	$RayCast2D.target_position = to_local( mouse_pos )
 	$RayCast2D.force_raycast_update()
-	print($RayCast2D.position,$RayCast2D.target_position  , "X")
+#	print($RayCast2D.position,$RayCast2D.target_position  , "X")
 #	print(to_local( mouse_pos))
 	if $RayCast2D.is_colliding():
 	# There is an obstruction between the units
-		print($RayCast2D.get_collider(),"  ", $RayCast2D.get_collision_point())
-	var new_position =  mouse_pos #  - mouse_pos_offset  
+		print($RayCast2D.get_collider(),$RayCast2D.get_collider().get_parent(),"  ", $RayCast2D.get_collision_point())
+	var new_position =  mouse_pos  #  - mouse_pos_offset  
 	var old_position = $NewPosition.global_position#owner.global_position
 	var distance_just_traveled = floor( new_position.distance_to(old_position) ) * current_movement_modifier  
 #	print( new_position.distance_to(old_position) , "DISTANCE",mouse_pos_offset,  new_position,   old_position)
@@ -171,16 +241,13 @@ func abort_movement():
 	print("CALLED ABORT MOVEMENT ", global_start_turn_position)
 	Globals.moving_unit = null
 	remain_distance = base_movement_range
-	set_owner_position(global_start_turn_position)  
+	set_owner_position(global_start_turn_position-owner.size/2 )  
 	exit_movement_state() 
  
 ## A very ugly way to deceslect movement
 func set_owner_position(new_position):
 	$Line2D.clear_points()
-#	print("SETTING OWNER POSITION TO ",new_position, " ", remain_distance)
-#	if remain_distance == base_movement_range:
-#		return
-	owner.global_position = new_position
+	owner.global_position = new_position 
 	owner.center = owner.get_node("Center").global_position
 	
 func process_for_next_turn():
@@ -190,7 +257,7 @@ func process_for_next_turn():
 
 func  set_new_start_turn_point():
 	print("SETTING NEW START TURN POS",global_position)
-	global_start_turn_position = global_position
+	global_start_turn_position = owner.global_position + owner.size/2
 
 
 func process_unit_placement():
@@ -237,3 +304,15 @@ func process_unit_placement():
 	if Input.is_action_just_pressed("right_click"): 
 		print("ABORTING BUYING AND GIVING MONEY BACK")
 		owner.queue_free()
+
+
+
+
+
+
+#	var mouse_pos = get_global_mouse_position()
+#	var x_distance = mouse_pos.x - global_position.x
+#	var y_distance = mouse_pos.y - global_position.y
+#	$RayCast2D.global_position = mouse_pos
+#	mouse_pos_offset = Vector2(x_distance, y_distance)#global_position.distance_to(get_global_mouse_position())
+#	print("MOUSE OFFSET ", mouse_pos_offset, mouse_pos, global_position)

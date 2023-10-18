@@ -20,5 +20,6 @@ func _on_exit_btn_button_up():
 	get_tree().quit()
 	
 func _ready() -> void:
-	$AudioStreamPlayer.play()
+	$random_music_player.active = true
+#	$AudioStreamPlayer.play()
  

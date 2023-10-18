@@ -23,6 +23,7 @@ func put_unit_into_teams():
  
 func _ready():
 	Globals.tenders= get_tree().get_nodes_in_group("player_tenders")
+
 #	Engine.time_scale = 0.5
 #	LoadingScreen.render_loading_screen()
 	set_process_input(true)
@@ -89,7 +90,14 @@ func _ready():
 	create_roads_to_edges()
 #
 	call_deferred_thread_group("process_place_units")
- 
+	$AudioStreamPlayer.play() 
+	$Timer.connect("timeout", stop_song )
+	# Start the timer
+	$Timer.start()
+
+func stop_song():
+	# Stop the song
+	$AudioStreamPlayer.stop()
 func process_place_units():
 	call_deferred_thread_group("place_starting_units",$RedBuyArea, "red", Globals.red_player_units ) #place_starting_units($RedBuyArea, "red", Globals.red_player_units  )
 	call_deferred_thread_group("place_starting_units",$BlueBuyArea, "blue", Globals.blue_player_units )
